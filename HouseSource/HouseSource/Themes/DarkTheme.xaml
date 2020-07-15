@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ResourceDictionary xmlns="http://xamarin.com/schemas/2014/forms"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                    x:Class="HouseSource.Themes.DarkTheme">
+
+    <Color x:Key="PageBackgroundColor">#323232</Color>
+    <Color x:Key="ControlBackgroundColor">#646464</Color>
+
+    <Color x:Key="PrimaryTextColor">White</Color>
+    <Color x:Key="SecondaryTextColor">WhiteSmoke</Color>
+    <Color x:Key="TertiaryTextColor">LightGray</Color>
+
+    <Color x:Key="MainColor">#6ECBB8</Color>
+    <Color x:Key="DeepBlue">#353f48</Color>
+    <Color x:Key="SkyBlue">#01acf2</Color>
+    <Color x:Key="LightBlue">#83d7f9</Color>
+    <Color x:Key="GrassGreen">#71c043</Color>
+    <Color x:Key="ThickPink">#d93365</Color>
+    <Color x:Key="LightPink">#e0557f</Color>
+
+</ResourceDictionary>

@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:viewModels="clr-namespace:HouseSource.ViewModels"
+             mc:Ignorable="d"
+             x:Class="HouseSource.Views.CollectionPage"
+             BackgroundColor="{DynamicResource PageBackgroundColor}"
+             x:Name="collectionPage"
+             Title="我的收藏">
+
+    <ContentPage.BindingContext>
+        <viewModels:CollectionViewModel/>
+    </ContentPage.BindingContext>
+    
+    <ContentPage.Content>
+        <ScrollView Orientation="Vertical">
+            <StackLayout Orientation="Vertical" Padding="10,0">
+                <StackLayout BindableLayout.ItemsSource="{Binding HouseItemList}" Orientation="Vertical">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate>
+                            <Frame HeightRequest="110" Padding="5" CornerRadius="5" Style="{DynamicResource BaseFrame}">
+                                <Grid RowSpacing="0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="100"/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <ff:CachedImage Grid.Row="0" Grid.Column="0" Grid.RowSpan="4" Source="{Binding PhotoUrl}" 
+                                                                HeightRequest="100" WidthRequest="100"
+                                                                DownsampleHeight="100" DownsampleWidth="100"/>
+
+                                    <Label Grid.Row="0" Grid.Column="1" Text="{Binding HouseTitle}" TextColor="{DynamicResource PrimaryTextColor}" 
+                                                       LineBreakMode="CharacterWrap" FontAttributes="Bold"/>
+
+                                    <Label Grid.Row="1" Grid.Column="1" FontSize="12" LineBreakMode="CharacterWrap">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding RoomStyle}"/>
+                                                <Span Text="|"/>
+                                                <Span Text="{Binding Square}"/>
+                                                <Span Text="|"/>
+                                                <Span Text="{Binding EstateName}"/>
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+
+                                    <Label Grid.Row="2" Grid.Column="1" FontSize="12" TextColor="{DynamicResource SkyBlue}">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding PanType}"/>
+                                                <Span Text="|"/>
+                                                <Span Text="{Binding PropertyDecoration}"/>
+                                                <Span Text="|"/>
+                                                <Span Text="{Binding PropertyLook}"/>
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+
+                                    <Label Grid.Row="3" Grid.Column="1">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding Price}" TextColor="Red"/>
+                                                <Span Text="{Binding SinglePrice}"/>
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+
+                                </Grid>
+
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer NumberOfTapsRequired="1"
+                                                              Command="{Binding BindingContext.TappedCommand, Source={x:Reference collectionPage}}"
+                                                              CommandParameter="{Binding PropertyID}"/>
+                                </Frame.GestureRecognizers>
+                            </Frame>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </StackLayout>
+
+                <Button Text="{Binding LoadMoreButtonText}" Command="{Binding LoadMoreCommand}" BackgroundColor="Transparent" IsEnabled="{Binding ButtonIsEnable}"/>
+            </StackLayout>
+
+            <!--
+                <ScrollView.Behaviors>
+                    <behaviors:EventToCommandBehavior EventName="Scrolled" 
+                                                      Command="{Binding LoadMoreCommand}" 
+                                                      CommandParameter="{Binding Source=ProductListScrollView,Path=ScrollY}"/>
+                </ScrollView.Behaviors>-->
+        </ScrollView>
+        
+    </ContentPage.Content>
+</ContentPage>

@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:viewModels="clr-namespace:HouseSource.ViewModels"
+             mc:Ignorable="d"
+             x:Class="HouseSource.Views.MessagePage"
+             x:Name="messagePage"
+             BackgroundColor="{DynamicResource PageBackgroundColor}"
+             Title="系统消息">
+
+    <ContentPage.BindingContext>
+        <viewModels:MessageViewModel/>
+    </ContentPage.BindingContext>
+    
+    <ContentPage.Content>
+        
+            <!--消息列表   news == message -->
+        <CollectionView Grid.Row="1" x:Name="list" ItemsSource="{Binding NewsList}" EmptyView="无选项" SelectionMode="None" Margin="10">
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Orientation="Vertical" Span="1" HorizontalItemSpacing="10" VerticalItemSpacing="10"/>
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame CornerRadius="5" HasShadow="False" IsClippedToBounds="True" BackgroundColor="{DynamicResource ControlBackgroundColor}">
+                        <StackLayout Orientation="Vertical" VerticalOptions="CenterAndExpand" Margin="5,0">
+
+                            <Label Text="{Binding Title}" TextColor="{Binding TitleColor2}" FontSize="16" FontAttributes="Bold"/>
+
+                            <StackLayout Orientation="Horizontal" VerticalOptions="CenterAndExpand">
+                                <Frame HeightRequest="20" WidthRequest="30" BorderColor="Red" HasShadow="False" 
+                                       HorizontalOptions="Center" VerticalOptions="Center" Padding="0" IsVisible="{Binding FlagTop}">
+                                    <Label Text="置顶" FontSize="12" TextColor="Red" HorizontalOptions="Center" VerticalOptions="Center"/>
+                                </Frame>
+
+                                <Frame HeightRequest="20" WidthRequest="30" BorderColor="Black" HasShadow="False" 
+                                       HorizontalOptions="Center" VerticalOptions="Center" Padding="0">
+                                    <Label Text="{Binding NewsType}" FontSize="12" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center"/>
+                                </Frame>
+
+                                <Label Text="{Binding EmpName}" FontSize="14"/>
+                                <Label Text="{Binding ModDate}" FontSize="14"/>
+                            </StackLayout>
+                        </StackLayout>
+
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1"
+                                                      Command="{Binding BindingContext.NavigateCommand, Source={x:Reference messagePage}}"
+                                                      CommandParameter="{Binding .}"/>
+                        </Frame.GestureRecognizers>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </ContentPage.Content>
+</ContentPage>

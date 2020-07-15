@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:microcharts="clr-namespace:Microcharts.Forms;assembly=Microcharts.Forms"
+             xmlns:ultimateChart="clr-namespace:UltimateXF.Widget.Charts;assembly=UltimateXF"
+             xmlns:viewModels="clr-namespace:HouseSource.ViewModels"
+             mc:Ignorable="d"
+             x:Class="HouseSource.Views.ReportPage"
+             x:Name="reportPage"
+             NavigationPage.HasNavigationBar="False"
+             BackgroundColor="{DynamicResource PageBackgroundColor}"
+             Icon="cake.png"
+             Title="报表">
+
+    <ContentPage.BindingContext>
+        <viewModels:ReportViewModel/>
+    </ContentPage.BindingContext>
+    
+    <ContentPage.Content>
+        <StackLayout>
+            <microcharts:ChartView Chart="{Binding BarChartView}" HeightRequest="200"/>
+
+            <ultimateChart:SupportLineChartExtended x:Name="chart" HeightRequest="200"
+                                                        DrawBorders="false" DoubleTapToZoomEnabled="false" ChartData="{Binding MyLineChartData}"
+                                                        XAxis="{Binding MyXAxisConfig}" DescriptionChart="{Binding Description}"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

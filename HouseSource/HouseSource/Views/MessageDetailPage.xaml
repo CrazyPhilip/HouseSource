@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:viewModels="clr-namespace:HouseSource.ViewModels"
+             mc:Ignorable="d"
+             x:Class="HouseSource.Views.MessageDetailPage"
+             BackgroundColor="{DynamicResource PageBackgroundColor}"
+             Title="消息详情">
+
+    <ContentPage.BindingContext>
+        <viewModels:MessageDetailViewModel x:Name="messageViewModel"/>
+    </ContentPage.BindingContext>
+    
+    <ContentPage.Content>
+        <Grid>
+            <Frame BorderColor="LightGray" HasShadow="True" Margin="10" CornerRadius="10" Padding="10" BackgroundColor="{DynamicResource ControlBackgroundColor}">
+                <StackLayout>
+                    <Label Text="{Binding News.Title}" TextColor="Black" FontAttributes="Bold" FontSize="18"/>
+
+                    <StackLayout Orientation="Horizontal" Margin="10,0">
+                        <Frame HeightRequest="20" WidthRequest="40" BorderColor="Red" HasShadow="False" 
+                               HorizontalOptions="Center" VerticalOptions="Center" Padding="0" IsVisible="{Binding News.FlagTop}">
+                            <Label Text="置顶" FontSize="14" TextColor="Red" HorizontalOptions="Center" VerticalOptions="Center"/>
+                        </Frame>
+
+                        <Frame HeightRequest="20" WidthRequest="40" BorderColor="Black" HasShadow="False" 
+                               HorizontalOptions="Center" VerticalOptions="Center" Padding="0">
+                            <Label Text="{Binding News.NewsType}" FontSize="14" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center"/>
+                        </Frame>
+                        <Label Text="{Binding News.EmpName}" FontSize="14"/>
+                        <Label Text="{Binding News.ModDate}" FontSize="14"/>
+                    </StackLayout>
+
+                    <BoxView Color="LightGray" HeightRequest="1" HorizontalOptions="Fill"/>
+
+                    <Label Text="{Binding News.Content}" FontSize="16" Margin="10"/>
+                </StackLayout>
+            </Frame>
+
+            <ff:CachedImage HeightRequest="40" Source="Resource/drawable/stick.png" IsVisible="{Binding News.FlagTop}" 
+                            VerticalOptions="Start" HorizontalOptions="End" Margin="30,10"/>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

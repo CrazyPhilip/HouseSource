@@ -1,0 +1,220 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:HouseSource.ViewModels"
+             xmlns:controls="clr-namespace:HouseSource.Controls"
+             xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             mc:Ignorable="d"
+             x:Class="HouseSource.Views.AllHouseListPage"
+             BackgroundColor="{DynamicResource PageBackgroundColor}"
+             x:Name="allHouseListPage"
+             Title="全网房源">
+
+    <ContentPage.BindingContext>
+        <viewModels:AllHouseListViewModel/>
+    </ContentPage.BindingContext>
+
+    <ContentPage.Content>
+        <Grid Padding="10,0" RowDefinitions="30, 40, Auto" ColumnDefinitions="4*, 1*">
+
+            <!--筛选条件-->
+            <StackLayout Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" VerticalOptions="Center" Spacing="0">
+                <Label Text="{Binding SortType}" Style="{DynamicResource LabelStyle}" HorizontalOptions="CenterAndExpand">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding SortCommand}" CommandParameter="0"/>
+                    </Label.GestureRecognizers>
+                </Label>
+                
+                <Label Text="区域" Style="{DynamicResource LabelStyle}" HorizontalOptions="CenterAndExpand">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding SortCommand}" CommandParameter="1"/>
+                    </Label.GestureRecognizers>
+                </Label>
+
+                <Label Text="房型" Style="{DynamicResource LabelStyle}" HorizontalOptions="CenterAndExpand">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding SortCommand}" CommandParameter="2"/>
+                    </Label.GestureRecognizers>
+                </Label>
+
+                <Label Text="价格" Style="{DynamicResource LabelStyle}" HorizontalOptions="CenterAndExpand">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding SortCommand}" CommandParameter="3"/>
+                    </Label.GestureRecognizers>
+                </Label>
+
+                <Label Text="面积" Style="{DynamicResource LabelStyle}" HorizontalOptions="CenterAndExpand">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding SortCommand}" CommandParameter="4"/>
+                    </Label.GestureRecognizers>
+                </Label>
+            </StackLayout>
+
+            <!--搜索-->
+            <Frame Grid.Row="1" Grid.Column="0" IsClippedToBounds="True" Padding="5" CornerRadius="5" BackgroundColor="LightGray" >
+                <controls:MyEntry Placeholder="输入楼盘名/片区搜索房源" FontSize="14"/>
+            </Frame>
+            <ImageButton Grid.Row="1" Grid.Column="1" Source="search.png" BackgroundColor="Transparent" HeightRequest="30" WidthRequest="30" VerticalOptions="CenterAndExpand"/>
+
+            <!--房源列表-->
+            <!--
+            <RefreshView Grid.Row="2" IsRefreshing="{Binding IsRefreshing}" Command="{Binding RefreshCommand}">
+                <CollectionView ItemsSource="{Binding HouseItemList}" EmptyView="无" SelectionMode="None" Margin="10">
+                    <CollectionView.ItemsLayout>
+                        <GridItemsLayout Orientation="Vertical" Span="1" HorizontalItemSpacing="10" VerticalItemSpacing="10"/>
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame HeightRequest="100" CornerRadius="5" Style="{DynamicResource BaseFrame}">
+                                <Grid RowSpacing="0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="100"/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <ff:CachedImage Grid.Row="0" Grid.Column="0" Grid.RowSpan="4" Source="{Binding PhotoUrl}" 
+                                                                HeightRequest="100" WidthRequest="100"
+                                                                DownsampleHeight="100" DownsampleWidth="100"/>
+
+                                    <Label Grid.Row="0" Grid.Column="1" Text="{Binding HouseTitle}" TextColor="{DynamicResource PrimaryTextColor}" 
+                                                       LineBreakMode="CharacterWrap" FontAttributes="Bold"/>
+
+                                    <Label Grid.Row="1" Grid.Column="1" FontSize="12" LineBreakMode="CharacterWrap">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding RoomStyle}"/>
+                                                <Span Text="|"/>
+                                                <Span Text="{Binding Square}"/>
+                                                <Span Text="|"/>
+                                                <Span Text="{Binding EstateName}"/>
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+
+                                    <Label Grid.Row="2" Grid.Column="1" FontSize="12" TextColor="{DynamicResource SkyBlue}">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding PanType}"/>
+                                                <Span Text="|"/>
+                                                <Span Text="{Binding PropertyDecoration}"/>
+                                                <Span Text="|"/>
+                                                <Span Text="{Binding PropertyLook}"/>
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+
+                                    <Label Grid.Row="3" Grid.Column="1">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding Price}" TextColor="Red"/>
+                                                <Span Text="{Binding SinglePrice}"/>
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+
+                                </Grid>
+                                
+                                            <Frame.GestureRecognizers>
+                                                <TapGestureRecognizer NumberOfTapsRequired="1"
+                                                                      Command="{Binding BindingContext.NavigateCommand, Source={x:Reference homePage}}"
+                                                                      CommandParameter="{Binding .}"/>
+                                            </Frame.GestureRecognizers>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </RefreshView>-->
+
+            <ScrollView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Vertical">
+                <StackLayout Orientation="Vertical">
+                    <StackLayout BindableLayout.ItemsSource="{Binding HouseItemList}" Orientation="Vertical">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate>
+                                <Frame HeightRequest="110" Padding="5" CornerRadius="5" Style="{DynamicResource BaseFrame}">
+                                    <Grid RowSpacing="0">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <ff:CachedImage Grid.Row="0" Grid.Column="0" Grid.RowSpan="4" Source="{Binding PhotoUrl}" 
+                                                                HeightRequest="100" WidthRequest="100"
+                                                                DownsampleHeight="100" DownsampleWidth="100"/>
+
+                                        <Label Grid.Row="0" Grid.Column="1" Text="{Binding HouseTitle}" TextColor="{DynamicResource PrimaryTextColor}" 
+                                                       LineBreakMode="CharacterWrap" FontAttributes="Bold"/>
+
+                                        <Label Grid.Row="1" Grid.Column="1" FontSize="12" LineBreakMode="CharacterWrap">
+                                            <Label.FormattedText>
+                                                <FormattedString>
+                                                    <Span Text="{Binding RoomStyle}"/>
+                                                    <Span Text="|"/>
+                                                    <Span Text="{Binding Square}"/>
+                                                    <Span Text="|"/>
+                                                    <Span Text="{Binding EstateName}"/>
+                                                </FormattedString>
+                                            </Label.FormattedText>
+                                        </Label>
+
+                                        <Label Grid.Row="2" Grid.Column="1" FontSize="12" TextColor="{DynamicResource SkyBlue}">
+                                            <Label.FormattedText>
+                                                <FormattedString>
+                                                    <Span Text="{Binding PanType}"/>
+                                                    <Span Text="|"/>
+                                                    <Span Text="{Binding PropertyDecoration}"/>
+                                                    <Span Text="|"/>
+                                                    <Span Text="{Binding PropertyLook}"/>
+                                                </FormattedString>
+                                            </Label.FormattedText>
+                                        </Label>
+
+                                        <Label Grid.Row="3" Grid.Column="1">
+                                            <Label.FormattedText>
+                                                <FormattedString>
+                                                    <Span Text="{Binding Price}" TextColor="Red"/>
+                                                    <Span Text="{Binding SinglePrice}"/>
+                                                </FormattedString>
+                                            </Label.FormattedText>
+                                        </Label>
+                                    </Grid>
+                                    
+                                    <Frame.GestureRecognizers>
+                                        <TapGestureRecognizer NumberOfTapsRequired="1"
+                                                              Command="{Binding BindingContext.TappedCommand, Source={x:Reference allHouseListPage}}"
+                                                              CommandParameter="{Binding PropertyID}"/>
+                                    </Frame.GestureRecognizers>
+                                </Frame>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </StackLayout>
+
+                    <Button Text="{Binding LoadMoreButtonText}" Command="{Binding LoadMoreCommand}" BackgroundColor="Transparent" IsEnabled="{Binding ButtonIsEnable}"/>
+                </StackLayout>
+
+                <!--
+                <ScrollView.Behaviors>
+                    <behaviors:EventToCommandBehavior EventName="Scrolled" 
+                                                      Command="{Binding LoadMoreCommand}" 
+                                                      CommandParameter="{Binding Source=ProductListScrollView,Path=ScrollY}"/>
+                </ScrollView.Behaviors>-->
+            </ScrollView>
+            
+            <!--
+            <IndicatorView Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" Grid.ColumnSpan="2" IsVisible="{Binding IsLoading}"/>-->
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

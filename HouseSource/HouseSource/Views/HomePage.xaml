@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:tb="clr-namespace:Xam.Plugin.TabView;assembly=Xam.Plugin.TabView"
+             xmlns:viewModels="clr-namespace:HouseSource.ViewModels"
+             xmlns:behaviors="clr-namespace:HouseSource.Behaviors"
+             xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:controls="clr-namespace:HouseSource.Controls"
+             xmlns:microcharts="clr-namespace:Microcharts.Forms;assembly=Microcharts.Forms"
+             xmlns:ultimateChart="clr-namespace:UltimateXF.Widget.Charts;assembly=UltimateXF"
+             xmlns:formatters="clr-namespace:UltimateXF.Widget.Charts.Models.Formatters;assembly=UltimateXF"
+             mc:Ignorable="d"
+             x:Class="HouseSource.Views.HomePage"
+             x:Name="homePage"
+             NavigationPage.HasNavigationBar="False"
+             BackgroundColor="{DynamicResource PageBackgroundColor}"
+             Icon="home.png"
+             Title="首页">
+
+    <ContentPage.BindingContext>
+        <viewModels:HomeViewModel/>
+    </ContentPage.BindingContext>
+
+    <ContentPage.Resources>
+        <Style x:Key="SectionTitle" TargetType="Label">
+            <Setter Property="TextColor" Value="{DynamicResource PrimaryTextColor}"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontAttributes" Value="Bold"/>
+            <Setter Property="HorizontalOptions" Value="StartAndExpand"/>
+            <Setter Property="VerticalTextAlignment" Value="Center"/>
+        </Style>
+        <Style x:Key="MoreStyle" TargetType="Label">
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="HorizontalOptions" Value="EndAndExpand"/>
+            <Setter Property="VerticalTextAlignment" Value="Center"/>
+        </Style>
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <ScrollView>
+            <Grid Padding="10" RowDefinitions="60, 200, 200, 80, 400" ColumnDefinitions="1*, 1*">
+
+                <Frame Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Style="{DynamicResource BaseFrame}" HeightRequest="40" BorderColor="LightGray" HasShadow="True">
+                    <controls:MyEntry Placeholder="输入楼盘名/片区搜索房源" HorizontalTextAlignment="Center" FontSize="14"/>
+                </Frame>
+
+                <CarouselView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"  x:Name="carousel" ItemsSource="{Binding CarouselList}">
+                    <CarouselView.ItemTemplate>
+                        <DataTemplate>
+                            <ff:CachedImage Source="{Binding .}" BackgroundColor="Transparent" Aspect="AspectFill">
+                                <!--<ff:CachedImage.GestureRecognizers>
+                                    <TapGestureRecognizer x:Name="CarouselItem" NumberOfTapsRequired="1"
+                                                                  Command="{Binding Path=BindingContext.CarouselTappedCommand, Source={x:Reference Name=homePage}}"
+                                                                  CommandParameter="{Binding Path=Position,Source={x:Reference carousel}}"/>
+                                </ff:CachedImage.GestureRecognizers>-->
+                            </ff:CachedImage>
+                        </DataTemplate>
+                    </CarouselView.ItemTemplate>
+                </CarouselView>
+
+                <CollectionView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding OptionList}" EmptyView="无选项" SelectionMode="None">
+                    <CollectionView.ItemsLayout>
+                        <GridItemsLayout Orientation="Vertical" Span="4"/>
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame CornerRadius="5" HasShadow="False" Padding="5" BackgroundColor="Transparent">
+                                <StackLayout Orientation="Vertical">
+                                    <ff:CachedImage Source="{Binding icon}" HeightRequest="50" WidthRequest="50"/>
+                                    <Label Text="{Binding option}" HorizontalOptions="Center" VerticalOptions="Center" FontSize="14" TextColor="Black" FontAttributes="Bold"/>
+                                </StackLayout>
+
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer NumberOfTapsRequired="1"
+                                                          Command="{Binding BindingContext.NavigateCommand, Source={x:Reference homePage}}"
+                                                          CommandParameter="{Binding page}"/>
+                                </Frame.GestureRecognizers>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <Frame Grid.Row="3" Grid.Column="0" CornerRadius="5" BackgroundColor="{DynamicResource ControlBackgroundColor}">
+                    <Grid RowDefinitions="1*,1*" ColumnDefinitions="50, Auto">
+
+                        <ff:CachedImage Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Source="medal.png"/>
+
+                        <Label Grid.Row="0" Grid.Column="1" Text="二手房热销榜" TextColor="Black" FontAttributes="Bold"/>
+                        <Label Grid.Row="1" Grid.Column="1" Text="真实低价房源" FontSize="12"/>
+                    </Grid>
+                </Frame>
+
+                <Frame Grid.Row="3" Grid.Column="1" CornerRadius="5" BackgroundColor="{DynamicResource ControlBackgroundColor}">
+                    <Grid RowDefinitions="1*,1*" ColumnDefinitions="50, Auto">
+
+                        <ff:CachedImage Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Source="cup.png"/>
+
+                        <Label Grid.Row="0" Grid.Column="1" Text="新房热销榜" TextColor="Black" FontAttributes="Bold"/>
+                        <Label Grid.Row="1" Grid.Column="1" Text="人气抢手房" FontSize="12"/>
+                    </Grid>
+                </Frame>
+
+                
+
+            </Grid>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

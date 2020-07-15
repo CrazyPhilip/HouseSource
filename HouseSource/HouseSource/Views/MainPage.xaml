@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
+            android:TabbedPage.ToolbarPlacement="Bottom"
+            android:TabbedPage.IsSwipePagingEnabled="False"
+            xmlns:views="clr-namespace:HouseSource.Views"
+            x:Class="HouseSource.Views.MainPage"
+            NavigationPage.HasNavigationBar="False"
+            BackgroundColor="{DynamicResource PageBackgroundColor}"
+            SelectedTabColor="{StaticResource MainColor}"
+            UnselectedTabColor="LightGray">
+    
+    <views:HomePage/>
+    <views:MapPage/>
+    <views:ReportPage/>
+    <views:MePage/>
+
+</TabbedPage>

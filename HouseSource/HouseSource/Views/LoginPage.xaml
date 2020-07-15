@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controls="clr-namespace:HouseSource.Controls"
+             xmlns:viewModels="clr-namespace:HouseSource.ViewModels"
+             mc:Ignorable="d"
+             NavigationPage.HasNavigationBar="False"
+             x:Class="HouseSource.Views.LoginPage">
+
+    <ContentPage.BindingContext>
+        <viewModels:LoginViewModel/>
+    </ContentPage.BindingContext>
+
+    <ContentPage.Resources>
+        <Style x:Name="EntryStyle" TargetType="controls:MyEntry">
+            <Setter Property="WidthRequest" Value="250"/>
+            <Setter Property="PlaceholderColor" Value="LightGray"/>
+            <Setter Property="HorizontalOptions" Value="CenterAndExpand"/>
+            <Setter Property="VerticalOptions" Value="CenterAndExpand"/>
+            <Setter Property="HorizontalTextAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="18"/>
+        </Style>
+        <Style x:Name="FrameStyle" TargetType="Frame">
+            <Setter Property="WidthRequest" Value="300"/>
+            <Setter Property="HeightRequest" Value="50"/>
+            <Setter Property="BorderColor" Value="#6ecbb8"/>
+            <Setter Property="CornerRadius" Value="25"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="HorizontalOptions" Value="Center"/>
+            <Setter Property="VerticalOptions" Value="Center"/>
+        </Style>
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <StackLayout>
+            <Image WidthRequest="128" HeightRequest="128" Source="Resource/drawable/erp_logo.png" VerticalOptions="EndAndExpand"/>
+
+            <Label Text="欢迎使用68房产管理APP" HorizontalOptions="Center" VerticalOptions="Start" FontSize="22"/>
+            <Label Text="独立经纪人版" HorizontalOptions="Center" VerticalOptions="StartAndExpand" FontSize="18"/>
+
+            <StackLayout VerticalOptions="CenterAndExpand">
+                <Frame Style="{DynamicResource FrameStyle}">
+                    <controls:MyEntry x:Name="account" Placeholder="手机号或员工号" Text="{Binding TelOrEmpNo}" Style="{DynamicResource EntryStyle}"/>
+                </Frame>
+                <Frame Style="{DynamicResource FrameStyle}">
+                    <controls:MyEntry x:Name="password" Placeholder="密码" IsPassword="True" Text="{Binding Password}" Style="{DynamicResource EntryStyle}"/>
+                </Frame>
+            </StackLayout>
+
+            <Button x:Name="LoginButton" Text="登录" WidthRequest="300" HeightRequest="50" BackgroundColor="{DynamicResource MainColor}" TextColor="White" FontSize="18"
+                    HorizontalOptions="Center" VerticalOptions="StartAndExpand" BorderRadius="25" Command="{Binding LoginCommand}"/>
+
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

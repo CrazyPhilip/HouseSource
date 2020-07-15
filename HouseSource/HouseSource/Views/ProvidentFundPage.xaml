@@ -1,0 +1,245 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:viewModels="clr-namespace:HouseSource.ViewModels"
+             xmlns:behaviors="clr-namespace:HouseSource.Behaviors"
+             mc:Ignorable="d"
+             x:Class="HouseSource.Views.ProvidentFundPage"
+             x:Name="providentFundPage"
+            BackgroundColor="{DynamicResource PageBackgroundColor}"
+             Title="公积金贷款">
+
+    <ContentPage.BindingContext>
+        <viewModels:ProvidentFundViewModel/>
+    </ContentPage.BindingContext>
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Name="ButtonStyle" TargetType="Button">
+                <Setter Property="HeightRequest" Value="40"/>
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="CornerRadius" Value="20"/>
+                <Setter Property="VerticalOptions" Value="Center"/>
+                <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+                <Setter Property="TextColor" Value="White"/>
+            </Style>
+            <Style x:Name="LabelStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="HorizontalOptions" Value="Start"/>
+                <Setter Property="VerticalOptions" Value="Center"/>
+            </Style>
+            <Style x:Name="EntryStyle" TargetType="Entry">
+                <Setter Property="WidthRequest" Value="200"/>
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="HorizontalOptions" Value="EndAndExpand"/>
+                <Setter Property="VerticalOptions" Value="Center"/>
+            </Style>
+            <Style x:Name="PickerStyle" TargetType="Picker">
+                <Setter Property="WidthRequest" Value="200"/>
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="HorizontalOptions" Value="EndAndExpand"/>
+                <Setter Property="VerticalOptions" Value="Center"/>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout Orientation="Vertical">
+                <!--计算结果-->
+                <Frame BorderColor="LightGray" HasShadow="True" CornerRadius="10" Margin="10,5" Padding="10">
+                    <Grid>
+                        <ff:CachedImage Source="money.png"/>
+                        <StackLayout Orientation="Vertical">
+                            <Label TextColor="Red">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="贷款总额："/>
+                                        <Span Text="{Binding PFTotalLoan}" FontSize="Title" FontAttributes="Bold"/>
+                                        <Span Text="元" FontSize="Title" FontAttributes="Bold"/>
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                            <Label TextColor="Blue">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="总利息："/>
+                                        <Span Text="{Binding PFTotalInterest}" FontSize="Title" FontAttributes="Bold"/>
+                                        <Span Text="元" FontSize="Title" FontAttributes="Bold"/>
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                            <Label TextColor="Green">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="月均还款："/>
+                                        <Span Text="{Binding PFMonthlyRepayment}" FontSize="Title" FontAttributes="Bold"/>
+                                        <Span Text="元/月" FontSize="Title" FontAttributes="Bold"/>
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                            <Label TextColor="Black">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="利率："/>
+                                        <Span Text="{Binding PFRate}" FontSize="Title" FontAttributes="Bold"/>
+                                        <Span Text="%" FontSize="Title" FontAttributes="Bold"/>
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                            <Label Text="*以上计算结果仅供参考"/>
+                        </StackLayout>
+                    </Grid>
+                </Frame>
+
+                <!--计算方式-->
+                <StackLayout Orientation="Horizontal" Margin="10">
+                    <Label>
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="*" TextColor="Red"/>
+                                <Span Text="计算方式：" Style="{DynamicResource LabelStyle}"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+
+                    <Label Text="按房价总额" Style="{DynamicResource LabelStyle}" WidthRequest="150">
+                        <Label.Behaviors>
+                            <behaviors:RadioBehavior x:Name="PFTotalPriceRadio" GroupName="PFCalculateMethod" IsChecked="{Binding TotalPriceRadio,Mode=TwoWay}"/>
+                        </Label.Behaviors>
+                        <Label.Triggers>
+                            <DataTrigger TargetType="Label" Binding="{Binding Source={x:Reference PFTotalPriceRadio}, Path=IsChecked}" Value="True">
+                                <Setter Property="TextColor" Value="{DynamicResource MainColor}" />
+                                <Setter Property="FontSize" Value="16" />
+                                <Setter Property="FontAttributes" Value="Bold" />
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+
+                    <Label Text="按贷款总额" Style="{DynamicResource LabelStyle}" WidthRequest="150">
+                        <Label.Behaviors>
+                            <behaviors:RadioBehavior x:Name="PFTotalLoanRadio" GroupName="PFCalculateMethod" IsChecked="{Binding TotalLoanRadio,Mode=TwoWay}"/>
+                        </Label.Behaviors>
+                        <Label.Triggers>
+                            <DataTrigger TargetType="Label" Binding="{Binding Source={x:Reference PFTotalLoanRadio}, Path=IsChecked}" Value="True">
+                                <Setter Property="TextColor" Value="{DynamicResource MainColor}" />
+                                <Setter Property="FontSize" Value="16" />
+                                <Setter Property="FontAttributes" Value="Bold" />
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+                </StackLayout>
+
+                <!--还款方式-->
+                <StackLayout Orientation="Horizontal" Margin="10">
+                    <Label>
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="*" TextColor="Red"/>
+                                <Span Text="还款方式：" Style="{DynamicResource LabelStyle}"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <Label Text="等额本息" Style="{DynamicResource LabelStyle}" WidthRequest="150">
+                        <Label.Behaviors>
+                            <behaviors:RadioBehavior x:Name="PFAveCapAndIntRadio" GroupName="PFPaymentMethod" IsChecked="{Binding AveCapAndIntRadio,Mode=TwoWay}"/>
+                        </Label.Behaviors>
+                        <Label.Triggers>
+                            <DataTrigger TargetType="Label" Binding="{Binding Source={x:Reference PFAveCapAndIntRadio}, Path=IsChecked}" Value="True">
+                                <Setter Property="TextColor" Value="{DynamicResource MainColor}" />
+                                <Setter Property="FontSize" Value="16" />
+                                <Setter Property="FontAttributes" Value="Bold" />
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+                    <Label Text="等额本金" Style="{DynamicResource LabelStyle}" WidthRequest="150">
+                        <Label.Behaviors>
+                            <behaviors:RadioBehavior x:Name="PFAveCapRadio" GroupName="PFPaymentMethod" IsChecked="{Binding AveCapRadio,Mode=TwoWay}"/>
+                        </Label.Behaviors>
+                        <Label.Triggers>
+                            <DataTrigger TargetType="Label" Binding="{Binding Source={x:Reference PFAveCapRadio}, Path=IsChecked}" Value="True">
+                                <Setter Property="TextColor" Value="{DynamicResource MainColor}" />
+                                <Setter Property="FontSize" Value="16" />
+                                <Setter Property="FontAttributes" Value="Bold" />
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+                </StackLayout>
+
+                <!--房价总额-->
+                <StackLayout Orientation="Horizontal" Margin="10" IsVisible="{Binding Source={x:Reference PFTotalPriceRadio}, Path=IsChecked}">
+                    <Label>
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="*" TextColor="Red"/>
+                                <Span Text="房价总额（元）：" Style="{DynamicResource LabelStyle}"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <Entry Placeholder="请输入房价总额" Text="{Binding PFTotalPrice}" Style="{DynamicResource EntryStyle}"/>
+                </StackLayout>
+
+                <!--贷款比例-->
+                <StackLayout Orientation="Horizontal" Margin="10" IsVisible="{Binding Source={x:Reference PFTotalPriceRadio}, Path=IsChecked}">
+                    <Label>
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="*" TextColor="Red"/>
+                                <Span Text="贷款比例：" Style="{DynamicResource LabelStyle}"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <Picker Title="贷款比例" ItemsSource="{Binding PFLoanProportionList}" SelectedIndex="{Binding PFLoanProportionIndex}" Style="{DynamicResource PickerStyle}"/>
+                </StackLayout>
+
+                <!--贷款金额-->
+                <StackLayout Orientation="Horizontal" Margin="10" IsVisible="{Binding Source={x:Reference PFTotalLoanRadio}, Path=IsChecked}">
+                    <Label>
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="*" TextColor="Red"/>
+                                <Span Text="贷款金额（元）：" Style="{DynamicResource LabelStyle}"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <Entry Placeholder="请输入贷款金额" Text="{Binding PFLoanAmount}" Style="{DynamicResource EntryStyle}"/>
+                </StackLayout>
+
+                <!--按揭年数-->
+                <StackLayout Orientation="Horizontal" Margin="10,0">
+                    <Label>
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="*" TextColor="Red"/>
+                                <Span Text="按揭年数：" Style="{DynamicResource LabelStyle}"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <Picker Title="按揭年数" ItemsSource="{Binding PFYearList}" SelectedIndex="{Binding PFYearIndex}" Style="{DynamicResource PickerStyle}"/>
+                </StackLayout>
+
+                <!--公积金利率-->
+                <StackLayout Orientation="Horizontal" Margin="10">
+                    <Label>
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="*" TextColor="Red"/>
+                                <Span Text="公积金利率（%）：" Style="{DynamicResource LabelStyle}"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <Entry Placeholder="请输入公积金利率" Text="{Binding PFRate}" Style="{DynamicResource EntryStyle}"/>
+                </StackLayout>
+
+                <StackLayout Orientation="Horizontal" Margin="0,0,0,20">
+                    <Button Text="清空" Command="{Binding ClearCommand}" Style="{DynamicResource ButtonStyle}" BackgroundColor="LightGray"/>
+                    <Button Text="开始计算" Command="{Binding CalculateCommand}" Style="{DynamicResource ButtonStyle}" BackgroundColor="{DynamicResource MainColor}"/>
+                </StackLayout>
+
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>
