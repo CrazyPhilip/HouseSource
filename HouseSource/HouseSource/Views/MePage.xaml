@@ -19,32 +19,25 @@
     </ContentPage.BindingContext>
     
     <ContentPage.Content>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="200"/>
-                <RowDefinition Height="80"/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
+        <Grid RowDefinitions="2*,1*,7*" Padding="10,0">
 
             <!--头像-->
-            <ff:CachedImage Grid.Row="0"  Source="{Binding User.PhotoUrl}" WidthRequest="80" HeightRequest="80" HorizontalOptions="Center" VerticalOptions="Center">
-                
-            </ff:CachedImage>
+            <ff:CachedImage Grid.Row="0"  Source="{Binding User.PhotoUrl}" WidthRequest="80" HeightRequest="80" HorizontalOptions="Center" VerticalOptions="End"/>
 
             <!--用户名-->
-            <Label Grid.Row="1" Text="{Binding User.EmpName}" HorizontalOptions="Center" VerticalOptions="Start" TextColor="{DynamicResource PrimaryTextColor}"/>
+            <Label Grid.Row="1" Text="{Binding User.EmpName}" FontSize="16" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center" TextColor="{DynamicResource PrimaryTextColor}"/>
 
             <!--选项列表-->
-            <CollectionView Grid.Row="2" x:Name="list" ItemsSource="{Binding OptionList}" EmptyView="无选项" SelectionMode="None" Margin="10">
+            <CollectionView Grid.Row="2" ItemsSource="{Binding OptionList}" EmptyView="无选项" SelectionMode="None">
                 <CollectionView.ItemsLayout>
                     <LinearItemsLayout Orientation="Vertical" ItemSpacing="10"/>
                 </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <Frame CornerRadius="5" HasShadow="False" BackgroundColor="{DynamicResource ControlBackgroundColor}">
-                            <StackLayout Orientation="Horizontal">
+                        <Frame Padding="10,5" HeightRequest="40" CornerRadius="5" HasShadow="False" BackgroundColor="{DynamicResource ControlBackgroundColor}">
+                            <StackLayout Orientation="Horizontal" >
                                 <ff:CachedImage Source="{Binding icon}" HeightRequest="30" WidthRequest="30"/>
-                                <Label Text="{Binding option}" HorizontalOptions="Start" VerticalOptions="Center" FontSize="14" TextColor="{DynamicResource PrimaryTextColor}" FontAttributes="Bold"/>
+                                <Label Text="{Binding option}" VerticalOptions="Center" FontSize="14" TextColor="{DynamicResource PrimaryTextColor}" FontAttributes="Bold"/>
                             </StackLayout>
                             <Frame.GestureRecognizers>
                                 <TapGestureRecognizer NumberOfTapsRequired="1"

@@ -52,13 +52,13 @@
 
     <ContentPage.Content>
         <ScrollView>
-            <StackLayout Orientation="Vertical">
+            <StackLayout Orientation="Vertical" Margin="10,0" >
                 <!--<Frame BorderColor="LightGray" HasShadow="True" Margin="10,5" CornerRadius="10" Padding="10">
                     <Image Source="Resource/drawable/person_add.png"/>
                 </Frame>
 
                 第一组-->
-                <StackLayout Orientation="Vertical" Margin="10,0" Spacing="0">
+                <StackLayout Orientation="Vertical" Spacing="0">
                     <!--姓名-->
                     <StackLayout Orientation="Horizontal">
                         <Label>
@@ -135,7 +135,7 @@
                 </StackLayout>
 
                 <!--第二组-->
-                <StackLayout Orientation="Vertical" Margin="10,0" Spacing="0">
+                <StackLayout Orientation="Vertical" Spacing="0">
                     <!--等级-->
                     <StackLayout Orientation="Horizontal">
                         <Label Text="等级：" Style="{DynamicResource LabelStyle}"/>

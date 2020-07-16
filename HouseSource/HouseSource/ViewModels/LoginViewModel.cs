@@ -7,12 +7,11 @@ using Plugin.Toast.Abstractions;
 using Newtonsoft.Json.Linq;
 using HouseSource.Models;
 using Newtonsoft.Json;
-using HouseSource.Controls;
 using HouseSource.Views;
 
 namespace HouseSource.ViewModels
 {
-    public class LoginViewModel : BaseViewModel
+	public class LoginViewModel : BaseViewModel
     {
 		private string telOrEmpNo;   //手机号或编号
 		public string TelOrEmpNo
@@ -29,6 +28,8 @@ namespace HouseSource.ViewModels
 		}
 
 		public Command LoginCommand { get; set; }   //登录命令事件
+		public Command ToRegisterCommand { get; set; }   //注册命令事件
+		public Command ToResetPasswordCommand { get; set; }   //重置密码命令事件
 
 		public LoginViewModel()
 		{
@@ -41,6 +42,17 @@ namespace HouseSource.ViewModels
 				Login();
 			}, () => { return true; });
 
+			ToRegisterCommand = new Command(() =>
+			{
+				RegisterPage registerPage = new RegisterPage();
+				Application.Current.MainPage.Navigation.PushAsync(registerPage);
+			}, () => { return true; });
+
+			ToResetPasswordCommand = new Command(() =>
+			{
+				ResetPasswordPage resetPasswordPage = new ResetPasswordPage();
+				Application.Current.MainPage.Navigation.PushAsync(resetPasswordPage);
+			}, () => { return true; });
 		}
 
 		/// <summary>

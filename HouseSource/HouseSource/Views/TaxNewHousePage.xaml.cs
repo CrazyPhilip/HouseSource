@@ -10,21 +10,11 @@ using Xamarin.Forms.Xaml;
 namespace HouseSource.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class LoginPage : ContentPage
+    public partial class TaxNewHousePage : ContentPage
     {
-        public LoginPage()
+        public TaxNewHousePage()
         {
             InitializeComponent();
-
-        }
-
-        /// <summary>
-        /// 返回键事件，禁止返回
-        /// </summary>
-        /// <returns></returns>
-        protected override bool OnBackButtonPressed()
-        {
-            return true;
         }
     }
 }

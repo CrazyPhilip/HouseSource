@@ -23,6 +23,7 @@
                 <Setter Property="VerticalOptions" Value="CenterAndExpand"/>
                 <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
                 <Setter Property="TextColor" Value="White"/>
+                <Setter Property="Padding" Value="0"/>
             </Style>
             <Style x:Name="LabelStyle" TargetType="Label">
                 <Setter Property="HeightRequest" Value="50"/>
@@ -51,13 +52,13 @@
 
     <ContentPage.Content>
         <ScrollView>
-            <StackLayout Orientation="Vertical">
+            <StackLayout Margin="10,0" Orientation="Vertical">
                 <!--<Frame BorderColor="LightGray" HasShadow="True" Margin="10,5" CornerRadius="10" Padding="10">
                     <Image Source="Resource/drawable/person_add.png"/>
                 </Frame>
 
                 第一组-->
-                <StackLayout Orientation="Vertical" Margin="10,0" Spacing="0">
+                <StackLayout Orientation="Vertical" Spacing="0">
                     <StackLayout Orientation="Horizontal">
                         <Label>
                             <Label.FormattedText>
@@ -132,7 +133,7 @@
                 </StackLayout>
 
                 <!--第二组-->
-                <StackLayout Orientation="Vertical" Margin="10,0" Spacing="0">
+                <StackLayout Orientation="Vertical" Spacing="0">
                     <StackLayout Orientation="Horizontal">
                         <Label>
                             <Label.FormattedText>
@@ -183,7 +184,7 @@
                 </StackLayout>
 
                 <!--第三组-->
-                <StackLayout Orientation="Vertical" Margin="10,0" Spacing="0">
+                <StackLayout Orientation="Vertical" Spacing="0">
                     <StackLayout Orientation="Horizontal">
                         <Label Text="装修：" Style="{DynamicResource LabelStyle}"/>
                         <Picker Title="装修" Style="{DynamicResource PickerStyle}"/>
@@ -212,7 +213,7 @@
                 </StackLayout>
 
                 <!--第四组-->
-                <StackLayout Orientation="Vertical" Margin="10,0" Spacing="0">
+                <StackLayout Orientation="Vertical" Spacing="0">
                     <StackLayout Orientation="Horizontal">
                         <Label>
                             <Label.FormattedText>

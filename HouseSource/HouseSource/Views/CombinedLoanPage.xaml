@@ -125,6 +125,10 @@
                         </Label.FormattedText>
                     </Label>
 
+                    <RadioButton x:Name="CTotalPriceRadioButton" Text="按房价总额" GroupName="CalculateMethod" IsChecked="{Binding TotalPriceRadio}"/>
+                    <RadioButton x:Name="CTotalLoanRadioButton" Text="按贷款总额" GroupName="CalculateMethod" IsChecked="{Binding TotalLoanRadio}"/>
+
+                    <!--
                     <Label Text="按房价总额" Style="{DynamicResource LabelStyle}" WidthRequest="150">
                         <Label.Behaviors>
                             <behaviors:RadioBehavior x:Name="CTotalPriceRadio" GroupName="CalculateMethod" IsChecked="{Binding TotalPriceRadio}"/>
@@ -149,7 +153,7 @@
                                 <Setter Property="FontAttributes" Value="Bold" />
                             </DataTrigger>
                         </Label.Triggers>
-                    </Label>
+                    </Label>-->
                 </StackLayout>
 
                 <!--还款方式-->
@@ -162,6 +166,10 @@
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
+
+                    <RadioButton x:Name="CAveCapAndIntRadio" Text="等额本息" GroupName="PaymentMethod" IsChecked="{Binding AveCapAndIntRadio}"/>
+                    <RadioButton x:Name="CAveCapRadio" Text="等额本金" GroupName="PaymentMethod" IsChecked="{Binding AveCapRadio}"/>
+                    <!--
                     <Label Text="等额本息" Style="{DynamicResource LabelStyle}" WidthRequest="150" >
                         <Label.Behaviors>
                             <behaviors:RadioBehavior x:Name="CAveCapAndIntRadio" GroupName="PaymentMethod" IsChecked="{Binding AveCapAndIntRadio}"/>
@@ -185,11 +193,11 @@
                                 <Setter Property="FontAttributes" Value="Bold" />
                             </DataTrigger>
                         </Label.Triggers>
-                    </Label>
+                    </Label>-->
                 </StackLayout>
 
                 <!--房价总额-->
-                <StackLayout Orientation="Horizontal" Margin="10" IsVisible="{Binding Source={x:Reference CTotalPriceRadio}, Path=IsChecked}">
+                <StackLayout Orientation="Horizontal" Margin="10" IsVisible="{Binding Source={x:Reference CTotalPriceRadioButton}, Path=IsChecked}">
                     <Label>
                         <Label.FormattedText>
                             <FormattedString>
@@ -202,7 +210,7 @@
                 </StackLayout>
 
                 <!--贷款比例-->
-                <StackLayout Orientation="Horizontal" Margin="10" IsVisible="{Binding Source={x:Reference CTotalPriceRadio}, Path=IsChecked}">
+                <StackLayout Orientation="Horizontal" Margin="10" IsVisible="{Binding Source={x:Reference CTotalPriceRadioButton}, Path=IsChecked}">
                     <Label>
                         <Label.FormattedText>
                             <FormattedString>

@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:HouseSource.ViewModels"
+             xmlns:controls="clr-namespace:HouseSource.Controls"
+             mc:Ignorable="d"
+             x:Class="HouseSource.Views.RegisterPage">
+
+    <ContentPage.BindingContext>
+        <viewModels:RegisterViewModel/>
+    </ContentPage.BindingContext>
+
+    <ContentPage.Resources>
+        <Style x:Name="EntryStyle" TargetType="controls:MyEntry">
+            <Setter Property="WidthRequest" Value="250"/>
+            <Setter Property="PlaceholderColor" Value="LightGray"/>
+            <Setter Property="HorizontalOptions" Value="CenterAndExpand"/>
+            <Setter Property="VerticalOptions" Value="CenterAndExpand"/>
+            <Setter Property="HorizontalTextAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="18"/>
+        </Style>
+        <Style x:Name="FrameStyle" TargetType="Frame">
+            <Setter Property="HeightRequest" Value="40"/>
+            <Setter Property="HasShadow" Value="False"/>
+            <Setter Property="BorderColor" Value="#6ecbb8"/>
+            <Setter Property="CornerRadius" Value="25"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="HorizontalOptions" Value="Fill"/>
+            <Setter Property="VerticalOptions" Value="Center"/>
+        </Style>
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <Grid RowDefinitions="40,40,40,40,40,40,40,40" ColumnDefinitions="3*, 1*" VerticalOptions="CenterAndExpand" Margin="40,0">
+            <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="注册" HorizontalOptions="Center" VerticalOptions="Start" FontSize="22"/>
+
+            <Frame Grid.Row="1" Grid.Column="0" Style="{DynamicResource FrameStyle}">
+                <controls:MyEntry Placeholder="手机号" Text="{Binding TelOrEmpNo}" Keyboard="Telephone" MaxLength="11" Style="{DynamicResource EntryStyle}"/>
+            </Frame>
+
+            <Button Grid.Row="1" Grid.Column="1" Text="{Binding AuthCodeButtonText}" HeightRequest="40" BackgroundColor="{Binding ButtonColor}" TextColor="White" FontSize="12"
+                    HorizontalOptions="Center" BorderRadius="20" Padding="0" Command="{Binding SendCodeCommand}"/>
+
+            <Frame Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Style="{DynamicResource FrameStyle}">
+                <controls:MyEntry Placeholder="短信验证码" Text="{Binding Code}" Keyboard="Numeric" MaxLength="6" Style="{DynamicResource EntryStyle}"/>
+            </Frame>
+
+            <Frame Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Style="{DynamicResource FrameStyle}">
+                <controls:MyEntry Placeholder="登录密码" Text="{Binding Password}" MaxLength="20" Style="{DynamicResource EntryStyle}"/>
+            </Frame>
+
+            <Frame Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Style="{DynamicResource FrameStyle}">
+                <controls:MyEntry Placeholder="真实姓名" Text="{Binding RealName}" Style="{DynamicResource EntryStyle}"/>
+            </Frame>
+
+            <Button Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Text="注册" HeightRequest="40" BackgroundColor="{DynamicResource MainColor}" TextColor="White" FontSize="18"
+                    HorizontalOptions="Center" BorderRadius="20" Padding="0" Command="{Binding RegisterCommand}"/>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

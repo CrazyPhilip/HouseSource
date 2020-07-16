@@ -89,12 +89,6 @@
                 <Button Text="{Binding LoadMoreButtonText}" Command="{Binding LoadMoreCommand}" BackgroundColor="Transparent" IsEnabled="{Binding ButtonIsEnable}"/>
             </StackLayout>
 
-            <!--
-                <ScrollView.Behaviors>
-                    <behaviors:EventToCommandBehavior EventName="Scrolled" 
-                                                      Command="{Binding LoadMoreCommand}" 
-                                                      CommandParameter="{Binding Source=ProductListScrollView,Path=ScrollY}"/>
-                </ScrollView.Behaviors>-->
         </ScrollView>
         
     </ContentPage.Content>

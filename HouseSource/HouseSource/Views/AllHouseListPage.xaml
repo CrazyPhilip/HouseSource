@@ -17,46 +17,44 @@
     </ContentPage.BindingContext>
 
     <ContentPage.Content>
-        <Grid Padding="10,0" RowDefinitions="30, 40, Auto" ColumnDefinitions="4*, 1*">
+        <Grid Padding="10,0" RowDefinitions="30, 40, Auto" ColumnDefinitions="1*, 1*, 1*, 1*, 1*">
 
             <!--筛选条件-->
-            <StackLayout Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" VerticalOptions="Center" Spacing="0">
-                <Label Text="{Binding SortType}" Style="{DynamicResource LabelStyle}" HorizontalOptions="CenterAndExpand">
+                <Label Grid.Row="0" Grid.Column="0" Text="{Binding SortType}" Style="{DynamicResource LabelStyle}" HorizontalOptions="Center" VerticalOptions="Center">
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding SortCommand}" CommandParameter="0"/>
                     </Label.GestureRecognizers>
                 </Label>
-                
-                <Label Text="区域" Style="{DynamicResource LabelStyle}" HorizontalOptions="CenterAndExpand">
+
+            <Label Grid.Row="0" Grid.Column="1" Text="{Binding District}" Style="{DynamicResource LabelStyle}" HorizontalOptions="Center" VerticalOptions="Center">
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding SortCommand}" CommandParameter="1"/>
                     </Label.GestureRecognizers>
                 </Label>
 
-                <Label Text="房型" Style="{DynamicResource LabelStyle}" HorizontalOptions="CenterAndExpand">
+            <Label Grid.Row="0" Grid.Column="2" Text="{Binding RoomStyle}" Style="{DynamicResource LabelStyle}" HorizontalOptions="Center" VerticalOptions="Center">
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding SortCommand}" CommandParameter="2"/>
                     </Label.GestureRecognizers>
                 </Label>
 
-                <Label Text="价格" Style="{DynamicResource LabelStyle}" HorizontalOptions="CenterAndExpand">
+            <Label Grid.Row="0" Grid.Column="3" Text="{Binding SalePrice}" Style="{DynamicResource LabelStyle}" HorizontalOptions="Center" VerticalOptions="Center">
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding SortCommand}" CommandParameter="3"/>
                     </Label.GestureRecognizers>
                 </Label>
 
-                <Label Text="面积" Style="{DynamicResource LabelStyle}" HorizontalOptions="CenterAndExpand">
+            <Label Grid.Row="0" Grid.Column="4" Text="{Binding Square}" Style="{DynamicResource LabelStyle}" HorizontalOptions="Center" VerticalOptions="Center">
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding SortCommand}" CommandParameter="4"/>
                     </Label.GestureRecognizers>
                 </Label>
-            </StackLayout>
 
-            <!--搜索-->
-            <Frame Grid.Row="1" Grid.Column="0" IsClippedToBounds="True" Padding="5" CornerRadius="5" BackgroundColor="LightGray" >
+                <!--搜索-->
+            <Frame Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" IsClippedToBounds="True" Padding="5" CornerRadius="5" BackgroundColor="LightGray" >
                 <controls:MyEntry Placeholder="输入楼盘名/片区搜索房源" FontSize="14"/>
             </Frame>
-            <ImageButton Grid.Row="1" Grid.Column="1" Source="search.png" BackgroundColor="Transparent" HeightRequest="30" WidthRequest="30" VerticalOptions="CenterAndExpand"/>
+            <ImageButton Grid.Row="1" Grid.Column="4" Source="search.png" BackgroundColor="Transparent" HeightRequest="30" WidthRequest="30" VerticalOptions="CenterAndExpand"/>
 
             <!--房源列表-->
             <!--
@@ -133,7 +131,7 @@
                 </CollectionView>
             </RefreshView>-->
 
-            <ScrollView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Vertical">
+            <ScrollView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="5" Orientation="Vertical">
                 <StackLayout Orientation="Vertical">
                     <StackLayout BindableLayout.ItemsSource="{Binding HouseItemList}" Orientation="Vertical">
                         <BindableLayout.ItemTemplate>

@@ -6,6 +6,7 @@ using Xamarin.Forms;
 using HouseSource.Models;
 using HouseSource.Utils;
 using HouseSource.Themes;
+using HouseSource.Views;
 
 namespace HouseSource.ViewModels
 {
@@ -94,6 +95,8 @@ namespace HouseSource.ViewModels
                         break;
                 }
             }, (pageName) => { return true; });
+
+
         }
 
         /// <summary>
@@ -101,7 +104,14 @@ namespace HouseSource.ViewModels
         /// </summary>
         private void LoginOut()
         {
+            GlobalVariables.IsLogged = false;
 
+            //string fileName = Path.Combine(FileSystem.CacheDirectory, "log.dat");
+            //File.Delete(fileName);
+
+            LoginPage loginPage = new LoginPage();
+            Application.Current.MainPage.Navigation.PushAsync(loginPage);
+            Application.Current.MainPage.Navigation.RemovePage(Application.Current.MainPage.Navigation.NavigationStack[0]);
         }
 
         /// <summary>

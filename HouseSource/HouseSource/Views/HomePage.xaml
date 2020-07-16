@@ -3,14 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:tb="clr-namespace:Xam.Plugin.TabView;assembly=Xam.Plugin.TabView"
              xmlns:viewModels="clr-namespace:HouseSource.ViewModels"
-             xmlns:behaviors="clr-namespace:HouseSource.Behaviors"
              xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              xmlns:controls="clr-namespace:HouseSource.Controls"
-             xmlns:microcharts="clr-namespace:Microcharts.Forms;assembly=Microcharts.Forms"
-             xmlns:ultimateChart="clr-namespace:UltimateXF.Widget.Charts;assembly=UltimateXF"
-             xmlns:formatters="clr-namespace:UltimateXF.Widget.Charts.Models.Formatters;assembly=UltimateXF"
              mc:Ignorable="d"
              x:Class="HouseSource.Views.HomePage"
              x:Name="homePage"
@@ -40,7 +35,7 @@
 
     <ContentPage.Content>
         <ScrollView>
-            <Grid Padding="10" RowDefinitions="60, 200, 200, 80, 400" ColumnDefinitions="1*, 1*">
+            <Grid RowSpacing="5" ColumnSpacing="5" Padding="10,0" RowDefinitions="50, 200, 180, 80, 40, Auto" ColumnDefinitions="1*, 1*">
 
                 <Frame Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Style="{DynamicResource BaseFrame}" HeightRequest="40" BorderColor="LightGray" HasShadow="True">
                     <controls:MyEntry Placeholder="输入楼盘名/片区搜索房源" HorizontalTextAlignment="Center" FontSize="14"/>
@@ -60,16 +55,36 @@
                     </CarouselView.ItemTemplate>
                 </CarouselView>
 
-                <CollectionView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding OptionList}" EmptyView="无选项" SelectionMode="None">
+                <!--
+                <CollectionView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding OptionList}" EmptyView="无选项" SelectionMode="None" ItemSizingStrategy="MeasureAllItems">
                     <CollectionView.ItemsLayout>
-                        <GridItemsLayout Orientation="Vertical" Span="4"/>
+                        <GridItemsLayout Orientation="Vertical" Span="4" HorizontalItemSpacing="5" VerticalItemSpacing="5"/>
                     </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <Frame CornerRadius="5" HasShadow="False" Padding="5" BackgroundColor="Transparent">
-                                <StackLayout Orientation="Vertical">
+                            <StackLayout HeightRequest="80" WidthRequest="80" Padding="5" Orientation="Vertical" BackgroundColor="{StaticResource MainColor}">
                                     <ff:CachedImage Source="{Binding icon}" HeightRequest="50" WidthRequest="50"/>
-                                    <Label Text="{Binding option}" HorizontalOptions="Center" VerticalOptions="Center" FontSize="14" TextColor="Black" FontAttributes="Bold"/>
+                                    <Label Text="{Binding option}" HorizontalOptions="Center" VerticalOptions="Center" FontSize="14" TextColor="White" FontAttributes="Bold"/>
+
+
+                                <StackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer NumberOfTapsRequired="1"
+                                                          Command="{Binding BindingContext.NavigateCommand, Source={x:Reference homePage}}"
+                                                          CommandParameter="{Binding page}"/>
+                                </StackLayout.GestureRecognizers>
+                            </StackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>-->
+
+                <controls:MyGrid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" TileHeight="80" MaxColumns="4"
+                                 ItemsSource="{Binding OptionList,Mode=TwoWay}">
+                    <controls:MyGrid.ItemTemplate>
+                        <DataTemplate>
+                            <Frame CornerRadius="5" Padding="0" BackgroundColor="{DynamicResource ControlBackgroundColor}">
+                                <StackLayout Orientation="Vertical">
+                                    <ff:CachedImage Source="{Binding icon}" HeightRequest="50"/>
+                                    <Label Text="{Binding option}" HorizontalOptions="Center"  FontSize="14" TextColor="Black" FontAttributes="Bold"/>
                                 </StackLayout>
 
                                 <Frame.GestureRecognizers>
@@ -79,15 +94,15 @@
                                 </Frame.GestureRecognizers>
                             </Frame>
                         </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
+                    </controls:MyGrid.ItemTemplate>
+                </controls:MyGrid>
 
                 <Frame Grid.Row="3" Grid.Column="0" CornerRadius="5" BackgroundColor="{DynamicResource ControlBackgroundColor}">
                     <Grid RowDefinitions="1*,1*" ColumnDefinitions="50, Auto">
 
                         <ff:CachedImage Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Source="medal.png"/>
 
-                        <Label Grid.Row="0" Grid.Column="1" Text="二手房热销榜" TextColor="Black" FontAttributes="Bold"/>
+                        <Label Grid.Row="0" Grid.Column="1" Text="二手房热销榜" FontSize="14" TextColor="Black" FontAttributes="Bold"/>
                         <Label Grid.Row="1" Grid.Column="1" Text="真实低价房源" FontSize="12"/>
                     </Grid>
                 </Frame>
@@ -97,12 +112,46 @@
 
                         <ff:CachedImage Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Source="cup.png"/>
 
-                        <Label Grid.Row="0" Grid.Column="1" Text="新房热销榜" TextColor="Black" FontAttributes="Bold"/>
+                        <Label Grid.Row="0" Grid.Column="1" Text="新房热销榜" FontSize="14" TextColor="Black" FontAttributes="Bold"/>
                         <Label Grid.Row="1" Grid.Column="1" Text="人气抢手房" FontSize="12"/>
                     </Grid>
                 </Frame>
 
-                
+                <Label Grid.Row="4" Grid.Column="0" Text="热门优选" Style="{DynamicResource SectionTitle}"/>
+
+                <ScrollView Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalScrollBarVisibility="Never">
+                    <StackLayout Orientation="Horizontal" BindableLayout.ItemsSource="{Binding HouseItemList}" Spacing="0">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate>
+                                <Frame Style="{StaticResource BaseFrame}" HeightRequest="140" WidthRequest="140" Margin="5,0">
+                                    <Grid RowSpacing="0" RowDefinitions="100, 20, 20">
+
+                                        <ff:CachedImage Grid.Row="0" Grid.RowSpan="3" Source="{Binding PhotoUrl}" Aspect="AspectFill" DownsampleHeight="100" DownsampleWidth="100"/>
+
+                                        <Label Grid.Row="1" Text="{Binding HouseTitle}" TextColor="White" BackgroundColor="{DynamicResource MainColor}"
+                                                       LineBreakMode="TailTruncation" FontAttributes="Bold"/>
+
+                                        <Label Grid.Row="2" BackgroundColor="{DynamicResource MainColor}">
+                                            <Label.FormattedText>
+                                                <FormattedString>
+                                                    <Span Text="{Binding Price}" TextColor="Red"/>
+                                                    <Span Text="{Binding SinglePrice}" TextColor="White"/>
+                                                </FormattedString>
+                                            </Label.FormattedText>
+                                        </Label>
+
+                                    </Grid>
+
+                                    <Frame.GestureRecognizers>
+                                        <TapGestureRecognizer NumberOfTapsRequired="1"
+                                                              Command="{Binding BindingContext.TappedCommand, Source={x:Reference homePage}}"
+                                                              CommandParameter="{Binding PropertyID}"/>
+                                    </Frame.GestureRecognizers>
+                                </Frame>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </StackLayout>
+                </ScrollView>
 
             </Grid>
         </ScrollView>

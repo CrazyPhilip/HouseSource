@@ -1,0 +1,412 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:viewModels="clr-namespace:HouseSource.ViewModels"
+             xmlns:utils="clr-namespace:HouseSource.Utils"
+             mc:Ignorable="d"
+             x:Class="HouseSource.Views.TaxResoldHousePage"
+             x:Name="taxResoldHousePage"
+             BackgroundColor="{DynamicResource PageBackgroundColor}"
+             Title="二手房">
+
+    <ContentPage.BindingContext>
+        <viewModels:TaxResoldHouseViewModel/>
+    </ContentPage.BindingContext>
+    
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Name="ButtonStyle" TargetType="Button">
+                <Setter Property="HeightRequest" Value="40"/>
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="CornerRadius" Value="20"/>
+                <Setter Property="VerticalOptions" Value="Center"/>
+                <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+                <Setter Property="TextColor" Value="White"/>
+            </Style>
+            <Style x:Name="LabelStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="HorizontalOptions" Value="Start"/>
+                <Setter Property="VerticalOptions" Value="Center"/>
+            </Style>
+            <Style x:Name="EntryStyle" TargetType="Entry">
+                <Setter Property="WidthRequest" Value="200"/>
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="HorizontalOptions" Value="EndAndExpand"/>
+                <Setter Property="VerticalOptions" Value="Center"/>
+            </Style>
+            <Style x:Name="PickerStyle" TargetType="Picker">
+                <Setter Property="WidthRequest" Value="200"/>
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="HorizontalOptions" Value="EndAndExpand"/>
+                <Setter Property="VerticalOptions" Value="Center"/>
+            </Style>
+            <utils:TrueToFalseConverter x:Key="trueToFalse"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout Orientation="Vertical">
+                <!--计算结果-->
+                <Frame BorderColor="LightGray" HasShadow="True" CornerRadius="10" Margin="10,5" Padding="10">
+                    <Grid>
+                        <ff:CachedImage Source="money_pink.png"/>
+                        <StackLayout x:Name="ResoldResultStack" Spacing="0" Orientation="Vertical" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                            <Label TextColor="Red">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="房款总价："/>
+                                        <Span Text="{Binding ResoldTotalPrice}" FontSize="Title" FontAttributes="Bold"/>
+                                        <Span Text="元" FontSize="Title" FontAttributes="Bold"/>
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                            <Label TextColor="Blue">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="契税："/>
+                                        <Span Text="{Binding ResoldDeedTax}" FontSize="Title" FontAttributes="Bold"/>
+                                        <Span Text="元" FontSize="Title" FontAttributes="Bold"/>
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                            <Label TextColor="Green">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="增值税："/>
+                                        <Span Text="{Binding ResoldAddedValueTax}" FontSize="Title" FontAttributes="Bold"/>
+                                        <Span Text="元" FontSize="Title" FontAttributes="Bold"/>
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                            <Label TextColor="Black">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="印花税："/>
+                                        <Span Text="0元" FontSize="Title" FontAttributes="Bold"/>
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                            <Label TextColor="Red">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="个人所得税："/>
+                                        <Span Text="{Binding ResoldIndividualIncomeTax}" FontSize="Title" FontAttributes="Bold"/>
+                                        <Span Text="元" FontSize="Title" FontAttributes="Bold"/>
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                            <Label TextColor="Blue">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="工本印花税："/>
+                                        <Span Text="5元" FontSize="Title" FontAttributes="Bold"/>
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                            <Label TextColor="Green">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="综合地价税："/>
+                                        <Span Text="{Binding ResoldComprehensiveLandPriceTax}" FontSize="Title" FontAttributes="Bold"/>
+                                        <Span Text="元" FontSize="Title" FontAttributes="Bold"/>
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                            <Label TextColor="Black">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="税金总额："/>
+                                        <Span Text="{Binding ResoldTotalTax}" FontSize="Title" FontAttributes="Bold"/>
+                                        <Span Text="元" FontSize="Title" FontAttributes="Bold"/>
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                            <Label Text="*以上计算结果仅供参考"/>
+                        </StackLayout>
+                    </Grid>
+                </Frame>
+
+                <!--物业类型-->
+                <StackLayout Orientation="Horizontal" Margin="10,0">
+                    <Label>
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="*" TextColor="Red"/>
+                                <Span Text="物业类型：" Style="{DynamicResource LabelStyle}"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+
+                    <RadioButton x:Name="CommonResidenceRadioButton" Text="普通住宅" GroupName="PropertyType" IsChecked="{Binding CommonResidenceRadio}"/>
+                    <RadioButton x:Name="NonOrdinaryResidenceRadioButton" Text="非普通住宅" GroupName="PropertyType" IsChecked="{Binding NonOrdinaryResidenceRadio}"/>
+                    <RadioButton x:Name="AffordableHouseRadioButton" Text="经济适用房" GroupName="PropertyType" IsChecked="{Binding AffordableHouseRadio}"/>
+
+                    <!--
+                    <Label Text="普通住宅" Style="{DynamicResource LabelStyle}" WidthRequest="85">
+                        <Label.Behaviors>
+                            <behaviors:RadioBehavior x:Name="CommonResidenceRadio" GroupName="PropertyType"/>
+                        </Label.Behaviors>
+                        <Label.Triggers>
+                            <DataTrigger TargetType="Label" Binding="{Binding Source={x:Reference CommonResidenceRadio}, Path=IsChecked}" Value="True">
+                                <Setter Property="TextColor" Value="Green" />
+                                <Setter Property="FontSize" Value="Title" />
+                                <Setter Property="FontAttributes" Value="Bold" />
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+
+                    <Label Text="非普通住宅" Style="{DynamicResource LabelStyle}" WidthRequest="105">
+                        <Label.Behaviors>
+                            <behaviors:RadioBehavior x:Name="NonOrdinaryResidenceRadio" GroupName="PropertyType"/>
+                        </Label.Behaviors>
+                        <Label.Triggers>
+                            <DataTrigger TargetType="Label" Binding="{Binding Source={x:Reference NonOrdinaryResidenceRadio}, Path=IsChecked}" Value="True">
+                                <Setter Property="TextColor" Value="Green" />
+                                <Setter Property="FontSize" Value="Title" />
+                                <Setter Property="FontAttributes" Value="Bold" />
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+                    <Label Text="经济适用房" Style="{DynamicResource LabelStyle}" WidthRequest="105">
+                        <Label.Behaviors>
+                            <behaviors:RadioBehavior x:Name="AffordableHouseRadio" GroupName="PropertyType"/>
+                        </Label.Behaviors>
+                        <Label.Triggers>
+                            <DataTrigger TargetType="Label" Binding="{Binding Source={x:Reference AffordableHouseRadio}, Path=IsChecked}" Value="True">
+                                <Setter Property="TextColor" Value="Green" />
+                                <Setter Property="FontSize" Value="Title" />
+                                <Setter Property="FontAttributes" Value="Bold" />
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>-->
+                </StackLayout>
+
+                <!--计算方式-->
+                <StackLayout Orientation="Horizontal" Margin="10,0">
+                    <Label>
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="*" TextColor="Red"/>
+                                <Span Text="计算方式：" Style="{DynamicResource LabelStyle}"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+
+                    <RadioButton x:Name="TotalPriceRadioButton" Text="按总价计算" GroupName="CalculateMethod" IsChecked="{Binding TotalPriceRadio}"/>
+                    <RadioButton x:Name="PriceSpreadRadioButton" Text="按差价计算" GroupName="CalculateMethod" IsChecked="{Binding PriceSpreadRadio}"/>
+
+                    <!--
+                    <Label Text="按总价计算" Style="{DynamicResource LabelStyle}" WidthRequest="150">
+                        <Label.Behaviors>
+                            <behaviors:RadioBehavior x:Name="TotalPriceRadio" GroupName="CalculateMethod"/>
+                        </Label.Behaviors>
+                        <Label.Triggers>
+                            <DataTrigger TargetType="Label" Binding="{Binding Source={x:Reference TotalPriceRadio}, Path=IsChecked}" Value="True">
+                                <Setter Property="TextColor" Value="Green" />
+                                <Setter Property="FontSize" Value="Title" />
+                                <Setter Property="FontAttributes" Value="Bold" />
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+
+                    <Label Text="按差价计算" Style="{DynamicResource LabelStyle}" WidthRequest="150">
+                        <Label.Behaviors>
+                            <behaviors:RadioBehavior x:Name="PriceSpreadRadio" GroupName="CalculateMethod"/>
+                        </Label.Behaviors>
+                        <Label.Triggers>
+                            <DataTrigger TargetType="Label" Binding="{Binding Source={x:Reference PriceSpreadRadio}, Path=IsChecked}" Value="True">
+                                <Setter Property="TextColor" Value="Green" />
+                                <Setter Property="FontSize" Value="Title" />
+                                <Setter Property="FontAttributes" Value="Bold" />
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>-->
+                </StackLayout>
+
+                <!--房产购置年限-->
+                <StackLayout x:Name="PurchasePeriodStack" Orientation="Horizontal" Margin="10,0" IsVisible="{Binding Source={x:Reference AffordableHouseRadioButton}, Path=IsChecked, Converter={StaticResource trueToFalse}}">
+                    <Label>
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="*" TextColor="Red"/>
+                                <Span Text="房产购置年限：" Style="{DynamicResource LabelStyle}"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+
+                    <RadioButton x:Name="LessThanTwoRadioButton" Text="不满两年" GroupName="PropertyPurchasePeriod" IsChecked="{Binding LessThanTwoRadio}"/>
+                    <RadioButton x:Name="TwoToFiveRadioButton" Text="二到五年" GroupName="PropertyPurchasePeriod" IsChecked="{Binding TwoToFiveRadio}"/>
+                    <RadioButton x:Name="MoreThanFiveRadioButton" Text="五年以上" GroupName="PropertyPurchasePeriod" IsChecked="{Binding MoreThanFiveRadio}"/>
+
+<!--
+                    <Label Text="不满两年" Style="{DynamicResource LabelStyle}" WidthRequest="90">
+                        <Label.Behaviors>
+                            <behaviors:RadioBehavior x:Name="LessThanTwoRadio" GroupName="PropertyPurchasePeriod"/>
+                        </Label.Behaviors>
+                        <Label.Triggers>
+                            <DataTrigger TargetType="Label" Binding="{Binding Source={x:Reference LessThanTwoRadio}, Path=IsChecked}" Value="True">
+                                <Setter Property="TextColor" Value="Green" />
+                                <Setter Property="FontSize" Value="Title" />
+                                <Setter Property="FontAttributes" Value="Bold" />
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+                    <Label Text="二到五年" Style="{DynamicResource LabelStyle}" WidthRequest="90">
+                        <Label.Behaviors>
+                            <behaviors:RadioBehavior x:Name="TwoToFiveRadio" GroupName="PropertyPurchasePeriod"/>
+                        </Label.Behaviors>
+                        <Label.Triggers>
+                            <DataTrigger TargetType="Label" Binding="{Binding Source={x:Reference TwoToFiveRadio}, Path=IsChecked}" Value="True">
+                                <Setter Property="TextColor" Value="Green" />
+                                <Setter Property="FontSize" Value="Title" />
+                                <Setter Property="FontAttributes" Value="Bold" />
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+                    <Label Text="五年以上" Style="{DynamicResource LabelStyle}" WidthRequest="90">
+                        <Label.Behaviors>
+                            <behaviors:RadioBehavior x:Name="MoreThanFiveRadio" GroupName="PropertyPurchasePeriod"/>
+                        </Label.Behaviors>
+                        <Label.Triggers>
+                            <DataTrigger TargetType="Label" Binding="{Binding Source={x:Reference MoreThanFiveRadio}, Path=IsChecked}" Value="True">
+                                <Setter Property="TextColor" Value="Green" />
+                                <Setter Property="FontSize" Value="Title" />
+                                <Setter Property="FontAttributes" Value="Bold" />
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>-->
+                </StackLayout>
+
+                <!--是否首次购房-->
+                <StackLayout Orientation="Horizontal" Margin="10,0">
+                    <Label>
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="*" TextColor="Red"/>
+                                <Span Text="是否首次购房：" Style="{DynamicResource LabelStyle}"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+
+                    <RadioButton x:Name="ResoldYesFirstRadioButton" Text="是" GroupName="ResoldFirstTradeMethod" IsChecked="{Binding ResoldYesFirstRadio}"/>
+                    <RadioButton x:Name="ResoldNoFirstRadioButton" Text="否" GroupName="ResoldFirstTradeMethod" IsChecked="{Binding ResoldNoFirstRadio}"/>
+                    <!--
+                    <Label Text="是" Style="{DynamicResource LabelStyle}" WidthRequest="100">
+                        <Label.Behaviors>
+                            <behaviors:RadioBehavior x:Name="ResoldYesFirstRadio" GroupName="ResoldFirstTradeMethod"/>
+                        </Label.Behaviors>
+                        <Label.Triggers>
+                            <DataTrigger TargetType="Label" Binding="{Binding Source={x:Reference ResoldYesFirstRadio}, Path=IsChecked}" Value="True">
+                                <Setter Property="TextColor" Value="Green" />
+                                <Setter Property="FontSize" Value="Title" />
+                                <Setter Property="FontAttributes" Value="Bold" />
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+
+                    <Label Text="否" Style="{DynamicResource LabelStyle}" WidthRequest="100">
+                        <Label.Behaviors>
+                            <behaviors:RadioBehavior x:Name="ResoldNoFirstRadio" GroupName="ResoldFirstTradeMethod"/>
+                        </Label.Behaviors>
+                        <Label.Triggers>
+                            <DataTrigger TargetType="Label" Binding="{Binding Source={x:Reference ResoldNoFirstRadio}, Path=IsChecked}" Value="True">
+                                <Setter Property="TextColor" Value="Green" />
+                                <Setter Property="FontSize" Value="Title" />
+                                <Setter Property="FontAttributes" Value="Bold" />
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>-->
+                </StackLayout>
+
+                <!--是否唯一住房-->
+                <StackLayout Orientation="Horizontal" Margin="10,0">
+                    <Label>
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="*" TextColor="Red"/>
+                                <Span Text="是否唯一住房：" Style="{DynamicResource LabelStyle}"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+
+                    <RadioButton x:Name="ResoldOnlyYesRadioButton" Text="是" GroupName="ResoldOnlyHouseMethod" IsChecked="{Binding ResoldOnlyYesRadio}"/>
+                    <RadioButton x:Name="ResoldOnlyNoRadioButton" Text="否" GroupName="ResoldOnlyHouseMethod" IsChecked="{Binding ResoldOnlyNoRadio}"/>
+                    <!--
+                    <Label Text="是" Style="{DynamicResource LabelStyle}" WidthRequest="100">
+                        <Label.Behaviors>
+                            <behaviors:RadioBehavior x:Name="ResoldOnlyYesRadio" GroupName="ResoldOnlyHouseMethod"/>
+                        </Label.Behaviors>
+                        <Label.Triggers>
+                            <DataTrigger TargetType="Label" Binding="{Binding Source={x:Reference ResoldOnlyYesRadio}, Path=IsChecked}" Value="True">
+                                <Setter Property="TextColor" Value="Green" />
+                                <Setter Property="FontSize" Value="Title" />
+                                <Setter Property="FontAttributes" Value="Bold" />
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+
+                    <Label Text="否" Style="{DynamicResource LabelStyle}" WidthRequest="100">
+                        <Label.Behaviors>
+                            <behaviors:RadioBehavior x:Name="ResoldOnlyNoRadio" GroupName="ResoldOnlyHouseMethod"/>
+                        </Label.Behaviors>
+                        <Label.Triggers>
+                            <DataTrigger TargetType="Label" Binding="{Binding Source={x:Reference ResoldOnlyNoRadio}, Path=IsChecked}" Value="True">
+                                <Setter Property="TextColor" Value="Green" />
+                                <Setter Property="FontSize" Value="Title" />
+                                <Setter Property="FontAttributes" Value="Bold" />
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>-->
+                </StackLayout>
+
+                <!--建筑面积-->
+                <StackLayout Orientation="Horizontal" Margin="10,0">
+                    <Label>
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="*" TextColor="Red"/>
+                                <Span Text="建筑面积（㎡）：" Style="{DynamicResource LabelStyle}"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <Entry Placeholder="请输入建筑面积" Text="{Binding ResoldHouseArea}"/>
+                </StackLayout>
+
+                <!--总价-->
+                <StackLayout Orientation="Horizontal" Margin="10,0">
+                    <Label>
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="*" TextColor="Red"/>
+                                <Span Text="总价（元）：" Style="{DynamicResource LabelStyle}"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <Entry Placeholder="请输入总价" Text="{Binding ResoldTotalPrice}"/>
+                </StackLayout>
+
+                <!--原价-->
+                <StackLayout Orientation="Horizontal" Margin="10,0" IsVisible="{Binding Source={x:Reference PriceSpreadRadioButton}, Path=IsChecked}">
+                    <Label>
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="*" TextColor="Red"/>
+                                <Span Text="原价（元）：" Style="{DynamicResource LabelStyle}"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <Entry Placeholder="请输入原价" Text="{Binding ResoldOriginalTotalPrice}"/>
+                </StackLayout>
+
+                <StackLayout Orientation="Horizontal" Margin="0,0,0,20">
+                    <Button Text="清空" Command="{Binding ClearCommand}" Style="{DynamicResource ButtonStyle}" BackgroundColor="LightGray"/>
+                    <Button Text="开始计算" Command="{Binding CalculateCommand}" Style="{DynamicResource ButtonStyle}" BackgroundColor="{DynamicResource MainColor}"/>
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

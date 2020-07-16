@@ -106,6 +106,10 @@
                         </Label.FormattedText>
                     </Label>
 
+                    <RadioButton x:Name="PFTotalPriceRadio" Text="按房价总额" GroupName="PFCalculateMethod" IsChecked="{Binding TotalPriceRadio}"/>
+                    <RadioButton x:Name="PFTotalLoanRadio" Text="按贷款总额" GroupName="PFCalculateMethod" IsChecked="{Binding TotalLoanRadio}"/>
+
+                    <!--
                     <Label Text="按房价总额" Style="{DynamicResource LabelStyle}" WidthRequest="150">
                         <Label.Behaviors>
                             <behaviors:RadioBehavior x:Name="PFTotalPriceRadio" GroupName="PFCalculateMethod" IsChecked="{Binding TotalPriceRadio,Mode=TwoWay}"/>
@@ -130,7 +134,7 @@
                                 <Setter Property="FontAttributes" Value="Bold" />
                             </DataTrigger>
                         </Label.Triggers>
-                    </Label>
+                    </Label>-->
                 </StackLayout>
 
                 <!--还款方式-->
@@ -143,6 +147,10 @@
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
+
+                    <RadioButton x:Name="PFAveCapAndIntRadio" Text="等额本息" GroupName="PFPaymentMethod" IsChecked="{Binding AveCapAndIntRadio}"/>
+                    <RadioButton x:Name="PFAveCapRadio" Text="等额本金" GroupName="PFPaymentMethod" IsChecked="{Binding AveCapRadio}"/>
+                    <!--
                     <Label Text="等额本息" Style="{DynamicResource LabelStyle}" WidthRequest="150">
                         <Label.Behaviors>
                             <behaviors:RadioBehavior x:Name="PFAveCapAndIntRadio" GroupName="PFPaymentMethod" IsChecked="{Binding AveCapAndIntRadio,Mode=TwoWay}"/>
@@ -166,7 +174,7 @@
                                 <Setter Property="FontAttributes" Value="Bold" />
                             </DataTrigger>
                         </Label.Triggers>
-                    </Label>
+                    </Label>-->
                 </StackLayout>
 
                 <!--房价总额-->

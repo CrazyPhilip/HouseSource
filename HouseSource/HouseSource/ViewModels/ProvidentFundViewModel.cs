@@ -128,6 +128,9 @@ namespace HouseSource.ViewModels
         {
             InitPickers();
 
+            TotalPriceRadio = true;
+            AveCapAndIntRadio = true;
+
             ClearCommand = new Command(() =>
             {
 

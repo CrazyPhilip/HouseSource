@@ -45,6 +45,34 @@ namespace HouseSource.Services
             }
         }
 
+        /// <summary>
+        /// 发送验证码
+        /// </summary>
+        /// <param name="tel"></param>
+        /// <returns></returns>
+        public static async Task<string> SendCode(string tel)
+        {
+            string url = "GetTelCode?DBName=cd&Tel=" + tel;
+
+            string content = await RestSharpHelper<string>.GetAsyncWithoutDeserialization(url);
+            return GetSubString(content, "{", "}");
+        }
+
+        /// <summary>
+        /// 注册
+        /// </summary>
+        /// <param name="tel">手机号</param>
+        /// <param name="password">密码</param>
+        /// <param name="name">真实姓名</param>
+        /// <returns></returns>
+        public static async Task<string> Register(string tel, string password, string name)
+        {
+            string url = "ApplyForRegister?DBName=cd&EmpNo=&Tel=" + tel
+                + "&Password=" + password + "&EmpName=" + name + "&AccountStyle=独立经纪人&CompanyOrEstateName=";
+
+            string content = await RestSharpHelper<string>.GetAsyncWithoutDeserialization(url);
+            return GetSubString(content, "{", "}");
+        }
         #endregion
 
 

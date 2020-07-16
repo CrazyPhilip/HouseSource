@@ -50,6 +50,34 @@ namespace HouseSource.ViewModels
             set { SetProperty(ref sortType, value); }
         }
 
+        private string district;   //区域
+        public string District
+        {
+            get { return district; }
+            set { SetProperty(ref district, value); }
+        }
+
+        private string roomStyle;   //房型
+        public string RoomStyle
+        {
+            get { return roomStyle; }
+            set { SetProperty(ref roomStyle, value); }
+        }
+
+        private string salePrice;   //价格
+        public string SalePrice
+        {
+            get { return salePrice; }
+            set { SetProperty(ref salePrice, value); }
+        }
+
+        private string square;   //面积
+        public string Square
+        {
+            get { return square; }
+            set { SetProperty(ref square, value); }
+        }
+
         private bool isLoading;   //是否正在加载
         public bool IsLoading
         {
@@ -104,6 +132,10 @@ namespace HouseSource.ViewModels
             //PanTypeList = new List<string> { "全部类型", "公盘", "私盘", "特盘", "封盘" };
 
             SortType = SortTypeList[0];
+            District = DistrictList[0];
+            RoomStyle = RoomStyleList[0];
+            SalePrice = SalePriceList[0];
+            Square = SquareList[0];
 
             saleHouseItemList = new List<HouseItemInfo>();
             rentHouseItemList = new List<HouseItemInfo>();
@@ -137,7 +169,7 @@ namespace HouseSource.ViewModels
                     case "0":
                         {
                             string result = await Application.Current.MainPage.DisplayActionSheet("分类", "取消", null, SortTypeList);
-                            SortType = result == "取消" ? SortType: result;
+                            SortType = result == null || result == "取消" ? SortType: result;
 
                             if (SortType == "出售")
                             {
@@ -169,28 +201,32 @@ namespace HouseSource.ViewModels
                     //区域
                     case "1":
                         {
-
+                            string result = await Application.Current.MainPage.DisplayActionSheet("区域", "取消", null, DistrictList);
+                            District = result == null || result == "取消" ? District : result;
                         }
                         break;
 
                     //房型
                     case "2":
                         {
-
+                            string result = await Application.Current.MainPage.DisplayActionSheet("区域", "取消", null, RoomStyleList);
+                            RoomStyle = result == null || result == "取消" ? RoomStyle : result;
                         }
                         break;
 
                     //价格
                     case "3":
                         {
-
+                            string result = await Application.Current.MainPage.DisplayActionSheet("价格", "取消", null, SalePriceList);
+                            SalePrice = result == null || result == "取消" ? SalePrice : result;
                         }
                         break;
                         
                     //面积
                     case "4":
                         {
-
+                            string result = await Application.Current.MainPage.DisplayActionSheet("面积", "取消", null, SquareList);
+                            Square = result == null || result == "取消" ? Square : result;
                         }
                         break;
 

@@ -25,6 +25,7 @@ namespace HouseSource.Droid
             CarouselViewRenderer.Init();    //轮播图
             CachedImageRenderer.Init(true);
             UltimateXFSettup.Initialize(this);
+            Xamarin.Forms.Forms.SetFlags("RadioButton_Experimental");
 
             base.OnCreate(savedInstanceState);
 
