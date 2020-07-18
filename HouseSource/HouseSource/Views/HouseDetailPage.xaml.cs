@@ -18,6 +18,7 @@ namespace HouseSource.Views
             InitializeComponent();
 
             houseDetailViewModel.House = house;
+            houseDetailViewModel.HouseTitle = house.DistrictName + " " + house.AreaName + " " + house.EstateName;
         }
     }
 }

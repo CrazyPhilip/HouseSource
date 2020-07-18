@@ -9,6 +9,11 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary Source="Themes/LightTheme.xaml" />
+
+            <OnPlatform x:Key="font" x:TypeArguments="x:String">
+                <On Platform="Android" Value="Fonts/FontAwesome.otf#Font Awesome" />
+                <!--<On Platform="iOS" Value="FuturaBT-Book" />-->
+            </OnPlatform>
             
             <Style x:Key="TitleLabel" TargetType="Label">
                 <Setter Property="TextColor" Value="{DynamicResource PrimaryTextColor}"/>

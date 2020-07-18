@@ -10,6 +10,7 @@ using CarouselView.FormsPlugin.Android;
 using FFImageLoading.Forms.Platform;
 using Rg.Plugins.Popup;
 using UltimateXF.Droid;
+using Xamarin.Forms;
 
 namespace HouseSource.Droid
 {
@@ -25,7 +26,7 @@ namespace HouseSource.Droid
             CarouselViewRenderer.Init();    //轮播图
             CachedImageRenderer.Init(true);
             UltimateXFSettup.Initialize(this);
-            Xamarin.Forms.Forms.SetFlags("RadioButton_Experimental");
+            Forms.SetFlags("RadioButton_Experimental");
 
             base.OnCreate(savedInstanceState);
 

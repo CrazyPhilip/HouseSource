@@ -16,35 +16,46 @@
         <viewModels:AllHouseListViewModel/>
     </ContentPage.BindingContext>
 
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="LabelStyle" TargetType="Label">
+                <Setter Property="FontFamily" Value="{StaticResource font}"/>
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="HorizontalOptions" Value="Center"/>
+                <Setter Property="VerticalOptions" Value="Center"/>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
     <ContentPage.Content>
         <Grid Padding="10,0" RowDefinitions="30, 40, Auto" ColumnDefinitions="1*, 1*, 1*, 1*, 1*">
 
             <!--筛选条件-->
-                <Label Grid.Row="0" Grid.Column="0" Text="{Binding SortType}" Style="{DynamicResource LabelStyle}" HorizontalOptions="Center" VerticalOptions="Center">
+            <Label Grid.Row="0" Grid.Column="0" Text="{Binding SortType,StringFormat='{0}&#xf0d7;'}" Style="{DynamicResource LabelStyle}">
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding SortCommand}" CommandParameter="0"/>
                     </Label.GestureRecognizers>
                 </Label>
 
-            <Label Grid.Row="0" Grid.Column="1" Text="{Binding District}" Style="{DynamicResource LabelStyle}" HorizontalOptions="Center" VerticalOptions="Center">
+            <Label Grid.Row="0" Grid.Column="1" Text="{Binding District,StringFormat='{0}&#xf0d7;'}" Style="{DynamicResource LabelStyle}">
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding SortCommand}" CommandParameter="1"/>
                     </Label.GestureRecognizers>
                 </Label>
 
-            <Label Grid.Row="0" Grid.Column="2" Text="{Binding RoomStyle}" Style="{DynamicResource LabelStyle}" HorizontalOptions="Center" VerticalOptions="Center">
+            <Label Grid.Row="0" Grid.Column="2" Text="{Binding RoomStyle,StringFormat='{0}&#xf0d7;'}" Style="{DynamicResource LabelStyle}">
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding SortCommand}" CommandParameter="2"/>
                     </Label.GestureRecognizers>
                 </Label>
 
-            <Label Grid.Row="0" Grid.Column="3" Text="{Binding SalePrice}" Style="{DynamicResource LabelStyle}" HorizontalOptions="Center" VerticalOptions="Center">
+            <Label Grid.Row="0" Grid.Column="3" Text="{Binding SalePrice,StringFormat='{0}&#xf0d7;'}" Style="{DynamicResource LabelStyle}">
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding SortCommand}" CommandParameter="3"/>
                     </Label.GestureRecognizers>
                 </Label>
 
-            <Label Grid.Row="0" Grid.Column="4" Text="{Binding Square}" Style="{DynamicResource LabelStyle}" HorizontalOptions="Center" VerticalOptions="Center">
+            <Label Grid.Row="0" Grid.Column="4" Text="{Binding Square,StringFormat='{0}&#xf0d7;'}" Style="{DynamicResource LabelStyle}">
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding SortCommand}" CommandParameter="4"/>
                     </Label.GestureRecognizers>
@@ -137,18 +148,7 @@
                         <BindableLayout.ItemTemplate>
                             <DataTemplate>
                                 <Frame HeightRequest="110" Padding="5" CornerRadius="5" Style="{DynamicResource BaseFrame}">
-                                    <Grid RowSpacing="0">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition/>
-                                            <RowDefinition/>
-                                            <RowDefinition/>
-                                            <RowDefinition/>
-                                        </Grid.RowDefinitions>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="100"/>
-                                            <ColumnDefinition/>
-                                        </Grid.ColumnDefinitions>
-
+                                    <Grid RowSpacing="0" RowDefinitions="*,*,*,*" ColumnDefinitions="100,*">
                                         <ff:CachedImage Grid.Row="0" Grid.Column="0" Grid.RowSpan="4" Source="{Binding PhotoUrl}" 
                                                                 HeightRequest="100" WidthRequest="100"
                                                                 DownsampleHeight="100" DownsampleWidth="100"/>
@@ -210,9 +210,8 @@
                                                       CommandParameter="{Binding Source=ProductListScrollView,Path=ScrollY}"/>
                 </ScrollView.Behaviors>-->
             </ScrollView>
-            
-            <!--
-            <IndicatorView Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" Grid.ColumnSpan="2" IsVisible="{Binding IsLoading}"/>-->
+
+            <IndicatorView Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" Grid.ColumnSpan="2" IsVisible="{Binding IsLoading}"/>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

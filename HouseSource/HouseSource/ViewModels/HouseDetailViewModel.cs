@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using HouseSource.Models;
+using Xamarin.Forms;
 
 namespace HouseSource.ViewModels
 {
@@ -14,9 +15,20 @@ namespace HouseSource.ViewModels
             set { SetProperty(ref house, value); }
         }
 
+        private string houseTitle;   //Comment
+        public string HouseTitle
+        {
+            get { return houseTitle; }
+            set { SetProperty(ref houseTitle, value); }
+        }
+
+        public Command ShareCommand { get; set; }
+        public Command CollectCommand { get; set; }
+        public Command CallCommand { get; set; }
+
         public HouseDetailViewModel()
         {
-
+            
         }
     }
 }

@@ -16,16 +16,12 @@
     </ContentPage.BindingContext>
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem Name="ShareTool" Text="分享" IconImageSource="star.png"/>
-        <ToolbarItem Name="CollectTool" Text="收藏" IconImageSource="circle.png"/>
+        <ToolbarItem Name="ShareTool" Text="分享" IconImageSource="star.png" Command="{Binding ShareCommand}"/>
+        <ToolbarItem Name="CollectTool" Text="收藏" IconImageSource="share.png" Command="{Binding CollectCommand}"/>
     </ContentPage.ToolbarItems>
 
     <ContentPage.Content>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="60"/>
-            </Grid.RowDefinitions>
+        <Grid RowDefinitions="*,50">
 
             <ScrollView Grid.Row="0">
                 <StackLayout Orientation="Vertical">
@@ -35,49 +31,35 @@
                     <!--简要信息，原app的Card-->
                     <Frame BorderColor="LightGray" HasShadow="True" CornerRadius="10" Margin="10,5" Padding="10">
                         <StackLayout Orientation="Vertical">
-                            <Label Text="{Binding House.HouseTitle}" TextColor="Black" FontSize="Title" FontAttributes="Bold" Margin="5"/>
+                            <Label Text="{Binding HouseTitle}" TextColor="Black" FontSize="16" FontAttributes="Bold" Margin="5"/>
                             <BoxView Color="LightGray" HeightRequest="1" HorizontalOptions="Fill" Margin="5"/>
                             <StackLayout Orientation="Horizontal" Margin="5">
-                                <Label Text="精装" BackgroundColor="LightGray" FontSize="Medium"/>
-                                <Label Text="可预约" BackgroundColor="LightGray" FontSize="Medium"/>
+                                <Label Text="精装" BackgroundColor="LightGray" FontSize="14"/>
+                                <Label Text="可预约" BackgroundColor="LightGray" FontSize="14"/>
+                            </StackLayout>
+                            
+                            <StackLayout Orientation="Horizontal" Margin="5">
+                                <Label Text="{Binding House.Price,StringFormat='{0:F2}万元'}" TextColor="Red" FontSize="18" HorizontalOptions="StartAndExpand"/>
+                                <Label Text="{Binding House.RoomStyle}" TextColor="Red" FontSize="16" HorizontalOptions="CenterAndExpand"/>
+                                <Label Text="{Binding House.Square,StringFormat='{0:F2}㎡'}" TextColor="Red" FontSize="16" HorizontalOptions="EndAndExpand"/>
                             </StackLayout>
                             <StackLayout Orientation="Horizontal" Margin="5">
-                                <Label TextColor="Red" FontSize="Title" HorizontalOptions="StartAndExpand">
-                                    <Label.FormattedText>
-                                        <FormattedString>
-                                            <Span Text="{Binding House.Price,StringFormat='{0:F2}'}"/>
-                                            <Span Text="万元"/>
-                                        </FormattedString>
-                                    </Label.FormattedText>
-                                </Label>
-                                <Label Text="{Binding House.RoomStyle}" TextColor="Red" FontSize="Title" HorizontalOptions="CenterAndExpand"/>
-                                <Label TextColor="Red" FontSize="Title" HorizontalOptions="EndAndExpand">
-                                    <Label.FormattedText>
-                                        <FormattedString>
-                                            <Span Text="{Binding House.Square}"/>
-                                            <Span Text="㎡"/>
-                                        </FormattedString>
-                                    </Label.FormattedText>
-                                </Label>
-                            </StackLayout>
-                            <StackLayout Orientation="Horizontal" Margin="5">
-                                <Frame HeightRequest="40" WidthRequest="40" CornerRadius="20" HasShadow="False" 
-                                       IsClippedToBounds="True" Padding="0" VerticalOptions="Center">
-                                    <Image HeightRequest="40" WidthRequest="40" Source="Resource/drawable/SamplePic.png"/>
+                                <Frame HasShadow="False" IsClippedToBounds="True" Padding="0" VerticalOptions="Center">
+                                    <Image HeightRequest="40" WidthRequest="40" Source="avatar.png"/>
                                 </Frame>
 
                                 <StackLayout Orientation="Vertical">
                                     <Label>
                                         <Label.FormattedText>
                                             <FormattedString>
-                                                <Span Text="{Binding House.EmpName}" FontSize="Large" TextColor="Black"/>
-                                                <Span Text="|" FontSize="Large"/>
-                                                <Span Text="{Binding House.DeptName}" FontSize="Medium"/>
-                                                <Span Text="{Binding House.RegPerson}" FontSize="Medium"/>
+                                                <Span Text="{Binding House.EmpName}" FontSize="16" TextColor="Black"/>
+                                                <Span Text="|" FontSize="16"/>
+                                                <Span Text="{Binding House.DeptName}" FontSize="14"/>
+                                                <Span Text="{Binding House.RegPerson}" FontSize="14"/>
                                             </FormattedString>
                                         </Label.FormattedText>
                                     </Label>
-                                    <Label Text="房屋信息发布人" FontSize="Small"/>
+                                    <Label Text="房屋信息发布人" FontSize="12"/>
                                 </StackLayout>
                             </StackLayout>
                         </StackLayout>
@@ -85,7 +67,7 @@
 
                     <!--详细信息-->
                     <StackLayout Orientation="Vertical" Margin="10,5">
-                        <Label FontSize="Large">
+                        <Label FontSize="16">
                             <Label.FormattedText>
                                 <FormattedString>
                                     <Span Text=">>" TextColor="#6ecbb8"/>
@@ -94,51 +76,38 @@
                             </Label.FormattedText>
                         </Label>
                         <BoxView Color="LightGray" HeightRequest="1" HorizontalOptions="Fill"/>
-                        <Grid Margin="5">
-                            <Grid.RowDefinitions>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="1*"/>
-                                <ColumnDefinition Width="3*"/>
-                                <ColumnDefinition Width="1*"/>
-                                <ColumnDefinition Width="3*"/>
-                            </Grid.ColumnDefinitions>
+                        <Grid Margin="5" RowDefinitions="*,*,*,*,*" ColumnDefinitions="1*,3*,1*,3*">
 
-                            <Label Grid.Row="0" Grid.Column="0" Text="单价：" FontSize="Medium"/>
-                            <Label Grid.Row="0" Grid.Column="1" Text="{Binding House.SinglePrice}" FontSize="Medium" TextColor="Black"/>
+                            <Label Grid.Row="0" Grid.Column="0" Text="单价：" FontSize="14"/>
+                            <Label Grid.Row="0" Grid.Column="1" Text="{Binding House.SinglePrice}" FontSize="14" TextColor="Black"/>
 
-                            <Label Grid.Row="0" Grid.Column="2" Text="挂牌：" FontSize="Medium"/>
-                            <Label Grid.Row="0" Grid.Column="3" Text="01" FontSize="Medium" TextColor="Black"/>
+                            <Label Grid.Row="0" Grid.Column="2" Text="挂牌：" FontSize="14"/>
+                            <Label Grid.Row="0" Grid.Column="3" Text="01" FontSize="14" TextColor="Black"/>
 
-                            <Label Grid.Row="1" Grid.Column="0" Text="朝向：" FontSize="Medium"/>
-                            <Label Grid.Row="1" Grid.Column="1" Text="{Binding House.PropertyDirection}" FontSize="Medium" TextColor="Black"/>
+                            <Label Grid.Row="1" Grid.Column="0" Text="朝向：" FontSize="14"/>
+                            <Label Grid.Row="1" Grid.Column="1" Text="{Binding House.PropertyDirection}" FontSize="14" TextColor="Black"/>
 
-                            <Label Grid.Row="1" Grid.Column="2" Text="楼层：" FontSize="Medium"/>
-                            <Label Grid.Row="1" Grid.Column="3" Text="{Binding House.Floor}" FontSize="Medium" TextColor="Black"/>
+                            <Label Grid.Row="1" Grid.Column="2" Text="楼层：" FontSize="14"/>
+                            <Label Grid.Row="1" Grid.Column="3" Text="{Binding House.Floor}" FontSize="14" TextColor="Black"/>
 
-                            <Label Grid.Row="2" Grid.Column="0" Text="装修：" FontSize="Medium"/>
-                            <Label Grid.Row="2" Grid.Column="1" Text="{Binding House.PropertyDecoration}" FontSize="Medium" TextColor="Black"/>
+                            <Label Grid.Row="2" Grid.Column="0" Text="装修：" FontSize="14"/>
+                            <Label Grid.Row="2" Grid.Column="1" Text="{Binding House.PropertyDecoration}" FontSize="14" TextColor="Black"/>
 
-                            <Label Grid.Row="2" Grid.Column="2" Text="年代：" FontSize="Medium"/>
-                            <Label Grid.Row="2" Grid.Column="3" Text="" FontSize="Medium" TextColor="Black"/>
+                            <Label Grid.Row="2" Grid.Column="2" Text="年代：" FontSize="14"/>
+                            <Label Grid.Row="2" Grid.Column="3" Text="" FontSize="14" TextColor="Black"/>
 
-                            <Label Grid.Row="3" Grid.Column="0" Text="用途：" FontSize="Medium"/>
-                            <Label Grid.Row="3" Grid.Column="1" Text="住宅" FontSize="Medium" TextColor="Black"/>
+                            <Label Grid.Row="3" Grid.Column="0" Text="用途：" FontSize="14"/>
+                            <Label Grid.Row="3" Grid.Column="1" Text="住宅" FontSize="14" TextColor="Black"/>
 
-                            <Label Grid.Row="3" Grid.Column="2" Text="权属：" FontSize="Medium"/>
-                            <Label Grid.Row="3" Grid.Column="3" Text="" FontSize="Medium" TextColor="Black"/>
+                            <Label Grid.Row="3" Grid.Column="2" Text="权属：" FontSize="14"/>
+                            <Label Grid.Row="3" Grid.Column="3" Text="" FontSize="14" TextColor="Black"/>
 
-                            <Label Grid.Row="4" Grid.Column="0" Text="小区：" FontSize="Medium"/>
-                            <Label Grid.Row="4" Grid.Column="1" Text="{Binding House.EstateName}" FontSize="Medium" TextColor="Black"/>
+                            <Label Grid.Row="4" Grid.Column="0" Text="小区：" FontSize="14"/>
+                            <Label Grid.Row="4" Grid.Column="1" Text="{Binding House.EstateName}" FontSize="14" TextColor="Black"/>
 
                         </Grid>
 
-                        <Label FontSize="Large">
+                        <Label FontSize="16">
                             <Label.FormattedText>
                                 <FormattedString>
                                     <Span Text=">>" TextColor="#6ecbb8"/>
@@ -147,9 +116,9 @@
                             </Label.FormattedText>
                         </Label>
                         <BoxView Color="LightGray" HeightRequest="1" HorizontalOptions="Fill"/>
-                        <Label Text="暂无内容" FontSize="Small"/>
+                        <Label Text="暂无内容" FontSize="12"/>
 
-                        <Label FontSize="Large">
+                        <Label FontSize="16">
                             <Label.FormattedText>
                                 <FormattedString>
                                     <Span Text=">>" TextColor="#6ecbb8"/>
@@ -158,26 +127,15 @@
                             </Label.FormattedText>
                         </Label>
                         <BoxView Color="LightGray" HeightRequest="1" HorizontalOptions="Fill"/>
-                        <Grid Margin="5">
-                            <Grid.RowDefinitions>
-                                <RowDefinition/>
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="1*"/>
-                                <ColumnDefinition Width="3*"/>
-                                <ColumnDefinition Width="1*"/>
-                                <ColumnDefinition Width="3*"/>
-                            </Grid.ColumnDefinitions>
+                        <Grid Margin="5" ColumnDefinitions="1*,3*,1*,3*">
+                            <Label Grid.Column="0" Text="业主：" FontSize="14"/>
+                            <Label Grid.Column="1" Text="{Binding House.ownername}" FontSize="14" TextColor="Black"/>
 
-                            <Label Grid.Row="0" Grid.Column="0" Text="业主：" FontSize="Medium"/>
-                            <Label Grid.Row="0" Grid.Column="1" Text="{Binding House.ownername}" FontSize="Medium" TextColor="Black"/>
-
-                            <Label Grid.Row="0" Grid.Column="2" Text="电话：" FontSize="Medium"/>
-                            <Label Grid.Row="0" Grid.Column="3" Text="{Binding House.ownermobile}" FontSize="Medium" TextColor="Black"/>
-
+                            <Label Grid.Column="2" Text="电话：" FontSize="14"/>
+                            <Label Grid.Column="3" Text="{Binding House.ownermobile}" FontSize="14" TextColor="Black"/>
                         </Grid>
 
-                        <Label FontSize="Large">
+                        <Label FontSize="16">
                             <Label.FormattedText>
                                 <FormattedString>
                                     <Span Text=">>" TextColor="#6ecbb8"/>
@@ -186,26 +144,26 @@
                             </Label.FormattedText>
                         </Label>
                         <BoxView Color="LightGray" HeightRequest="1" HorizontalOptions="Fill"/>
-                        <Label Text="暂无内容" FontSize="Small"/>
+                        <Label Text="暂无内容" FontSize="12"/>
                     </StackLayout>
                 </StackLayout>
             </ScrollView>
 
             <!--底部栏-->
-            <StackLayout Grid.Row="1" Orientation="Horizontal" Margin="5,0">
-                <Frame HeightRequest="40" WidthRequest="40" CornerRadius="20" HasShadow="False" 
+            <Grid Grid.Row="1" RowDefinitions="*,*" ColumnDefinitions="50,*,100" Margin="5,0">
+                <Frame Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" HeightRequest="30" WidthRequest="30" CornerRadius="15" HasShadow="False" 
                        IsClippedToBounds="True" Padding="0" VerticalOptions="Center">
-                    <Image HeightRequest="40" WidthRequest="40" Source="circle.png"/>
+                    <Image HeightRequest="30" WidthRequest="30" Source="avatar.png"/>
                 </Frame>
-                <StackLayout Orientation="Vertical" VerticalOptions="Center">
-                    <Label Text="{Binding House.EmpName}" FontSize="Large" TextColor="Black"/>
-                    <Label Text="房屋信息发布人" FontSize="Small"/>
-                </StackLayout>
-                <Button x:Name="CallButton" Text="致电" TextColor="White" BackgroundColor="#6ecbb8" FontSize="Large"
-                        WidthRequest="150" HeightRequest="50" CornerRadius="25"
+                <Label Grid.Row="0" Grid.Column="1" Text="{Binding House.EmpName}" FontSize="16" TextColor="Black"/>
+                <Label Grid.Row="1" Grid.Column="1" Text="房屋信息发布人" FontSize="12"/>
+                <Button Grid.Row="0" Grid.Column="2" Grid.RowSpan="2" Padding="0"
+                        Text="致电" TextColor="White" BackgroundColor="#6ecbb8" FontSize="14"
+                        WidthRequest="100" HeightRequest="40" CornerRadius="20"
                         VerticalOptions="Center"
-                        HorizontalOptions="EndAndExpand"/>
-            </StackLayout>
+                        HorizontalOptions="Center"
+                        Command="{Binding CallCommand}"/>
+            </Grid>
 
         </Grid>
     </ContentPage.Content>

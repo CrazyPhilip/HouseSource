@@ -9,8 +9,6 @@ using HouseSource.Models;
 using HouseSource.ResponseData;
 using Xamarin.Forms;
 using System.Collections.ObjectModel;
-using Microcharts;
-using SkiaSharp;
 using UltimateXF.Widget.Charts.Models;
 using UltimateXF.Widget.Charts.Models.LineChart;
 using UltimateXF.Widget.Charts.Models.Formatters;
@@ -20,14 +18,6 @@ namespace HouseSource.ViewModels
 {
     public class ReportViewModel : BaseViewModel
     {
-
-        private LineChart barChartView;   //Comment
-        public LineChart BarChartView
-        {
-            get { return barChartView; }
-            set { SetProperty(ref barChartView, value); }
-        }
-
         private LineChartData myLineChartData;   //Comment
         public LineChartData MyLineChartData
         {
@@ -83,16 +73,6 @@ namespace HouseSource.ViewModels
 
             MyLineChartData = new LineChartData(new List<ILineDataSetXF>() { dataSet5 });
 
-
-            BarChartView = new LineChart
-            {
-                Entries = new[]
-                {
-                    new ChartEntry(200) { Label = "January", ValueLabel = "200", Color = SKColor.Parse("#266489") },
-                    new ChartEntry(400) { Label = "February", ValueLabel = "400", Color = SKColor.Parse("#68B9C0") },
-                    new ChartEntry(-100) { Label = "March", ValueLabel = "-100", Color = SKColor.Parse("#90D585")}
-                }
-            };
         }
     }
 }

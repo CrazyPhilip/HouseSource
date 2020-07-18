@@ -9,8 +9,6 @@ using HouseSource.Models;
 using HouseSource.ResponseData;
 using Xamarin.Forms;
 using System.Collections.ObjectModel;
-using Microcharts;
-using SkiaSharp;
 using UltimateXF.Widget.Charts.Models;
 using UltimateXF.Widget.Charts.Models.LineChart;
 using UltimateXF.Widget.Charts.Models.Formatters;

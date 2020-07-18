@@ -5,14 +5,32 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
              xmlns:controls="clr-namespace:HouseSource.Controls"
+             xmlns:viewModels="clr-namespace:HouseSource.ViewModels"
              mc:Ignorable="d"
              x:Class="HouseSource.Views.MapPage"
              x:Name="mapPage"
              NavigationPage.HasNavigationBar="False"
              Icon="map.png"
              Title="地图">
+
+    <ContentPage.BindingContext>
+        <viewModels:MapViewModel/>
+    </ContentPage.BindingContext>
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="ButtonStyle" TargetType="Button">
+                <Setter Property="Padding" Value="0"/>
+                <Setter Property="FontFamily" Value="{StaticResource font}"/>
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="HorizontalOptions" Value="Center"/>
+                <Setter Property="VerticalOptions" Value="Center"/>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
     <ContentPage.Content>
-        <controls:HybridWebView Uri="http://www.crazyphilip.space/map2.html"
+        <controls:HybridWebView Uri="http://www.crazyphilip.space/map3.html"
                                 android:WebView.MixedContentMode="AlwaysAllow"
                                 android:WebView.EnableZoomControls="true" 
                                 android:WebView.DisplayZoomControls="True"/>

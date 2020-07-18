@@ -8,6 +8,8 @@ using Newtonsoft.Json.Linq;
 using HouseSource.Models;
 using Newtonsoft.Json;
 using HouseSource.Views;
+using System.IO;
+using Xamarin.Essentials;
 
 namespace HouseSource.ViewModels
 {
@@ -27,14 +29,58 @@ namespace HouseSource.ViewModels
 			set { SetProperty(ref password, value); }
 		}
 
+		private bool isRememberPwd;   //是否记住密码
+		public bool IsRememberPwd
+		{
+			get { return isRememberPwd; }
+			set { SetProperty(ref isRememberPwd, value); }
+		}
+
+		private string eyeSource;   //Comment
+		public string EyeSource
+		{
+			get { return eyeSource; }
+			set { SetProperty(ref eyeSource, value); }
+		}
+
+		private bool isPassword;   //Comment
+		public bool IsPassword
+		{
+			get { return isPassword; }
+			set { SetProperty(ref isPassword, value); }
+		}
+
+		private string fileName { get; set; }
+
 		public Command LoginCommand { get; set; }   //登录命令事件
 		public Command ToRegisterCommand { get; set; }   //注册命令事件
 		public Command ToResetPasswordCommand { get; set; }   //重置密码命令事件
+		public Command RememberPwdCommand { get; private set; }   //记住密码
+		public Command OpenEyeCommand { get; private set; }
 
 		public LoginViewModel()
 		{
-			TelOrEmpNo = "18428333654";
-			Password = "Philip1995641418";
+			//TelOrEmpNo = "18428333654";
+			//Password = "Philip1995641418";
+
+			fileName = Path.Combine(FileSystem.CacheDirectory, "log.dat");
+			if (File.Exists(fileName))
+			{
+				string[] text = File.ReadAllLines(fileName);
+				string check = text[0].Substring(6);
+				string tel = text[1].Substring(8);
+				string pwd = text[2].Substring(9);
+
+				if (check == "Checked")
+				{
+					TelOrEmpNo = tel;
+					Password = pwd;
+					IsRememberPwd = true;
+				}
+			}
+
+			IsPassword = true;
+			EyeSource = "closed_eye.png";
 
 			//登录命令事件
 			LoginCommand = new Command(() =>
@@ -52,6 +98,43 @@ namespace HouseSource.ViewModels
 			{
 				ResetPasswordPage resetPasswordPage = new ResetPasswordPage();
 				Application.Current.MainPage.Navigation.PushAsync(resetPasswordPage);
+			}, () => { return true; });
+
+			RememberPwdCommand = new Command(() =>
+			{
+				string text = "";
+
+				if (!string.IsNullOrWhiteSpace(TelOrEmpNo) && !string.IsNullOrWhiteSpace(Password))
+				{
+					if (IsRememberPwd)
+					{
+						text = "State:Checked\n" + "Account:" + TelOrEmpNo + "\n" + "Password:" + Password;
+						File.WriteAllText(fileName, text);
+					}
+					else
+					{
+						text = "State:Unchecked\nAccount:\nPassword:\n";
+						File.WriteAllText(fileName, text);
+					}
+				}
+				else
+				{
+					//await DisplayAlert("错误", "请输入账号及密码！", "OK");
+				}
+			}, () => { return true; });
+
+			OpenEyeCommand = new Command(() =>
+			{
+				if (IsPassword)
+				{
+					IsPassword = false;
+					EyeSource = "open_eye.png";
+				}
+				else
+				{
+					IsPassword = true;
+					EyeSource = "closed_eye.png";
+				}
 			}, () => { return true; });
 		}
 
@@ -98,8 +181,9 @@ namespace HouseSource.ViewModels
 						GlobalVariables.IsLogged = true;
 						GlobalVariables.LoggedUser.EmpNo = TelOrEmpNo;
 
+
+
 						MainPage mainPage = new MainPage();
-						
 						await Application.Current.MainPage.Navigation.PushAsync(mainPage);
 					}
 					else
