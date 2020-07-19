@@ -137,5 +137,8 @@ namespace HouseSource.Models
 
         [JsonProperty("Title", NullValueHandling = NullValueHandling.Ignore)]
         public string Title { get; set; }    //
+
+        [JsonProperty("tel", NullValueHandling = NullValueHandling.Ignore)]
+        public string tel { get; set; }    //
     }
 }

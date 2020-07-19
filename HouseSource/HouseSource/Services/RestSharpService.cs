@@ -154,6 +154,34 @@ namespace HouseSource.Services
             content = GetSubString(content, "{", "}");
             return content;
         }
+
+        /// <summary>
+        /// 获取某个房源是否被收藏
+        /// </summary>
+        /// <param name="propertyID">房源编号</param>
+        /// <returns></returns>
+        public static async Task<string> CheckCollection(string propertyID)
+        {
+            string url = "IfCollectProperty?DBName=cd&EmpID=" + GlobalVariables.LoggedUser.EmpID + "&PropertyID=" + propertyID;
+
+            string content = await RestSharpHelper<string>.GetAsyncWithoutDeserialization(url);
+            content = GetSubString(content, "{", "}");
+            return content;
+        }
+
+        /// <summary>
+        /// 收藏或取消收藏
+        /// </summary>
+        /// <param name="propertyID">房源编号</param>
+        /// <returns></returns>
+        public static async Task<string> CollectOrCancel(string propertyID)
+        {
+            string url = "CollectProperty?DBName=cd&EmpID=" + GlobalVariables.LoggedUser.EmpID + "&PropertyID=" + propertyID;
+
+            string content = await RestSharpHelper<string>.GetAsyncWithoutDeserialization(url);
+            content = GetSubString(content, "{", "}");
+            return content;
+        }
         #endregion
 
         #region 消息
@@ -174,6 +202,7 @@ namespace HouseSource.Services
 
         #endregion
 
+        #region 地理信息
         /// <summary>
         /// 获取城区列表
         /// </summary>
@@ -203,6 +232,9 @@ namespace HouseSource.Services
             return responseData;
         }
 
+        #endregion
+
+        #region 客户
         /// <summary>
         /// 新增客户
         /// </summary>
@@ -226,6 +258,36 @@ namespace HouseSource.Services
 
             return responseData;
         }
+
+        /// <summary>
+        /// 获取客源列表
+        /// </summary>
+        /// <param name="clientPara"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static async Task<ClientRD> GetClientAsync(ClientPara clientPara, string type)
+        {
+            string url = (type == "Sale" ? "querySaleCustomerSource" : "queryRentCustomerSource")
+                + "?DBName=cd"
+                + "&Tel=" + GlobalVariables.LoggedUser.EmpNo
+                + "&RoomStyle=" + clientPara.RoomStyle
+                + "&IsPublic=" + clientPara.IsPublic
+                + "&Floor=" + clientPara.Floor
+                + "&Square=" + clientPara.Square
+                + "&Price=" + clientPara.Price
+                + "&CusName=" + clientPara.CusName
+                + "&Phone=" + clientPara.Phone
+                + "&Contact=" + clientPara.Contact
+                + "&SearchContent=" + clientPara.SearchContent
+                + "&Page=" + clientPara.Page
+                + "&EmpID=" + clientPara.EmpID;
+
+            string content = await RestSharpHelper<string>.GetAsyncWithoutDeserialization(url);
+            content = GetSubString(content, "{", "}");
+            ClientRD clientRD = JsonConvert.DeserializeObject<ClientRD>(content);
+            return clientRD;
+        }
+        #endregion
 
         /// <summary>
         /// 截取字符串，处理网站返回值

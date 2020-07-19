@@ -11,13 +11,9 @@
              x:Name="houseDetailPage"
              Title="房源详情">
 
-    <ContentPage.BindingContext>
-        <viewModels:HouseDetailViewModel x:Name="houseDetailViewModel"/>
-    </ContentPage.BindingContext>
-
     <ContentPage.ToolbarItems>
-        <ToolbarItem Name="ShareTool" Text="分享" IconImageSource="star.png" Command="{Binding ShareCommand}"/>
-        <ToolbarItem Name="CollectTool" Text="收藏" IconImageSource="share.png" Command="{Binding CollectCommand}"/>
+        <ToolbarItem Text="分享" IconImageSource="share.png" Command="{Binding ShareCommand}"/>
+        <ToolbarItem Text="收藏" IconImageSource="{Binding StarSource}" Command="{Binding CollectCommand}"/>
     </ContentPage.ToolbarItems>
 
     <ContentPage.Content>
@@ -159,9 +155,8 @@
                 <Label Grid.Row="1" Grid.Column="1" Text="房屋信息发布人" FontSize="12"/>
                 <Button Grid.Row="0" Grid.Column="2" Grid.RowSpan="2" Padding="0"
                         Text="致电" TextColor="White" BackgroundColor="#6ecbb8" FontSize="14"
-                        WidthRequest="100" HeightRequest="40" CornerRadius="20"
-                        VerticalOptions="Center"
-                        HorizontalOptions="Center"
+                        HeightRequest="40" CornerRadius="20"
+                        VerticalOptions="Center" HorizontalOptions="Center"
                         Command="{Binding CallCommand}"/>
             </Grid>
 

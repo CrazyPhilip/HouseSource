@@ -64,7 +64,7 @@ namespace HouseSource.ViewModels
                 new Option { icon = "news.png", option = "新闻公告", page = "HouseSource.Views.MessagePage"},
                 new Option { icon = "calculator.png", option = "房贷计算器", page = "HouseSource.Views.LoanPage" },
                 new Option { icon = "calculator.png", option = "税费计算器", page = "HouseSource.Views.TaxPage" },
-                new Option { icon = "add.png", option = "新增房源", page = "HouseSource.Views.AddHousePage"},
+                new Option { icon = "add_house.png", option = "新增房源", page = "HouseSource.Views.AddHousePage"},
                 new Option { icon = "add_client.png", option = "新增客源", page = "HouseSource.Views.AddClientPage"}
 
             };

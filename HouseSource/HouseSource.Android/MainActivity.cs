@@ -11,6 +11,7 @@ using FFImageLoading.Forms.Platform;
 using Rg.Plugins.Popup;
 using UltimateXF.Droid;
 using Xamarin.Forms;
+using Com.Tencent.MM.Opensdk.Openapi;
 
 namespace HouseSource.Droid
 {

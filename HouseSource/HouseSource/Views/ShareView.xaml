@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<popup:PopupPage xmlns="http://xamarin.com/schemas/2014/forms" 
+                 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                 xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+                 xmlns:popup="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+                 xmlns:behaviors ="clr-namespace:HouseSource.Behaviors"
+                 xmlns:controls="clr-namespace:HouseSource.Controls"
+                 mc:Ignorable="d"
+                 x:Class="HouseSource.Views.ShareView">
+
+    <popup:PopupPage.Animation>
+        <controls:UserAnimation/>
+    </popup:PopupPage.Animation>
+
+    <Frame BackgroundColor="{DynamicResource ControlBackgroundColor}" HeightRequest="150" Margin="5" VerticalOptions="End" Style="{DynamicResource BaseFrame}">
+        <Grid RowDefinitions="*,*" ColumnDefinitions="1*,4*" RowSpacing="10" HorizontalOptions="Fill" VerticalOptions="CenterAndExpand" HeightRequest="100">
+
+            <!--
+            <ff:CachedImage Grid.Row="0" Grid.Column="0" Source="copy.png" HeightRequest="40" WidthRequest="40"/>
+            <Label Grid.Row="0" Grid.Column="1" Text="复制淘口令" VerticalOptions="Center" HorizontalOptions="Start" FontSize="18">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer NumberOfTapsRequired="1" Command="{Binding ShareCommand}" CommandParameter="3"/>
+                </Label.GestureRecognizers>
+            </Label>-->
+
+            <ff:CachedImage Grid.Row="0" Grid.Column="0" Source="wechat.png" HeightRequest="40" WidthRequest="40"/>
+            <Label Grid.Row="0" Grid.Column="1" Text="分享给微信好友（暂未使用）" VerticalOptions="Center" HorizontalOptions="Fill">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer NumberOfTapsRequired="1" Command="{Binding ShareCommand}" CommandParameter="1"/>
+                </Label.GestureRecognizers>
+            </Label>
+
+            <ff:CachedImage Grid.Row="1" Grid.Column="0" Source="pengyouquan.png" HeightRequest="40" WidthRequest="40"/>
+            <Label Grid.Row="1" Grid.Column="1" Text="分享到朋友圈（暂未使用）" VerticalOptions="Center" HorizontalOptions="Fill">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer NumberOfTapsRequired="1" Command="{Binding ShareCommand}" CommandParameter="2"/>
+                </Label.GestureRecognizers>
+            </Label>
+
+            <!--
+            <ff:CachedImage Grid.Row="2" Grid.Column="0" Source="wechat.png" HeightRequest="40" WidthRequest="40"/>
+            <Label Grid.Row="2" Grid.Column="1" Text="分享淘口令给微信好友" VerticalOptions="Center" HorizontalOptions="Start" FontSize="18">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer NumberOfTapsRequired="1" Command="{Binding ShareCommand}" CommandParameter="0"/>
+                </Label.GestureRecognizers>
+            </Label>-->
+        </Grid>
+    </Frame>
+
+</popup:PopupPage>

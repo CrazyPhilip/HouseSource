@@ -6,19 +6,15 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using HouseSource.Models;
-using HouseSource.ViewModels;
 
 namespace HouseSource.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class HouseDetailPage : ContentPage
+    public partial class RentClientPage : ContentPage
     {
-        public HouseDetailPage(HouseInfo house)
+        public RentClientPage()
         {
             InitializeComponent();
-
-            BindingContext = new HouseDetailViewModel(house);
         }
     }
 }

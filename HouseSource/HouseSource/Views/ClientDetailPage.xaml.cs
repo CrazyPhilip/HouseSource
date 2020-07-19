@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HouseSource.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,19 +7,18 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using HouseSource.Models;
 using HouseSource.ViewModels;
 
 namespace HouseSource.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class HouseDetailPage : ContentPage
+    public partial class ClientDetailPage : ContentPage
     {
-        public HouseDetailPage(HouseInfo house)
+        public ClientDetailPage(ClientItemInfo clientItemInfo)
         {
             InitializeComponent();
 
-            BindingContext = new HouseDetailViewModel(house);
+            BindingContext = new ClientDetailViewModel(clientItemInfo);
         }
     }
 }
