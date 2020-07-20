@@ -1,17 +1,12 @@
-﻿using System;
-
-using Android.App;
+﻿using Android.App;
 using Android.Content.PM;
 using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using Android.OS;
 using CarouselView.FormsPlugin.Android;
 using FFImageLoading.Forms.Platform;
 using Rg.Plugins.Popup;
 using UltimateXF.Droid;
 using Xamarin.Forms;
-using Com.Tencent.MM.Opensdk.Openapi;
 
 namespace HouseSource.Droid
 {
@@ -27,7 +22,7 @@ namespace HouseSource.Droid
             CarouselViewRenderer.Init();    //轮播图
             CachedImageRenderer.Init(true);
             UltimateXFSettup.Initialize(this);
-            Forms.SetFlags("RadioButton_Experimental");
+            Forms.SetFlags( new string[] { "RadioButton_Experimental", "Expander_Experimental" });
 
             base.OnCreate(savedInstanceState);
 

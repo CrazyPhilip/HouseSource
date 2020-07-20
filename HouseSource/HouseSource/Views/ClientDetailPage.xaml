@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              xmlns:views="clr-namespace:HouseSource.Views"
              mc:Ignorable="d"
              x:Class="HouseSource.Views.ClientDetailPage"
@@ -10,71 +11,41 @@
              x:Name="clientDetailPage"
              Title="客源详情">
     
-    <ContentPage.ToolbarItems>
-        <ToolbarItem x:Name="SeeFollowUp" Text="看跟进" Command="{Binding NavigateCommand}" CommandParameter="{x:Type views:SeeFollowUpPage}"/>
-        <ToolbarItem x:Name="WriteFollowUp" Text="写跟进" Command="{Binding NavigateCommand}" CommandParameter="{x:Type views:WriteFollowUpPage}"/>
-    </ContentPage.ToolbarItems>
-
     <ContentPage.Content>
         <StackLayout Orientation="Vertical" Margin="10" BindingContext="{Binding Client}">
-            <StackLayout Orientation="Horizontal">
-                <Image WidthRequest="100" HeightRequest="100" Source="avatar.png"/>
-                <StackLayout Orientation="Vertical">
-                    <StackLayout Orientation="Horizontal">
-                        <Label Text="{Binding CustName}" FontSize='16' TextColor="Black"/>
-                        <Frame WidthRequest="30" HeightRequest="20" CornerRadius="5" VerticalOptions="Center" HorizontalOptions="Start"
+            <Grid RowDefinitions="20,20,20,30" ColumnDefinitions="*,*,*,*">
+                <ff:CachedImage Grid.Row="0" Grid.Column="0" Grid.RowSpan="4" Source="avatar.png"/>
+                <Label Grid.Row="0" Grid.Column="1"  Text="{Binding CustName}" FontSize='16' TextColor="Black"/>
+                <Frame Grid.Row="0" Grid.Column="2"  WidthRequest="30" HeightRequest="20" CornerRadius="5" VerticalOptions="Center" HorizontalOptions="Start"
                                BorderColor="Red" HasShadow="False" Padding="0">
-                            <Label Text="{Binding Trade}" FontSize='12' TextColor="Red" 
+                    <Label Text="{Binding Trade}" FontSize='12' TextColor="Red" 
                                HorizontalOptions="Center" VerticalOptions="Center" 
                                HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
-                        </Frame>
-                    </StackLayout>
+                </Frame>
 
-                    <Label FontSize="14">
-                        <Label.FormattedText>
-                            <FormattedString>
-                                <Span Text="电话："/>
-                                <Span Text="{Binding CustMobile}"/>
-                            </FormattedString>
-                        </Label.FormattedText>
-                    </Label>
-                    <Label FontSize="14">
-                        <Label.FormattedText>
-                            <FormattedString>
-                                <Span Text="编号："/>
-                                <Span Text="{Binding InquiryNo}"/>
-                            </FormattedString>
-                        </Label.FormattedText>
-                    </Label>
+                <Label Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" FontSize="14" Text="{Binding CustMobile,StringFormat='电话：{0}'}"/>
 
-                    <Button x:Name="CallButton" Text="联系客户" WidthRequest="100" HeightRequest="40" CornerRadius="20" TextColor="White"
-                            BackgroundColor="{DynamicResource MainColor}" HorizontalOptions="Start"/>
-                </StackLayout>
-            </StackLayout>
+                <Label Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" FontSize="14" Text="{Binding InquiryNo,StringFormat='编号：{0}'}"/>
+
+                <Button Grid.Row="3" Grid.Column="1" Text="联系客户" Padding="0" CornerRadius="15" TextColor="White" BackgroundColor="{DynamicResource MainColor}"/>
+                <Button Grid.Row="3" Grid.Column="2" Text="看跟进" Padding="0" CornerRadius="15" TextColor="White" 
+                        Command="{Binding BindingContext.NavigateCommand, Source={x:Reference clientDetailPage}}" CommandParameter="{x:Type views:SeeFollowUpPage}"
+                        BackgroundColor="{DynamicResource MainColor}"/>
+                <Button Grid.Row="3" Grid.Column="3" Text="写跟进" Padding="0" CornerRadius="15" TextColor="White" 
+                        Command="{Binding BindingContext.NavigateCommand, Source={x:Reference clientDetailPage}}" CommandParameter="{x:Type views:WriteFollowUpPage}"
+                        BackgroundColor="{DynamicResource MainColor}"/>
+            </Grid>
 
             <Label Text="客户需求" FontSize="16" TextColor="Black"/>
             <BoxView Color="LightGray" HeightRequest="1" HorizontalOptions="Fill"/>
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1*"/>
-                    <ColumnDefinition Width="3*"/>
-                    <ColumnDefinition Width="1*"/>
-                    <ColumnDefinition Width="3*"/>
-                </Grid.ColumnDefinitions>
+            <Grid RowDefinitions="*,*,*,*" ColumnDefinitions="*,*">
 
-                <Label Grid.Row="0" Grid.Column="0" Text="付佣：" FontSize="14"/>
-                <Label Grid.Row="0" Grid.Column="1" Text="{Binding PropertyCommission}" FontSize="14" TextColor="Black"/>
+                <Label Grid.Row="0" Grid.Column="0" Text="{Binding PropertyCommission,StringFormat='付佣：{0}'}" FontSize="14" TextColor="Black"/>
 
-                <Label Grid.Row="0" Grid.Column="2" Text="价格：" FontSize="14"/>
-                <Label Grid.Row="0" Grid.Column="3" FontSize="14" TextColor="Black">
+                <Label Grid.Row="0" Grid.Column="1" FontSize="14" TextColor="Black">
                     <Label.FormattedText>
                         <FormattedString>
+                            <Span Text="价格："/>
                             <Span Text="{Binding PriceMin}"/>
                             <Span Text="~"/>
                             <Span Text="{Binding PriceMax}"/>
@@ -83,10 +54,10 @@
                     </Label.FormattedText>
                 </Label>
 
-                <Label Grid.Row="1" Grid.Column="0" Text="房型：" FontSize="14"/>
-                <Label Grid.Row="1" Grid.Column="1" FontSize="14" TextColor="Black">
+                <Label Grid.Row="1" Grid.Column="0" FontSize="14" TextColor="Black">
                     <Label.FormattedText>
                         <FormattedString>
+                            <Span Text="房型："/>
                             <Span Text="{Binding CountF}"/>
                             <Span Text="室"/>
                             <Span Text="{Binding CountT}"/>
@@ -99,13 +70,12 @@
                     </Label.FormattedText>
                 </Label>
 
-                <Label Grid.Row="1" Grid.Column="2" Text="状态：" FontSize="14"/>
-                <Label Grid.Row="1" Grid.Column="3" Text="{Binding Status}" FontSize="14" TextColor="Black"/>
+                <Label Grid.Row="1" Grid.Column="1" Text="{Binding Status,StringFormat='状态：{0}'}" FontSize="14" TextColor="Black"/>
 
-                <Label Grid.Row="2" Grid.Column="0" Text="面积：" FontSize="14"/>
-                <Label Grid.Row="2" Grid.Column="1" FontSize="14" TextColor="Black">
+                <Label Grid.Row="2" Grid.Column="0" FontSize="14" TextColor="Black">
                     <Label.FormattedText>
                         <FormattedString>
+                            <Span Text="面积："/>
                             <Span Text="{Binding SquareMin}"/>
                             <Span Text="~"/>
                             <Span Text="{Binding SquareMax}"/>
@@ -114,36 +84,19 @@
                     </Label.FormattedText>
                 </Label>
 
-                <Label Grid.Row="2" Grid.Column="2" Text="类型：" FontSize="14"/>
-                <Label Grid.Row="2" Grid.Column="3" Text="{Binding PropertyType}" FontSize="14" TextColor="Black"/>
+                <Label Grid.Row="2" Grid.Column="1" Text="{Binding PropertyType,StringFormat='类型：{0}'}" FontSize="14" TextColor="Black"/>
 
-                <Label Grid.Row="3" Grid.Column="0" Text="用途：" FontSize="14"/>
-                <Label Grid.Row="3" Grid.Column="1" Text="{Binding PropertyUsage}" FontSize="14" TextColor="Black"/>
+                <Label Grid.Row="3" Grid.Column="0" Text="{Binding PropertyUsage,StringFormat='用途：{0}'}" FontSize="14" TextColor="Black"/>
 
-                <Label Grid.Row="3" Grid.Column="2" Text="位置：" FontSize="14"/>
-                <Label Grid.Row="3" Grid.Column="3" Text="{Binding Position}" FontSize="14" TextColor="Black"/>
+                <Label Grid.Row="3" Grid.Column="1" Text="{Binding Position,StringFormat='位置：{0}'}" FontSize="14" TextColor="Black"/>
 
             </Grid>
 
             <Label Text="其他" FontSize="16" TextColor="Black"/>
             <BoxView Color="LightGray" HeightRequest="1" HorizontalOptions="Fill"/>
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1*"/>
-                    <ColumnDefinition Width="3*"/>
-                    <ColumnDefinition Width="1*"/>
-                    <ColumnDefinition Width="3*"/>
-                </Grid.ColumnDefinitions>
-
-                <Label Grid.Row="0" Grid.Column="0" Text="来源：" FontSize="14"/>
-                <Label Grid.Row="0" Grid.Column="1" Text="{Binding InquirySource}" FontSize="14" TextColor="Black"/>
-
-                <Label Grid.Row="0" Grid.Column="2" Text="员工：" FontSize="14"/>
-                <Label Grid.Row="0" Grid.Column="3" Text="{Binding RegPerson}" FontSize="14" TextColor="Black"/>
-
+            <Grid ColumnDefinitions="*,*">
+                <Label Grid.Row="0" Grid.Column="0" Text="{Binding InquirySource,StringFormat='来源：{0}'}" FontSize="14" TextColor="Black"/>
+                <Label Grid.Row="0" Grid.Column="1" Text="{Binding RegPerson,StringFormat='员工：{0}'}" FontSize="14" TextColor="Black"/>
             </Grid>
 
             <Label Text="备注" FontSize="16" TextColor="Black"/>

@@ -6,15 +6,18 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using HouseSource.ViewModels;
 
 namespace HouseSource.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class SeeFollowUpPage : ContentPage
     {
-        public SeeFollowUpPage()
+        public SeeFollowUpPage(string inquiryID)
         {
             InitializeComponent();
+
+            BindingContext = new SeeFollowViewModel(inquiryID);
         }
     }
 }

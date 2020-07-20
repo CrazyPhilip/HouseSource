@@ -6,15 +6,18 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using HouseSource.ViewModels;
 
 namespace HouseSource.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class WriteFollowUpPage : ContentPage
     {
-        public WriteFollowUpPage()
+        public WriteFollowUpPage(string inquiryID)
         {
             InitializeComponent();
+
+            BindingContext = new WriteFollowViewModel(inquiryID);
         }
     }
 }

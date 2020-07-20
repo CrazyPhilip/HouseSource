@@ -4,12 +4,19 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             x:Class="HouseSource.Views.WriteFollowUpPage">
+             x:Class="HouseSource.Views.WriteFollowUpPage"
+             Title="写跟进">
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
+        <Grid RowDefinitions="40,200,40" ColumnDefinitions="*,*" Padding="10,0">
+            <Label Grid.Row="0" Grid.Column="0" Text="跟进方式：" VerticalOptions="Center"/>
+            <Picker Grid.Row="0" Grid.Column="1" ItemsSource="{Binding FollowTypeList}" SelectedItem="{Binding FollowType}"/>
+
+            <Frame Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" CornerRadius="5">
+                <Editor Text="{Binding Content}" />
+            </Frame>
+            
+            <Button Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Text="提交" Command="{Binding CommitCommand}" TextColor="White" Padding="0"
+                    HorizontalOptions="Center" VerticalOptions="Center" HeightRequest="30" CornerRadius="15" BackgroundColor="{DynamicResource MainColor}"/>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

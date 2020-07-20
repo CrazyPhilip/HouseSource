@@ -4,12 +4,34 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             x:Class="HouseSource.Views.SeeFollowUpPage">
+             x:Class="HouseSource.Views.SeeFollowUpPage"
+             Title="跟进信息">
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+        <StackLayout BindableLayout.ItemsSource="{Binding InquiryFollowInfoList}" Padding="10,0">
+            <BindableLayout.ItemTemplate>
+                <DataTemplate>
+                    <Expander>
+                        <Expander.Header>
+                            <Frame CornerRadius="5" BackgroundColor="{DynamicResource ControlBackgroundColor}" HasShadow="False">
+                                <StackLayout Orientation="Horizontal">
+                                    <Label Text="{Binding Content}" FontAttributes="Bold" TextColor="Black" FontSize="14" HorizontalOptions="StartAndExpand"/>
+                                    <Label Text="{Binding FollowDate}" FontSize="14"/>
+                                </StackLayout>
+                                
+                            </Frame>
+                        </Expander.Header>
+                        <Frame CornerRadius="5" BackgroundColor="{DynamicResource ControlBackgroundColor}" HasShadow="False">
+                            <StackLayout Orientation="Vertical" Spacing="0">
+                                <Label Text="{Binding FollowType,StringFormat='类型：{0}'}"/>
+                                <Label Text="{Binding Content,StringFormat='内容：{0}'}" LineBreakMode="WordWrap"/>
+                                <Label Text="{Binding EmpName,StringFormat='跟进人：{0}'}"/>
+                                <Label Text="{Binding DeptName,StringFormat='跟进部门：{0}'}"/>
+                                <Label Text="{Binding FollowDate,StringFormat='跟进时间：{0}'}"/>
+                            </StackLayout>
+                        </Frame>
+                    </Expander>
+                </DataTemplate>
+            </BindableLayout.ItemTemplate>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

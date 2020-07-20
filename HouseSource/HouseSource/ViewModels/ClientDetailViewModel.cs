@@ -15,18 +15,18 @@ namespace HouseSource.ViewModels
             set { SetProperty(ref client, value); }
         }
 
-        public Command<string> NavigateCommand { get; set; }
+        public Command<Type> NavigateCommand { get; set; }
 
         public ClientDetailViewModel(ClientItemInfo clientItemInfo)
         {
             Client = clientItemInfo;
 
-            NavigateCommand = new Command<string>((p) =>
+            NavigateCommand = new Command<Type>(async (pageName) =>
             {
-                Type type = Type.GetType(p);
-                Page page = (Page)Activator.CreateInstance(type);
-                Application.Current.MainPage.Navigation.PushAsync(page);
-            }, (p) => { return true; });
+                //Type type = Type.GetType(pageName);
+                Page page = (Page)Activator.CreateInstance(pageName, Client.InquiryID);
+                await Application.Current.MainPage.Navigation.PushAsync(page);
+            }, (pageName) => { return true; });
         }
     }
 }

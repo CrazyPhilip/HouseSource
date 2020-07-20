@@ -287,6 +287,38 @@ namespace HouseSource.Services
             ClientRD clientRD = JsonConvert.DeserializeObject<ClientRD>(content);
             return clientRD;
         }
+
+        /// <summary>
+        /// 获取跟进信息
+        /// </summary>
+        /// <param name="inquiryID"></param>
+        /// <returns></returns>
+        public static async Task<InquiryFollowRD> GetInquiryFollowInfo(string inquiryID)
+        {
+            string url = "GetInquiryFollowInfo?DBName=cd&InquiryID=" + inquiryID;
+
+            string content = await RestSharpHelper<string>.GetAsyncWithoutDeserialization(url);
+            content = GetSubString(content, "{", "}");
+            InquiryFollowRD inquiryFollowRD = JsonConvert.DeserializeObject<InquiryFollowRD>(content);
+            return inquiryFollowRD;
+        }
+
+        /// <summary>
+        /// 新增跟进信息
+        /// </summary>
+        /// <param name="inquiryID"></param>
+        /// <returns></returns>
+        public static async Task<string> NewInquiryFollow(string inquiryID, string _content, string type)
+        {
+            string url = "NewInquiryFollow?DBName=cd&InquiryID=" + inquiryID
+                + "&EmpNo=" + GlobalVariables.LoggedUser.EmpNo
+                + "&Content=" + _content
+                + "&FollowType=" + type;
+
+            string content = await RestSharpHelper<string>.GetAsyncWithoutDeserialization(url);
+            content = GetSubString(content, "{", "}");
+            return content;
+        }
         #endregion
 
         /// <summary>

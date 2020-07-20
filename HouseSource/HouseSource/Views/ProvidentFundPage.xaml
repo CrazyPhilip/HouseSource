@@ -9,7 +9,7 @@
              mc:Ignorable="d"
              x:Class="HouseSource.Views.ProvidentFundPage"
              x:Name="providentFundPage"
-            BackgroundColor="{DynamicResource PageBackgroundColor}"
+             BackgroundColor="{DynamicResource PageBackgroundColor}"
              Title="公积金贷款">
 
     <ContentPage.BindingContext>
