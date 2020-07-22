@@ -7,6 +7,10 @@ using HouseSource.Models;
 using HouseSource.Utils;
 using HouseSource.Themes;
 using HouseSource.Views;
+using Plugin.Toast;
+using Plugin.Toast.Abstractions;
+using HouseSource.Services;
+using Newtonsoft.Json.Linq;
 
 namespace HouseSource.ViewModels
 {
@@ -53,7 +57,7 @@ namespace HouseSource.ViewModels
                     //业务办理
                     case "Business":
                         {
-
+                            ToBusiness();
                         }
                         break;
 
@@ -97,6 +101,39 @@ namespace HouseSource.ViewModels
             }, (pageName) => { return true; });
 
 
+        }
+
+        /// <summary>
+        /// 业务办理
+        /// </summary>
+        private async void ToBusiness()
+        {
+            try
+            {
+                if (!Tools.IsNetConnective())
+                {
+                    CrossToastPopUp.Current.ShowToastError("无网络连接，请检查网络。", ToastLength.Short);
+                    return;
+                }
+
+                string content = await RestSharpService.GetBusinessHand();
+                if (string.IsNullOrWhiteSpace(content))
+                {
+                    CrossToastPopUp.Current.ShowToastError("服务器出错", ToastLength.Short);
+                    return;
+                }
+                else
+                {
+                    JObject jObject = JObject.Parse(content);
+                    WebPage webPage = new WebPage(jObject["ShareUrl"].ToString(), "业务办理");
+                    await Application.Current.MainPage.Navigation.PushAsync(webPage);
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         /// <summary>

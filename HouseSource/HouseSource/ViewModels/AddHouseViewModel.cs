@@ -68,6 +68,8 @@ namespace HouseSource.ViewModels
 
         public AddHouseViewModel()
         {
+
+
             AddCommand = new Command(() =>
             {
 
@@ -77,7 +79,6 @@ namespace HouseSource.ViewModels
             {
 
             }, () => { return true; });
-
 
         }
     }

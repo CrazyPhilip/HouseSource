@@ -22,7 +22,19 @@
             <ScrollView Grid.Row="0">
                 <StackLayout Orientation="Vertical">
                     <!--图片集-->
-                    <ff:CachedImage HeightRequest="200" Source="{Binding House.PhotoUrl}"/>
+                    <CarouselView ItemsSource="{Binding PhotoList}" HeightRequest="250">
+                        <CarouselView.ItemTemplate>
+                            <DataTemplate>
+                                <ff:CachedImage Source="{Binding .}" BackgroundColor="Transparent" Aspect="AspectFit">
+                                    <ff:CachedImage.GestureRecognizers>
+                                        <TapGestureRecognizer NumberOfTapsRequired="1"
+                                                              Command="{Binding Path=BindingContext.CarouselTappedCommand, Source={x:Reference Name=houseDetailPage}}"
+                                                              CommandParameter="{Binding .}"/>
+                                    </ff:CachedImage.GestureRecognizers>
+                                </ff:CachedImage>
+                            </DataTemplate>
+                        </CarouselView.ItemTemplate>
+                    </CarouselView>
 
                     <!--简要信息，原app的Card-->
                     <Frame BorderColor="LightGray" HasShadow="True" CornerRadius="10" Margin="10,5" Padding="10">

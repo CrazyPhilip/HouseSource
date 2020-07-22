@@ -1,19 +1,24 @@
-﻿using HouseSource.ViewModels;
-using Rg.Plugins.Popup.Pages;
+﻿using Rg.Plugins.Popup.Pages;
 using Rg.Plugins.Popup.Services;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace HouseSource.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class ShareView : PopupPage
+    public partial class PhotoView : PopupPage
     {
-        public ShareView(string propertyID)
+        public PhotoView(string source)
         {
             InitializeComponent();
 
-            BindingContext = new ShareViewModel(propertyID);
+            cacheImage.Source = source;
         }
 
         private void OnClose(object sender, EventArgs e)

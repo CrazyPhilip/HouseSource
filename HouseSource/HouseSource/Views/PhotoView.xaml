@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<popup:PopupPage xmlns:popup="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup" 
+                 xmlns="http://xamarin.com/schemas/2014/forms"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                 xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+                 xmlns:controls="clr-namespace:HouseSource.Controls"
+                 mc:Ignorable="d"
+                 x:Class="HouseSource.Views.PhotoView">
+
+    <popup:PopupPage.Animation>
+        <controls:UserAnimation/>
+    </popup:PopupPage.Animation>
+
+    <Grid>
+        <controls:PinchToZoomContainer>
+            <controls:PinchToZoomContainer.Content>
+                <ff:CachedImage x:Name="cacheImage"/>
+            </controls:PinchToZoomContainer.Content>
+        </controls:PinchToZoomContainer>
+        <Button Text="关闭" BackgroundColor="Transparent" TextColor="White" HorizontalOptions="End" VerticalOptions="Start" Clicked="OnClose"/>
+    </Grid>
+</popup:PopupPage>

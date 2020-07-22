@@ -16,7 +16,7 @@
             </Frame>
             
             <Button Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Text="提交" Command="{Binding CommitCommand}" TextColor="White" Padding="0"
-                    HorizontalOptions="Center" VerticalOptions="Center" HeightRequest="30" CornerRadius="15" BackgroundColor="{DynamicResource MainColor}"/>
+                    HorizontalOptions="Center" HeightRequest="40" CornerRadius="20" BackgroundColor="{DynamicResource MainColor}"/>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

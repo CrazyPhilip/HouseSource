@@ -27,7 +27,9 @@
 
                 <Label Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" FontSize="14" Text="{Binding InquiryNo,StringFormat='编号：{0}'}"/>
 
-                <Button Grid.Row="3" Grid.Column="1" Text="联系客户" Padding="0" CornerRadius="15" TextColor="White" BackgroundColor="{DynamicResource MainColor}"/>
+                <Button Grid.Row="3" Grid.Column="1" Text="联系客户" Padding="0" CornerRadius="15" TextColor="White" 
+                        Command="{Binding BindingContext.CallCommand, Source={x:Reference clientDetailPage}}" 
+                        BackgroundColor="{DynamicResource MainColor}"/>
                 <Button Grid.Row="3" Grid.Column="2" Text="看跟进" Padding="0" CornerRadius="15" TextColor="White" 
                         Command="{Binding BindingContext.NavigateCommand, Source={x:Reference clientDetailPage}}" CommandParameter="{x:Type views:SeeFollowUpPage}"
                         BackgroundColor="{DynamicResource MainColor}"/>

@@ -75,7 +75,6 @@ namespace HouseSource.Services
         }
         #endregion
 
-
         #region 房产数据
 
         /// <summary>
@@ -181,6 +180,27 @@ namespace HouseSource.Services
             string content = await RestSharpHelper<string>.GetAsyncWithoutDeserialization(url);
             content = GetSubString(content, "{", "}");
             return content;
+        }
+
+        /// <summary>
+        /// 获取房源图片列表
+        /// </summary>
+        /// <param name="propertyID">房源编号</param>
+        /// <returns></returns>
+        public static async Task<string> GetPhotosByPropertyID(string propertyID)
+        {
+            string url = "GetPhotoUrlByPropertyID?DBName=cd&PropertyID=" + propertyID;
+
+            string content = await RestSharpHelper<string>.GetAsyncWithoutDeserialization(url);
+            if (!content.Contains("EmptyList"))
+            {
+                content = GetSubString(content, "{", "}");
+                return content;
+            }
+            else
+            {
+                return "EmptyList";
+            }
         }
         #endregion
 
@@ -320,6 +340,18 @@ namespace HouseSource.Services
             return content;
         }
         #endregion
+
+        /// <summary>
+        /// 获取办理业务的链接
+        /// </summary>
+        /// <returns></returns>
+        public static async Task<string> GetBusinessHand()
+        {
+            string url = "BusinessHand?DBName=cd&EmpID=" + GlobalVariables.LoggedUser.EmpID;
+
+            string content = await RestSharpHelper<string>.GetAsyncWithoutDeserialization(url);
+            return GetSubString(content, "{", "}");
+        }
 
         /// <summary>
         /// 截取字符串，处理网站返回值

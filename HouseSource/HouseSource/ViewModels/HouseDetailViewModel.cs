@@ -22,6 +22,13 @@ namespace HouseSource.ViewModels
             set { SetProperty(ref house, value); }
         }
 
+        private List<string> photoList;   //Comment
+        public List<string> PhotoList
+        {
+            get { return photoList; }
+            set { SetProperty(ref photoList, value); }
+        }
+
         private string houseTitle;   //Comment
         public string HouseTitle
         {
@@ -46,6 +53,7 @@ namespace HouseSource.ViewModels
         public Command ShareCommand { get; set; }
         public Command CollectCommand { get; set; }
         public Command CallCommand { get; set; }
+        public Command<string> CarouselTappedCommand { get; set; }
 
         public HouseDetailViewModel(HouseInfo houseInfo)
         {
@@ -54,6 +62,8 @@ namespace HouseSource.ViewModels
             House.PhotoUrl = string.IsNullOrWhiteSpace(House.PhotoUrl) ? "NullPic.jpg" : House.PhotoUrl;
 
             CheckCollected();
+
+            GetPhotos();
 
             ShareCommand = new Command(() =>
             {
@@ -130,6 +140,39 @@ namespace HouseSource.ViewModels
                 CollectOrCancel();
             }, () => { return true; });
 
+            CarouselTappedCommand = new Command<string>((p) =>
+            {
+                var page = new PhotoView(p);
+                PopupNavigation.Instance.PushAsync(page);
+            }, (p) => { return true; });
+
+        }
+
+        private async void GetPhotos()
+        {
+            try
+            {
+                if (!Tools.IsNetConnective())
+                {
+                    CrossToastPopUp.Current.ShowToastError("无网络连接，请检查网络。", ToastLength.Short);
+                    return;
+                }
+
+                string content = await RestSharpService.GetPhotosByPropertyID(House.PropertyID);
+                if (content == "EmptyList")
+                {
+                    PhotoList = new List<string> { "NullPic.jpg" };
+                }
+                else
+                {
+                    string[] array = content.TrimStart('{').TrimEnd('}').Split(',');
+                    PhotoList = new List<string>(array);
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         /// <summary>

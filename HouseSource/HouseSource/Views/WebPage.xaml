@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
+             xmlns:controls="clr-namespace:HouseSource.Controls"
+             mc:Ignorable="d"
+             x:Class="HouseSource.Views.WebPage">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Button">
+                <Setter Property="FontFamily" Value="{StaticResource font}"/>
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="HorizontalOptions" Value="Center"/>
+                <Setter Property="VerticalOptions" Value="Center"/>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <Grid RowDefinitions="40,*" ColumnDefinitions="*,40,40,40">
+
+            <Label Grid.Row="0" Grid.Column="0" x:Name="urlLabel" LineBreakMode="TailTruncation" VerticalOptions="Center"/>
+            <Button Grid.Row="0" Grid.Column="1" Text="&#xf021;" x:Name="refreshButton" Clicked="refreshButton_Clicked"/>
+            <Button Grid.Row="0" Grid.Column="2" Text="&#xf053;" x:Name="backButton" Clicked="backButton_Clicked"/>
+            <Button Grid.Row="0" Grid.Column="3" Text="&#xf054;" x:Name="forwardButton" Clicked="forwardButton_Clicked"/>
+            
+            <controls:HybridWebView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" x:Name="hybridWebView"
+                                    android:WebView.MixedContentMode="AlwaysAllow"
+                                    android:WebView.EnableZoomControls="true" 
+                                    android:WebView.DisplayZoomControls="False"
+                                    Navigating="hybridWebView_Navigating"
+                                    Navigated="hybridWebView_Navigated"/>
+
+            <IndicatorView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" x:Name="indicatorView"/>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>
