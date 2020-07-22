@@ -33,6 +33,13 @@ namespace HouseSource.ViewModels
             set { SetProperty(ref optionList, value); }
         }
 
+        private string searchContent;   //Comment
+        public string SearchContent
+        {
+            get { return searchContent; }
+            set { SetProperty(ref searchContent, value); }
+        }
+
         #region MyRegion
         private ObservableCollection<HouseItemInfo> houseItemList;    //收藏列表
         public ObservableCollection<HouseItemInfo> HouseItemList
@@ -44,9 +51,9 @@ namespace HouseSource.ViewModels
         public List<HouseInfo> houseList { get; set; }    //收藏列表   原始
 
         public Command<string> TappedCommand { get; set; }
-
         #endregion
 
+        public Command SearchCommand { get; set; }
         public Command<string> NavigateCommand { get; set; }    //导航命令事件
 
         public HomeViewModel()
@@ -68,6 +75,12 @@ namespace HouseSource.ViewModels
                 new Option { icon = "add_client.png", option = "新增客源", page = "HouseSource.Views.AddClientPage"}
 
             };
+
+            SearchCommand = new Command(() =>
+            {
+                AllHouseListPage allHouseListPage = new AllHouseListPage(SearchContent);
+                Application.Current.MainPage.Navigation.PushAsync(allHouseListPage);
+            }, () => { return true; });
 
             //导航命令事件
             NavigateCommand = new Command<string>(async (pageName) =>

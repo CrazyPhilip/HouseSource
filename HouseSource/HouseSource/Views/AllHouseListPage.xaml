@@ -12,10 +12,6 @@
              x:Name="allHouseListPage"
              Title="全网房源">
 
-    <ContentPage.BindingContext>
-        <viewModels:AllHouseListViewModel/>
-    </ContentPage.BindingContext>
-
     <ContentPage.Resources>
         <ResourceDictionary>
             <Style x:Key="LabelStyle" TargetType="Label">
@@ -63,9 +59,9 @@
 
                 <!--搜索-->
             <Frame Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" IsClippedToBounds="True" Padding="5" CornerRadius="5" BackgroundColor="LightGray" >
-                <controls:MyEntry Placeholder="输入楼盘名/片区搜索房源" FontSize="14"/>
+                <controls:MyEntry Placeholder="输入楼盘名/片区搜索房源" Text="{Binding SearchContent}" FontSize="14"/>
             </Frame>
-            <ImageButton Grid.Row="1" Grid.Column="4" Source="search.png" BackgroundColor="Transparent" HeightRequest="30" WidthRequest="30" VerticalOptions="CenterAndExpand"/>
+            <ImageButton Grid.Row="1" Grid.Column="4" Source="search.png" BackgroundColor="Transparent" Command="{Binding SearchCommand}"/>
 
             <!--房源列表-->
             <!--

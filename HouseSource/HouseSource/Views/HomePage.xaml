@@ -37,8 +37,11 @@
         <ScrollView>
             <Grid RowSpacing="5" ColumnSpacing="5" Padding="10,0" RowDefinitions="50, 200, 180, 80, 40, Auto" ColumnDefinitions="1*, 1*">
 
-                <Frame Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Style="{DynamicResource BaseFrame}" HeightRequest="40" BorderColor="LightGray" HasShadow="True">
-                    <controls:MyEntry Placeholder="输入楼盘名/片区搜索房源" HorizontalTextAlignment="Center" FontSize="14"/>
+                <Frame Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Style="{DynamicResource BaseFrame}" Padding="10,0" HeightRequest="40" BorderColor="LightGray" HasShadow="True">
+                    <StackLayout Orientation="Horizontal" HorizontalOptions="Fill">
+                        <controls:MyEntry Placeholder="输入楼盘名/片区搜索房源" Text="{Binding SearchContent}" HorizontalTextAlignment="Center" HorizontalOptions="FillAndExpand" FontSize="14"/>
+                        <ImageButton Source="search.png" Command="{Binding SearchCommand}" BackgroundColor="Transparent"/>
+                    </StackLayout>
                 </Frame>
 
                 <CarouselView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"  x:Name="carousel" ItemsSource="{Binding CarouselList}">

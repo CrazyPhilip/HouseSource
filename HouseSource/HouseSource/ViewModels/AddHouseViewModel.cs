@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 using Xamarin.Forms;
+using HouseSource.Models;
+using HouseSource.ResponseData;
+using HouseSource.Views;
 
 namespace HouseSource.ViewModels
 {
@@ -63,13 +66,19 @@ namespace HouseSource.ViewModels
             set { SetProperty(ref propertyTradeList, value); }
         }
 
+        private EstateItemInfo estate;   //Comment
+        public EstateItemInfo Estate
+        {
+            get { return estate; }
+            set { SetProperty(ref estate, value); }
+        }
+
         public Command AddCommand { get; set; }
         public Command ClearCommand { get; set; }
+        public Command ToEstateSelectCommand { get; set; }
 
         public AddHouseViewModel()
         {
-
-
             AddCommand = new Command(() =>
             {
 
@@ -78,6 +87,12 @@ namespace HouseSource.ViewModels
             ClearCommand = new Command(() =>
             {
 
+            }, () => { return true; });
+
+            ToEstateSelectCommand = new Command(async () =>
+            {
+                EstateSelectPage estateSelectPage = new EstateSelectPage();
+                await Application.Current.MainPage.Navigation.PushAsync(estateSelectPage);
             }, () => { return true; });
 
         }

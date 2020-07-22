@@ -27,7 +27,7 @@
     </ContentPage.Resources>
 
     <ContentPage.Content>
-        <Grid RowDefinitions="40,40,*" ColumnDefinitions="*,*,*,*" RowSpacing="0" Padding="10,0">
+        <Grid RowDefinitions="40,40,*" ColumnDefinitions="*,*,*,*" Padding="10,0">
 
             <!--筛选条件-->
             <Label Grid.Row="0" Grid.Column="0" Text="{Binding RoomStyle,StringFormat='{0}&#xf0d7;'}" Style="{DynamicResource LabelStyle}">
@@ -55,9 +55,9 @@
             </Label>
 
             <Frame Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" IsClippedToBounds="True" Padding="5" CornerRadius="5" BackgroundColor="LightGray" >
-                <controls:MyEntry Placeholder="输入客户姓名/手机号搜索客源" FontSize="14"/>
+                <controls:MyEntry Placeholder="输入客户姓名/手机号搜索客源" Text="{Binding SearchContent}" FontSize="14"/>
             </Frame>
-            <ImageButton Grid.Row="1" Grid.Column="3" Source="search.png" BackgroundColor="Transparent" HeightRequest="30" WidthRequest="30" VerticalOptions="CenterAndExpand"/>
+            <ImageButton Grid.Row="1" Grid.Column="3" Source="search.png" BackgroundColor="Transparent" VerticalOptions="CenterAndExpand" Command="{Binding SearchCommand}"/>
 
             <ScrollView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" Orientation="Vertical">
                 <StackLayout Orientation="Vertical">

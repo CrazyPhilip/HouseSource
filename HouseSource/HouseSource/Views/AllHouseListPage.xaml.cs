@@ -17,6 +17,14 @@ namespace HouseSource.Views
         {
             InitializeComponent();
 
+            BindingContext = new AllHouseListViewModel("");
+        }
+
+        public AllHouseListPage(string searchContent = "")
+        {
+            InitializeComponent();
+
+            BindingContext = new AllHouseListViewModel(searchContent);
         }
     }
 }

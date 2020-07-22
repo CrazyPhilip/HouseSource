@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controls="clr-namespace:HouseSource.Controls"
+             xmlns:viewModels="clr-namespace:HouseSource.ViewModels"
+             mc:Ignorable="d"
+             x:Class="HouseSource.Views.EstateSelectPage"
+             BackgroundColor="{DynamicResource PageBackgroundColor}"
+             x:Name="estateSelectPage"
+             Title="搜索小区">
+
+    <ContentPage.BindingContext>
+        <viewModels:EstateSelectViewModel/>
+    </ContentPage.BindingContext>
+    
+    <ContentPage.Content>
+        <Grid RowDefinitions="40,*" ColumnDefinitions="3*,1*" Padding="5,0">
+            <Frame Grid.Row="0" Grid.Column="0" BorderColor="LightGray" HasShadow="True" Padding="5">
+                <controls:MyEntry Placeholder="请输入楼盘名" Text="{Binding SearchContent}" FontSize="14"/>
+            </Frame>
+            <ImageButton Grid.Row="0" Grid.Column="1" Source="search.png" BackgroundColor="Transparent" Command="{Binding SearchCommand}"/>
+
+            <RefreshView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" IsRefreshing="{Binding IsRefreshing}" Command="{Binding SearchCommand}">
+                <CollectionView ItemsSource="{Binding EstateList}" EmptyView="没有找到符合条件的结果" SelectionMode="None">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Vertical" ItemSpacing="5"/>
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame CornerRadius="5" BackgroundColor="{DynamicResource ControlBackgroundColor}" HasShadow="False">
+                                <StackLayout Orientation="Horizontal">
+                                    <Label Text="{Binding EstateName}" FontAttributes="Bold" TextColor="Black" FontSize="14" HorizontalOptions="StartAndExpand"/>
+                                    <Label>
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding CityName}"/>
+                                                <Span Text="-"/>
+                                                <Span Text="{Binding DistrictName}"/>
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                </StackLayout>
+
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer NumberOfTapsRequired="1"
+                                                          Command="{Binding BindingContext.SelectCommand, Source={x:Reference estateSelectPage}}"
+                                                          CommandParameter="{Binding .}"/>
+                                </Frame.GestureRecognizers>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </RefreshView>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

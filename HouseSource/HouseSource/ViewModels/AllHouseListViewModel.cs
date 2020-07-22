@@ -112,20 +112,25 @@ namespace HouseSource.ViewModels
             set { SetProperty(ref isRefreshing, value); }
         }
 
-        public Command RefreshCommand { get; set; }
+        private string searchContent;   //Comment
+        public string SearchContent
+        {
+            get { return searchContent; }
+            set { SetProperty(ref searchContent, value); }
+        }
+
+        public Command SearchCommand { get; set; }
         public Command<string> SortCommand { get; set; }
         public Command<string> TappedCommand { get; set; }
 
-        public AllHouseListViewModel()
+        public AllHouseListViewModel(string search)
         {
+            SearchContent = search;
+
             SortTypeList = new [] { "出售", "出租" };
-
             DistrictList = new [] { "全部区域", "青白江区", "郫都区", "金牛区", "成华区", "高新西区", "武侯区", "锦江区", "高新区", "天府新区", "温江区", "新都区", "青羊区", "双流区", "龙泉驿区" };
-
             RoomStyleList = new [] { "全部房型", "1房", "2房", "3房", "4房及以上" };
-
             SalePriceList = new [] { "全部价格", "0-30万", "30-50万", "50-100万", "100-150万", "150-200万", "200-300万", "300-500万", "500万以上" };
-
             SquareList = new [] { "全部面积", "0-20平", "20-50平", "50-100平", "100-150平", "150-200平", "200-250平", "250-500平", "500-800平", "800平以上" };
 
             //UsageList = new List<string> { "全部用途", "住宅", "商住", "商铺", "网店", "写字楼", "厂房", "写厂", "铺厂", "仓库", "地皮", "车位", "其他" };
@@ -137,8 +142,11 @@ namespace HouseSource.ViewModels
             SalePrice = SalePriceList[0];
             Square = SquareList[0];
 
+            HouseItemList = new ObservableCollection<HouseItemInfo>();
             saleHouseItemList = new List<HouseItemInfo>();
             rentHouseItemList = new List<HouseItemInfo>();
+            saleHouseList = new List<HouseInfo>();
+            rentHouseList = new List<HouseInfo>();
 
             SaleHousePara = new HousePara
             {
@@ -156,11 +164,6 @@ namespace HouseSource.ViewModels
                 MaxPrice = ""
             };
 
-            RefreshCommand = new Command(() =>
-            {
-
-            }, () => { return true; });
-
             SortCommand = new Command<string>(async (t) =>
             {
                 switch (t)
@@ -175,7 +178,7 @@ namespace HouseSource.ViewModels
                             {
                                 if (saleHouseItemList.Count == 0)
                                 {
-                                    InitHouseListPage();
+                                    GetHouseList();
                                 }
                                 else
                                 {
@@ -187,7 +190,7 @@ namespace HouseSource.ViewModels
                             {
                                 if (rentHouseItemList.Count == 0)
                                 {
-                                    InitHouseListPage();
+                                    GetHouseList();
                                 }
                                 else
                                 {
@@ -203,6 +206,8 @@ namespace HouseSource.ViewModels
                         {
                             string result = await Application.Current.MainPage.DisplayActionSheet("区域", "取消", null, DistrictList);
                             District = result == null || result == "取消" ? District : result;
+                            SaleHousePara.DistrictName = District == "全部区域" ? "区域" : District.TrimEnd('区');
+                            GetHouseList();
                         }
                         break;
 
@@ -211,6 +216,8 @@ namespace HouseSource.ViewModels
                         {
                             string result = await Application.Current.MainPage.DisplayActionSheet("区域", "取消", null, RoomStyleList);
                             RoomStyle = result == null || result == "取消" ? RoomStyle : result;
+                            SaleHousePara.CountF = RoomStyle == "全部房型" ? "房型" : RoomStyle;
+                            GetHouseList();
                         }
                         break;
 
@@ -219,6 +226,8 @@ namespace HouseSource.ViewModels
                         {
                             string result = await Application.Current.MainPage.DisplayActionSheet("价格", "取消", null, SalePriceList);
                             SalePrice = result == null || result == "取消" ? SalePrice : result;
+                            SaleHousePara.Price = SalePrice == "全部价格" ? "价格" : SalePrice;
+                            GetHouseList();
                         }
                         break;
                         
@@ -227,6 +236,8 @@ namespace HouseSource.ViewModels
                         {
                             string result = await Application.Current.MainPage.DisplayActionSheet("面积", "取消", null, SquareList);
                             Square = result == null || result == "取消" ? Square : result;
+                            SaleHousePara.Square = Square == "全部面积" ? "面积" : Square;
+                            GetHouseList();
                         }
                         break;
 
@@ -234,6 +245,11 @@ namespace HouseSource.ViewModels
                         break;
                 }
             }, (t) => { return true; });
+
+            SearchCommand = new Command(() =>
+            {
+                GetHouseList();
+            }, () => { return true; });
 
             TappedCommand = new Command<string>((h) =>
             {
@@ -261,23 +277,23 @@ namespace HouseSource.ViewModels
                 }
             }, (h) => { return true; });
 
-            InitHouseListPage();
+            GetHouseList();
         }
 
         /// <summary>
-        /// 初始化首页
+        /// 
         /// </summary>
-        private async void InitHouseListPage()
+        private async void GetHouseList()
         {
             try
             {
-                
                 if (!Tools.IsNetConnective())
                 {
                     CrossToastPopUp.Current.ShowToastError("无网络连接，请检查网络。", ToastLength.Short);
                     return;
                 }
 
+                SaleHousePara.SearchContent = SearchContent;
                 HouseRD houseRD = await RestSharpService.GetHouseAsync(SaleHousePara, SortType);
 
                 List<HouseItemInfo> list = new List<HouseItemInfo>();
@@ -317,15 +333,23 @@ namespace HouseSource.ViewModels
 
                     if (SortType == "出售")
                     {
-                        saleHouseList = new List<HouseInfo>(houseRD.Buildings);
-                        saleHouseItemList = list;
-                        HouseItemList = new ObservableCollection<HouseItemInfo>(saleHouseItemList);
+                        saleHouseList.Clear();
+                        saleHouseItemList.Clear();
+                        HouseItemList.Clear();
+
+                        saleHouseList.AddRange(houseRD.Buildings);
+                        saleHouseItemList.AddRange(list);
+                        saleHouseItemList.ForEach(item => { HouseItemList.Add(item); });
                     }
                     else
                     {
-                        rentHouseList = new List<HouseInfo>(houseRD.Buildings);
-                        rentHouseItemList = list;
-                        HouseItemList = new ObservableCollection<HouseItemInfo>(rentHouseItemList);
+                        rentHouseList.Clear();
+                        rentHouseItemList.Clear();
+                        HouseItemList.Clear();
+
+                        rentHouseList.AddRange(houseRD.Buildings);
+                        rentHouseItemList.AddRange(list);
+                        rentHouseItemList.ForEach(item => { HouseItemList.Add(item); });
                     }
                 }
             }

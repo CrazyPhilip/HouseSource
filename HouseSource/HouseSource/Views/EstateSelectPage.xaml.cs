@@ -10,12 +10,11 @@ using Xamarin.Forms.Xaml;
 namespace HouseSource.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class AddHousePage : ContentPage
+    public partial class EstateSelectPage : ContentPage
     {
-        public AddHousePage()
+        public EstateSelectPage()
         {
             InitializeComponent();
         }
-
     }
 }

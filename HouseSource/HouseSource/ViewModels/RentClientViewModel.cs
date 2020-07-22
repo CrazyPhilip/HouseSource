@@ -59,27 +59,22 @@ namespace HouseSource.ViewModels
 			set { SetProperty(ref square, value); }
 		}
 
-		ClientPara clientPara = new ClientPara
+		private string searchContent;   //Comment
+		public string SearchContent
 		{
-			RoomStyle = "房型",
-			IsPublic = "类型",
-			Floor = "楼层",
-			Square = "面积",
-			Price = "价格",
-			CusName = "",
-			Phone = "",
-			Contact = "",
-			SearchContent = "",
-			Page = "",
-			EmpID = ""
-		};
+			get { return searchContent; }
+			set { SetProperty(ref searchContent, value); }
+		}
 
+		public ClientPara clientPara { get; set; }
+
+		public Command SearchCommand { get; set; }
 		public Command SortCommand { get; set; }
 		public Command<string> TappedCommand { get; set; }
 
 		public RentClientViewModel()
 		{
-			FloorList = new[] { "楼层（全部）", "0-10楼", "10-20楼", "20-30楼", "30楼以上" };
+			FloorList = new[] { "全部楼层", "0-10楼", "10-20楼", "20-30楼", "30楼以上" };
 			RoomStyleList = new[] { "全部房型", "1房", "2房", "3房", "4房及以上" };
 			SalePriceList = new[] { "全部价格", "0-30万", "30-50万", "50-100万", "100-150万", "150-200万", "200-300万", "300-500万", "500万以上" };
 			SquareList = new[] { "全部面积", "0-20平", "20-50平", "50-100平", "100-150平", "150-200平", "200-250平", "250-500平", "500-800平", "800平以上" };
@@ -89,7 +84,24 @@ namespace HouseSource.ViewModels
 			SalePrice = SalePriceList[0];
 			Square = SquareList[0];
 
-            SortCommand = new Command<string>(async (t) =>
+			RentClientList = new ObservableCollection<ClientItemInfo>();
+
+			clientPara = new ClientPara
+			{
+				RoomStyle = "房型",
+				IsPublic = "类型",
+				Floor = "楼层",
+				Square = "面积",
+				Price = "价格",
+				CusName = "",
+				Phone = "",
+				Contact = "",
+				SearchContent = SearchContent,
+				Page = "",
+				EmpID = ""
+			};
+
+			SortCommand = new Command<string>(async (t) =>
             {
                 switch (t)
                 {
@@ -98,6 +110,8 @@ namespace HouseSource.ViewModels
                         {
 							string result = await Application.Current.MainPage.DisplayActionSheet("房型", "取消", null, RoomStyleList);
 							RoomStyle = result == null || result == "取消" ? RoomStyle : result;
+							clientPara.RoomStyle = RoomStyle == "全部房型" ? "房型" : RoomStyle;
+							GetClientList();
 						}
                         break;
 
@@ -106,14 +120,18 @@ namespace HouseSource.ViewModels
                         {
                             string result = await Application.Current.MainPage.DisplayActionSheet("楼层", "取消", null, FloorList);
                             Floor = result == null || result == "取消" ? Floor : result;
-                        }
+							clientPara.Floor = Floor == "全部楼层" ? "楼层" : Floor;
+							GetClientList();
+						}
                         break;
 
                     //面积
                     case "2":
                         {
-                            string result = await Application.Current.MainPage.DisplayActionSheet("面积", "取消", null, RoomStyleList);
-                            RoomStyle = result == null || result == "取消" ? RoomStyle : result;
+                            string result = await Application.Current.MainPage.DisplayActionSheet("面积", "取消", null, SquareList);
+                            Square = result == null || result == "取消" ? Square : result;
+							clientPara.Square = Square == "全部面积" ? "面积" : Square;
+							GetClientList();
                         }
                         break;
 
@@ -122,13 +140,21 @@ namespace HouseSource.ViewModels
                         {
                             string result = await Application.Current.MainPage.DisplayActionSheet("价格", "取消", null, SalePriceList);
                             SalePrice = result == null || result == "取消" ? SalePrice : result;
-                        }
+							clientPara.Price = SalePrice == "全部价格" ? "价格" : SalePrice;
+							GetClientList();
+						}
                         break;
 
                     default:
-                        break;
+						GetClientList();
+						break;
                 }
             }, (t) => { return true; });
+
+			SearchCommand = new Command(() =>
+			{
+				GetClientList();
+			}, () => { return true; });
 
 			TappedCommand = new Command<string>((n) =>
 			{
@@ -158,14 +184,20 @@ namespace HouseSource.ViewModels
 					return;
 				}
 
+				clientPara.SearchContent = SearchContent;
 				ClientRD rentClientRD = await RestSharpService.GetClientAsync(clientPara, "Rent");
 
-				RentClientList = rentClientRD != null ? new ObservableCollection<ClientItemInfo>(rentClientRD.Customers) : new ObservableCollection<ClientItemInfo>();
-
+				RentClientList.Clear();
+				if (rentClientRD != null)
+				{
+					foreach (var item in rentClientRD.Customers)
+					{
+						RentClientList.Add(item);
+					}
+				}
 			}
 			catch (Exception)
 			{
-
 				throw;
 			}
 

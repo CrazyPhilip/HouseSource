@@ -39,6 +39,13 @@ namespace HouseSource.Models
         [JsonProperty("floor", NullValueHandling = NullValueHandling.Ignore)]
         public string Floor { get; set; }    //楼层
 
+        [JsonProperty("SearchContent", NullValueHandling = NullValueHandling.Ignore)]
+        public string SearchContent { get; set; }   //搜索关键字
+
+        [JsonProperty("Page", NullValueHandling = NullValueHandling.Ignore)]
+        public string Page { get; set; }   //Comment
+
+
         public string MaxPrice { get; set; }    //楼层
 
         public string MinPrice { get; set; }    //楼层

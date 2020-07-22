@@ -116,7 +116,9 @@ namespace HouseSource.Services
                 + "&BuildNo=" + housePara.BuildNo
                 + "&RoomNo=" + housePara.RoomNo
                 + "&PanType=" + housePara.PanType
-                + "&SearchContent=&Page=&EmpID=";
+                + "&SearchContent=" + housePara.SearchContent
+                + "&Page=" + housePara.Page
+                + "&EmpID=";
 
             string content = await RestSharpHelper<string>.GetAsyncWithoutDeserialization(url);
             content = GetSubString(content, "{", "}");
@@ -201,6 +203,20 @@ namespace HouseSource.Services
             {
                 return "EmptyList";
             }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="propertyID">房源编号</param>
+        /// <returns></returns>
+        public static async Task<EstateRD> GetEstateInfoByEstateName(string estateName)
+        {
+            string url = "GetEstateInfoByEstateName?DBName=cd&SelectType=1&EstateName=" + estateName;
+
+            string content = await RestSharpHelper<string>.GetAsyncWithoutDeserialization(url);
+            EstateRD estateRD = JsonConvert.DeserializeObject<EstateRD>(content);
+            return estateRD;
         }
         #endregion
 
