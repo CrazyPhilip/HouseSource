@@ -4,6 +4,7 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:HouseSource.ViewModels"
+             xmlns:behaviors="clr-namespace:HouseSource.Behaviors"
              mc:Ignorable="d"
              x:Class="HouseSource.Views.AddHousePage"
              BackgroundColor="{DynamicResource PageBackgroundColor}"
@@ -42,22 +43,17 @@
 
     <ContentPage.Content>
         <ScrollView>
-            <Grid RowDefinitions="*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*" ColumnDefinitions="*,*" Padding="10,0">
+            <Grid RowDefinitions="100,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,100,100,100,100,*" ColumnDefinitions="*,*" Padding="10,0">
                 <!--<Frame BorderColor="LightGray" HasShadow="True" Margin="10,5" CornerRadius="10" Padding="10">
                     <Image Source="Resource/drawable/person_add.png"/>
-                </Frame>
+                </Frame>-->
 
-                第一组-->
-                <Label Grid.Row="0" Grid.Column="0">
-                    <Label.FormattedText>
-                        <FormattedString>
-                            <Span Text="*" TextColor="Red"/>
-                            <Span Text="租售类型：" Style="{DynamicResource LabelStyle}"/>
-                        </FormattedString>
-                    </Label.FormattedText>
-                </Label>
-                <Picker Grid.Row="0" Grid.Column="1" Title="租售类型" ItemsSource="{Binding TradeList}" Style="{DynamicResource PickerStyle}"/>
+                
+                <StackLayout Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+                    
+                </StackLayout>
 
+                <!--小区-->
                 <Label Grid.Row="1" Grid.Column="0">
                     <Label.FormattedText>
                         <FormattedString>
@@ -67,10 +63,9 @@
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
-                <!--<Picker Title="小区" Style="{DynamicResource PickerStyle}"/>
-                <Entry Grid.Row="1" Grid.Column="1"/>-->
                 <Button Grid.Row="1" Grid.Column="1" Text="选择" HeightRequest="30" Command="{Binding ToEstateSelectCommand}"/>
 
+                <!--栋座-->
                 <Label Grid.Row="2" Grid.Column="0">
                     <Label.FormattedText>
                         <FormattedString>
@@ -79,8 +74,15 @@
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
-                <Picker Grid.Row="2" Grid.Column="1" Title="栋座" Style="{DynamicResource PickerStyle}"/>
+                <Picker Grid.Row="2" Grid.Column="1" x:Name="BuildingPicker" Title="栋座" ItemsSource="{Binding BuildingList}" Style="{DynamicResource PickerStyle}">
+                    <Picker.Behaviors>
+                        <behaviors:EventToCommandBehavior EventName="SelectedIndexChanged" 
+                                                          Command="{Binding GetUnitsCommand}" 
+                                                          CommandParameter="{Binding Path=SelectedIndex,Source={x:Reference BuildingPicker}}"/>
+                    </Picker.Behaviors>
+                </Picker>
 
+                <!--单元-->
                 <Label Grid.Row="3" Grid.Column="0">
                     <Label.FormattedText>
                         <FormattedString>
@@ -89,8 +91,9 @@
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
-                <Picker Grid.Row="3" Grid.Column="1" Title="单元" Style="{DynamicResource PickerStyle}"/>
+                <Picker Grid.Row="3" Grid.Column="1" Title="单元" ItemsSource="{Binding UnitList}" Style="{DynamicResource PickerStyle}"/>
 
+                <!--楼层-->
                 <Label Grid.Row="4" Grid.Column="0">
                     <Label.FormattedText>
                         <FormattedString>
@@ -99,8 +102,14 @@
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
-                <Picker Grid.Row="4" Grid.Column="1" Title="楼层" Style="{DynamicResource PickerStyle}"/>
+                <StackLayout Grid.Row="4" Grid.Column="1" Spacing="0" Orientation="Horizontal">
+                    <Entry Placeholder="楼层" Style="{DynamicResource EntryStyle}"/>
+                    <Label Text="/" Style="{DynamicResource LabelStyle}"/>
+                    <Entry Placeholder="总楼层" Style="{DynamicResource EntryStyle}"/>
+                </StackLayout>
+                <!--<Picker Title="楼层" Style="{DynamicResource PickerStyle}"/>-->
 
+                <!--房号-->
                 <Label Grid.Row="5" Grid.Column="0">
                     <Label.FormattedText>
                         <FormattedString>
@@ -111,8 +120,30 @@
                 </Label>
                 <Entry Grid.Row="5" Grid.Column="1" Placeholder="请输入房号（最多两位数）" Style="{DynamicResource EntryStyle}"/>
 
-                <!--第二组-->
+                <!--房源标题-->
                 <Label Grid.Row="6" Grid.Column="0">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="*" TextColor="Red"/>
+                            <Span Text="房源标题：" Style="{DynamicResource LabelStyle}"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <Entry Grid.Row="6" Grid.Column="1" Placeholder="请输入房源标题（最多25个字）" Style="{DynamicResource EntryStyle}"/>
+                
+                <!--交易类型-->
+                <Label Grid.Row="7" Grid.Column="0">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="*" TextColor="Red"/>
+                            <Span Text="交易类型：" Style="{DynamicResource LabelStyle}"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <Picker Grid.Row="7" Grid.Column="1" Title="交易类型" ItemsSource="{Binding TradeList}" Style="{DynamicResource PickerStyle}"/>
+
+                <!--售价-->
+                <Label Grid.Row="8" Grid.Column="0">
                     <Label.FormattedText>
                         <FormattedString>
                             <Span Text="*" TextColor="Red"/>
@@ -120,9 +151,10 @@
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
-                <Entry Grid.Row="6" Grid.Column="1" Placeholder="请输入售价" Style="{DynamicResource EntryStyle}"/>
+                <Entry Grid.Row="8" Grid.Column="1" Placeholder="请输入售价" Style="{DynamicResource EntryStyle}"/>
 
-                <Label Grid.Row="7" Grid.Column="0">
+                <!--面积-->
+                <Label Grid.Row="9" Grid.Column="0">
                     <Label.FormattedText>
                         <FormattedString>
                             <Span Text="*" TextColor="Red"/>
@@ -130,9 +162,10 @@
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
-                <Entry Grid.Row="7" Grid.Column="1"  Placeholder="请输入建筑面积" Style="{DynamicResource EntryStyle}"/>
+                <Entry Grid.Row="9" Grid.Column="1"  Placeholder="请输入建筑面积" Style="{DynamicResource EntryStyle}"/>
 
-                <Label Grid.Row="8" Grid.Column="0">
+                <!--户型-->
+                <Label Grid.Row="10" Grid.Column="0">
                     <Label.FormattedText>
                         <FormattedString>
                             <Span Text="*" TextColor="Red"/>
@@ -140,39 +173,38 @@
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
-                <Picker Grid.Row="8" Grid.Column="1"  Title="户型" Style="{DynamicResource PickerStyle}"/>
+                <StackLayout Grid.Row="10" Grid.Column="1" Spacing="0" Orientation="Horizontal">
+                    <Entry Placeholder="0-9" Style="{DynamicResource EntryStyle}"/>
+                    <Label Text="室" Style="{DynamicResource LabelStyle}"/>
+                    <Entry Placeholder="0-9" Style="{DynamicResource EntryStyle}"/>
+                    <Label Text="厅" Style="{DynamicResource LabelStyle}"/>
+                    <Entry Placeholder="0-9" Style="{DynamicResource EntryStyle}"/>
+                    <Label Text="卫" Style="{DynamicResource LabelStyle}"/>
+                    <Entry Placeholder="0-9" Style="{DynamicResource EntryStyle}"/>
+                    <Label Text="阳台" Style="{DynamicResource LabelStyle}"/>
+                </StackLayout>
+                <!--<Picker Grid.Row="10" Grid.Column="1"  Title="户型" ItemsSource="{Binding }" Style="{DynamicResource PickerStyle}"/>-->
 
-                <Label Grid.Row="9" Grid.Column="0">
+                <!--朝向-->
+                <Label Grid.Row="11" Grid.Column="0">
                     <Label.FormattedText>
                         <FormattedString>
                             <Span Text="*" TextColor="Red"/>
-                            <Span Text="房源类型：" Style="{DynamicResource LabelStyle}"/>
+                            <Span Text="朝向：" Style="{DynamicResource LabelStyle}"/>
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
-                <Picker Grid.Row="9" Grid.Column="1"  Title="房源类型" Style="{DynamicResource PickerStyle}"/>
+                <Picker Grid.Row="11" Grid.Column="1" Title="朝向" ItemsSource="{Binding DirectionList}" Style="{DynamicResource PickerStyle}"/>
 
-                <!--第三组-->
-                <Label Grid.Row="10" Grid.Column="0" Text="装修：" Style="{DynamicResource LabelStyle}"/>
-                <Picker Grid.Row="10" Grid.Column="1" Title="装修" Style="{DynamicResource PickerStyle}"/>
+                <!--对外展示-->
+                <StackLayout Grid.Row="12" Grid.Column="0" Orientation="Horizontal">
+                    <CheckBox/>
+                    <Label Text="对外展示" FontAttributes="Bold"/>
+                </StackLayout>
+                <Label Grid.Row="12" Grid.Column="1" Text="勾选可将房源概要信息同步至外网，保证信息安全。" LineBreakMode="WordWrap"/>
 
-                <Label Grid.Row="11" Grid.Column="0" Text="类型：" Style="{DynamicResource LabelStyle}"/>
-                <Picker Grid.Row="11" Grid.Column="1" Title="类型" Style="{DynamicResource PickerStyle}"/>
-
-                <Label Grid.Row="12" Grid.Column="0" Text="朝向：" Style="{DynamicResource LabelStyle}"/>
-                <Picker Grid.Row="12" Grid.Column="1" Title="朝向" Style="{DynamicResource PickerStyle}"/>
-
-                <Label Grid.Row="13" Grid.Column="0" Text="房屋用途：" Style="{DynamicResource LabelStyle}"/>
-                <Picker Grid.Row="13" Grid.Column="1" Title="房屋用途" Style="{DynamicResource PickerStyle}"/>
-
-                <Label Grid.Row="14" Grid.Column="0" Text="来源：" Style="{DynamicResource LabelStyle}"/>
-                <Picker Grid.Row="14" Grid.Column="1" Title="来源" Style="{DynamicResource PickerStyle}"/>
-
-                <Label Grid.Row="15" Grid.Column="0" Text="标签：" Style="{DynamicResource LabelStyle}"/>
-                <Picker Grid.Row="15" Grid.Column="1" Title="标签" Style="{DynamicResource PickerStyle}"/>
-
-                <!--第四组-->
-                <Label Grid.Row="16" Grid.Column="0">
+                <!--业主姓名-->
+                <Label Grid.Row="13" Grid.Column="0">
                     <Label.FormattedText>
                         <FormattedString>
                             <Span Text="*" TextColor="Red"/>
@@ -180,9 +212,10 @@
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
-                <Entry Grid.Row="16" Grid.Column="1" Placeholder="请输入业主姓名" Style="{DynamicResource EntryStyle}"/>
+                <Entry Grid.Row="13" Grid.Column="1" Placeholder="请输入业主姓名" Style="{DynamicResource EntryStyle}"/>
 
-                <Label Grid.Row="17" Grid.Column="0">
+                <!--业主电话-->
+                <Label Grid.Row="14" Grid.Column="0">
                     <Label.FormattedText>
                         <FormattedString>
                             <Span Text="*" TextColor="Red"/>
@@ -190,10 +223,89 @@
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
-                <Entry Grid.Row="17" Grid.Column="1" Placeholder="请输入业主电话" Style="{DynamicResource EntryStyle}"/>
+                <Entry Grid.Row="14" Grid.Column="1" Placeholder="请输入业主电话" Style="{DynamicResource EntryStyle}"/>
 
-                <Button Grid.Row="18" Grid.Column="0" Text="清空" Command="{Binding ClearCommand}" Style="{DynamicResource ButtonStyle}" BackgroundColor="LightGray"/>
-                <Button Grid.Row="18" Grid.Column="1" Text="确定新增" Command="{Binding AddCommand}" Style="{DynamicResource ButtonStyle}" BackgroundColor="#6ecbb8"/>
+                <Label Grid.Row="15" Grid.Column="0" Grid.ColumnSpan="2" Text="以上为必填项，以下为选填项" TextColor="{DynamicResource MainColor}" HorizontalOptions="Center" VerticalOptions="Center"/>
+
+                <StackLayout Grid.Row="16" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
+                    <Label Text="满五唯一"/>
+                    <Label Text="无抵押"/>
+                    <Label Text="可贷款"/>
+                    <Label Text="新上房源"/>
+                </StackLayout>
+
+                <!--装修-->
+                <Label Grid.Row="17" Grid.Column="0" Text="装修：" Style="{DynamicResource LabelStyle}"/>
+                <Picker Grid.Row="17" Grid.Column="1" Title="装修" ItemsSource="{Binding DecorationList}" Style="{DynamicResource PickerStyle}"/>
+
+                <!--类型-->
+                <Label Grid.Row="18" Grid.Column="0" Text="类型：" Style="{DynamicResource LabelStyle}"/>
+                <Picker Grid.Row="18" Grid.Column="1" Title="类型" ItemsSource="{Binding PropertyTypeList}" Style="{DynamicResource PickerStyle}"/>
+
+                <!--房屋用途-->
+                <Label Grid.Row="19" Grid.Column="0" Text="房屋用途：" Style="{DynamicResource LabelStyle}"/>
+                <Picker Grid.Row="19" Grid.Column="1" Title="房屋用途" ItemsSource="{Binding PropertyUseTypeList}" Style="{DynamicResource PickerStyle}"/>
+
+                <!--来源-->
+                <Label Grid.Row="20" Grid.Column="0" Text="来源：" Style="{DynamicResource LabelStyle}"/>
+                <Picker Grid.Row="20" Grid.Column="1" Title="来源" ItemsSource="{Binding PropertySourceList}" Style="{DynamicResource PickerStyle}"/>
+
+                <!--产权-->
+                <Label Grid.Row="21" Grid.Column="0" Text="产权：" Style="{DynamicResource LabelStyle}"/>
+                <Picker Grid.Row="21" Grid.Column="1"  Title="产权" ItemsSource="{Binding PropertyRightList}" Style="{DynamicResource PickerStyle}"/>
+
+                <!--证件-->
+                <Label Grid.Row="22" Grid.Column="0" Text="证件：" Style="{DynamicResource LabelStyle}"/>
+                <Picker Grid.Row="22" Grid.Column="1" Title="证件" ItemsSource="{Binding CredentialsList}" Style="{DynamicResource PickerStyle}"/>
+                
+                <!--现状-->
+                <Label Grid.Row="23" Grid.Column="0" Text="现状：" Style="{DynamicResource LabelStyle}"/>
+                <Picker Grid.Row="23" Grid.Column="1" Title="现状" ItemsSource="{Binding StatusList}" Style="{DynamicResource PickerStyle}"/>
+
+                <!--看房方式-->
+                <Label Grid.Row="24" Grid.Column="0" Text="看房方式：" Style="{DynamicResource LabelStyle}"/>
+                <Picker Grid.Row="24" Grid.Column="1" Title="看房方式" ItemsSource="{Binding LookWaysList}" Style="{DynamicResource PickerStyle}"/>
+
+                <Entry Grid.Row="25" Grid.Column="0" Grid.ColumnSpan="2" Placeholder="输入看房方式备注（8个字）" Style="{DynamicResource EntryStyle}"/>
+
+                <!--付佣-->
+                <Label Grid.Row="26" Grid.Column="0" Text="付佣：" Style="{DynamicResource LabelStyle}"/>
+                <Picker Grid.Row="26" Grid.Column="1" Title="付佣" ItemsSource="{Binding CommissionPayList}" Style="{DynamicResource PickerStyle}"/>
+
+                <!--付款-->
+                <Label Grid.Row="27" Grid.Column="0" Text="付款：" Style="{DynamicResource LabelStyle}"/>
+                <Picker Grid.Row="27" Grid.Column="1" Title="付款" ItemsSource="{Binding PaymentList}" Style="{DynamicResource PickerStyle}"/>
+
+                <!--家具-->
+                <Label Grid.Row="28" Grid.Column="0" Text="家具：" Style="{DynamicResource LabelStyle}"/>
+                <Picker Grid.Row="28" Grid.Column="1" Title="家具" ItemsSource="{Binding FurnitureList}" Style="{DynamicResource PickerStyle}"/>
+
+                <!--权属-->
+                <Label Grid.Row="29" Grid.Column="0" Text="权属：" Style="{DynamicResource LabelStyle}"/>
+                <Picker Grid.Row="29" Grid.Column="1" Title="权属" ItemsSource="{Binding OwnershipList}" Style="{DynamicResource PickerStyle}"/>
+
+                <!--交房日-->
+                <Label Grid.Row="30" Grid.Column="0" Text="交房日：" Style="{DynamicResource LabelStyle}"/>
+                <DatePicker Grid.Row="30" Grid.Column="1" MinimumDate="01/01/1970" MaximumDate="12/31/2030" Date="{Binding ReleaseDate}" FontSize="14"/>
+
+                <!--挂牌日-->
+                <Label Grid.Row="31" Grid.Column="0" Text="挂牌日：" Style="{DynamicResource LabelStyle}"/>
+                <DatePicker Grid.Row="31" Grid.Column="1" MinimumDate="01/01/1970" MaximumDate="12/31/2030" Date="{Binding EntrustDate}" FontSize="14"/>
+
+                <!--建房年代-->
+                <Label Grid.Row="32" Grid.Column="0" Text="建房年代：" Style="{DynamicResource LabelStyle}"/>
+                <Picker Grid.Row="32" Grid.Column="1" Title="建房年代" ItemsSource="{Binding BuiltYearList}" Style="{DynamicResource PickerStyle}"/>
+
+                <Editor Grid.Row="33" Grid.Column="0" Grid.ColumnSpan="2" Placeholder="输入房源备注备注（300字）" FontSize="14" HeightRequest="100"/>
+
+                <Editor Grid.Row="34" Grid.Column="0" Grid.ColumnSpan="2" Placeholder="输入房源介绍（300字）" FontSize="14" HeightRequest="100"/>
+
+                <Editor Grid.Row="35" Grid.Column="0" Grid.ColumnSpan="2" Placeholder="输入业主介绍（300字）" FontSize="14" HeightRequest="100"/>
+
+                <Editor Grid.Row="36" Grid.Column="0" Grid.ColumnSpan="2" Placeholder="输入服务介绍（300字）" FontSize="14" HeightRequest="100"/>
+
+                <Button Grid.Row="37" Grid.Column="0" Text="清空" Command="{Binding ClearCommand}" Style="{DynamicResource ButtonStyle}" BackgroundColor="LightGray"/>
+                <Button Grid.Row="37" Grid.Column="1" Text="确定新增" Command="{Binding AddCommand}" Style="{DynamicResource ButtonStyle}" BackgroundColor="#6ecbb8"/>
             </Grid>
         </ScrollView>
     </ContentPage.Content>

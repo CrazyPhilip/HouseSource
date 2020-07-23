@@ -10,17 +10,11 @@ using Xamarin.Forms.Xaml;
 namespace HouseSource.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class HouseManagePage : TabbedPage
+    public partial class RentHousePage : ContentPage
     {
-        public HouseManagePage()
+        public RentHousePage()
         {
             InitializeComponent();
-        }
-
-        private void ToolbarItem_Clicked(object sender, EventArgs e)
-        {
-            AddHousePage addHousePage = new AddHousePage();
-            Application.Current.MainPage.Navigation.PushAsync(addHousePage);
         }
     }
 }

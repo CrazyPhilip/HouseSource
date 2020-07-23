@@ -285,7 +285,7 @@ namespace HouseSource.ViewModels
 
                 string content = await RestSharpService.GetDistrictList();
 
-                string[] dists = content.Split(',');
+                string[] dists = content.TrimStart('{').TrimEnd('}').Split(',');
 
                 DistrictList = new List<string>(dists);
             }
@@ -451,6 +451,19 @@ namespace HouseSource.ViewModels
                 CrossToastPopUp.Current.ShowToastError("用途不能为空，请选择", ToastLength.Long);
                 return false;
             }
+
+            if (string.IsNullOrWhiteSpace(District))
+            {
+                CrossToastPopUp.Current.ShowToastError("请选择城区", ToastLength.Long);
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(Block))
+            {
+                CrossToastPopUp.Current.ShowToastError("请选择片区", ToastLength.Long);
+                return false;
+            }
+
             //预算
             if (MinBudget != null && MinBudget != "")
             {
@@ -478,6 +491,7 @@ namespace HouseSource.ViewModels
                     return false;
                 }
             }
+
             //面积
             if (MinArea != null && MinArea != "")
             {
@@ -505,6 +519,7 @@ namespace HouseSource.ViewModels
                     return false;
                 }
             }
+
             //楼层
             if (MinFloor != null && MinFloor != "")
             {

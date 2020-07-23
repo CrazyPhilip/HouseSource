@@ -76,7 +76,8 @@ namespace HouseSource.ViewModels
                             EstateName = h.EstateName,
                             Price = h.Price.Substring(0, h.Price.Length - 2) + "万元",
                             SinglePrice = h.Trade == "出售" ? h.RentPrice.Substring(0, h.RentPrice.Length - 2) + "元/平" : "",
-                            PhotoUrl = (h.PhotoUrl == "" ? "NullPic.jpg" : h.PhotoUrl)
+                            PhotoUrl = (h.PhotoUrl == "" ? "NullPic.jpg" : h.PhotoUrl),
+                            PropertyID = h.PropertyID
                         };
 
                         switch (h.Privy)

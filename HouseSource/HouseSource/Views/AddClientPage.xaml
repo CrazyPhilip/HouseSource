@@ -164,12 +164,18 @@
                 </StackLayout>
 
                 <!--城区-->
-
-                <Label Grid.Row="13" Grid.Column="0" Text="城区：" Style="{DynamicResource LabelStyle}"/>
+                <Label Grid.Row="13" Grid.Column="0">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="*" TextColor="Red"/>
+                            <Span Text="城区：" Style="{DynamicResource LabelStyle}"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
                 <Picker Grid.Row="13" Grid.Column="1" x:Name="DistrictPicker" Title="城区" 
-                                ItemsSource="{Binding DistrictList}" 
-                                SelectedItem="{Binding District}" 
-                                Style="{DynamicResource PickerStyle}">
+                        ItemsSource="{Binding DistrictList}" 
+                        SelectedItem="{Binding District}" 
+                        Style="{DynamicResource PickerStyle}">
                     <Picker.Behaviors>
                         <behaviors:EventToCommandBehavior EventName="SelectedIndexChanged"
                                                                   Command="{Binding DistrictPickerSelectedItemChangedCommand}"/>
@@ -177,10 +183,17 @@
                 </Picker>
 
                 <!--片区-->
-                <Label Grid.Row="14" Grid.Column="0" Text="片区：" Style="{DynamicResource LabelStyle}"/>
+                <Label Grid.Row="14" Grid.Column="0">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="*" TextColor="Red"/>
+                            <Span Text="片区：" Style="{DynamicResource LabelStyle}"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
                 <Picker Grid.Row="14" Grid.Column="1" x:Name="AreaPicker" Title="片区" 
-                                ItemsSource="{Binding BlockList}" SelectedItem="{Binding Block}" 
-                                Style="{DynamicResource PickerStyle}"/>
+                        ItemsSource="{Binding BlockList}" SelectedItem="{Binding Block}" 
+                        Style="{DynamicResource PickerStyle}"/>
 
 
                 <Button Grid.Row="15" Grid.Column="0" Text="清空" Command="{Binding ClearCommand}" Style="{DynamicResource ButtonStyle}" BackgroundColor="LightGray"/>

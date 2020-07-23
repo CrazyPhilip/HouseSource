@@ -206,18 +206,47 @@ namespace HouseSource.Services
         }
 
         /// <summary>
-        /// 
+        /// 获得小区基本信息
         /// </summary>
         /// <param name="propertyID">房源编号</param>
         /// <returns></returns>
-        public static async Task<EstateRD> GetEstateInfoByEstateName(string estateName)
+        public static async Task<string> GetEstateInfoByEstateName(string estateName)
         {
             string url = "GetEstateInfoByEstateName?DBName=cd&SelectType=1&EstateName=" + estateName;
 
             string content = await RestSharpHelper<string>.GetAsyncWithoutDeserialization(url);
-            EstateRD estateRD = JsonConvert.DeserializeObject<EstateRD>(content);
-            return estateRD;
+            //EstateRD estateRD = JsonConvert.DeserializeObject<EstateRD>(content);
+            return content;
         }
+
+        /// <summary>
+        /// 获得某小区的栋座列表
+        /// </summary>
+        /// <param name="propertyID">房源编号</param>
+        /// <returns></returns>
+        public static async Task<BuildingRD> GetDongzuoByEstateID(string estateID)
+        {
+            string url = "GetDongzuoByEstateID?DBName=cd&EstateID=" + estateID;
+
+            string content = await RestSharpHelper<string>.GetAsyncWithoutDeserialization(url);
+            BuildingRD buildingRD = JsonConvert.DeserializeObject<BuildingRD>(content);
+            return buildingRD;
+        }
+
+        /// <summary>
+        /// 获得某小区某栋楼的单元列表
+        /// </summary>
+        /// <param name="propertyID">房源编号</param>
+        /// <returns></returns>
+        public static async Task<string> GetCellByBuildingID(string buildingID)
+        {
+            string url = "GetCellByBuildingID?DBName=cd&BuildingID=" + buildingID;
+
+            string content = await RestSharpHelper<string>.GetAsyncWithoutDeserialization(url);
+            return content;
+        }
+        
+        
         #endregion
 
         #region 消息

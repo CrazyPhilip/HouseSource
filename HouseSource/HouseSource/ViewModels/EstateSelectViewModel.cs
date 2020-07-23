@@ -12,6 +12,7 @@ using Plugin.Toast;
 using Plugin.Toast.Abstractions;
 using HouseSource.ResponseData;
 using HouseSource.Services;
+using Newtonsoft.Json;
 
 namespace HouseSource.ViewModels
 {
@@ -74,10 +75,11 @@ namespace HouseSource.ViewModels
 					return;
 				}
 
-				EstateRD estateRD = await RestSharpService.GetEstateInfoByEstateName(searchContent);
+				string content = await RestSharpService.GetEstateInfoByEstateName(searchContent);
 
-				if (estateRD.Result == "Success")
+				if (content.Contains("Success"))
 				{
+					EstateRD estateRD = JsonConvert.DeserializeObject<EstateRD>(content);
 					EstateList = new ObservableCollection<EstateItemInfo>(estateRD.Info);
 				}
 			}
@@ -100,6 +102,7 @@ namespace HouseSource.ViewModels
 			if (vm != null)
 			{
 				vm.Estate = e;
+				vm.GetBuildings();
 			}
 
 			await Application.Current.MainPage.Navigation.PopAsync();
