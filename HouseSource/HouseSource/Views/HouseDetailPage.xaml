@@ -124,7 +124,7 @@
                             </Label.FormattedText>
                         </Label>
                         <BoxView Color="LightGray" HeightRequest="1" HorizontalOptions="Fill"/>
-                        <Label Text="暂无内容" FontSize="12"/>
+                        <Label Text="{Binding House.PropertyIntroduce}" FontSize="12"/>
 
                         <Label FontSize="16">
                             <Label.FormattedText>
@@ -152,7 +152,23 @@
                             </Label.FormattedText>
                         </Label>
                         <BoxView Color="LightGray" HeightRequest="1" HorizontalOptions="Fill"/>
-                        <Label Text="暂无内容" FontSize="12"/>
+                        <Label Text="{Binding House.ServiceIntroduce}" FontSize="12"/>
+
+                        <Label FontSize="16" IsVisible="{Binding Visible}">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text=">>" TextColor="#6ecbb8"/>
+                                    <Span Text="您是录入人，以下内容仅对您可见" TextColor="Black"/>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                        <BoxView Color="LightGray" HeightRequest="1" HorizontalOptions="Fill" IsVisible="{Binding Visible}"/>
+                        <Grid Margin="5" RowDefinitions="*,*" ColumnDefinitions="*,*" IsVisible="{Binding Visible}">
+                            <Button Grid.Row="0" Grid.Column="0" Text="联系业主"/>
+                            <Button Grid.Row="0" Grid.Column="1" Text="看跟进"/>
+                            <Button Grid.Row="1" Grid.Column="0" Text="写跟进"/>
+                            <Button Grid.Row="1" Grid.Column="1" Text="修改房源"/>
+                        </Grid>
                     </StackLayout>
                 </StackLayout>
             </ScrollView>

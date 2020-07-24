@@ -4,7 +4,8 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:controls="clr-namespace:HouseSource.Controls"
-             xmlns:viewModels="clr-namespace:HouseSource.ViewModels" xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:viewModels="clr-namespace:HouseSource.ViewModels" 
+             xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              mc:Ignorable="d"
              BackgroundColor="{DynamicResource PageBackgroundColor}"
              x:Class="HouseSource.Views.RentHousePage"
@@ -18,7 +19,7 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <Style x:Key="LabelStyle" TargetType="Label">
-                <Setter Property="FontFamily" Value="{StaticResource font}"/>
+                <Setter Property="FontFamily" Value="FontAwesome"/>
                 <Setter Property="FontSize" Value="14"/>
                 <Setter Property="HorizontalOptions" Value="Center"/>
                 <Setter Property="VerticalOptions" Value="Center"/>

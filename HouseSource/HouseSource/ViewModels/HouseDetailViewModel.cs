@@ -50,6 +50,13 @@ namespace HouseSource.ViewModels
             set { SetProperty(ref starSource, value); }
         }
 
+        private bool visible;   //Comment
+        public bool Visible
+        {
+            get { return visible; }
+            set { SetProperty(ref visible, value); }
+        }
+
         public Command ShareCommand { get; set; }
         public Command CollectCommand { get; set; }
         public Command CallCommand { get; set; }
@@ -60,6 +67,7 @@ namespace HouseSource.ViewModels
             House = houseInfo;
             HouseTitle = house.DistrictName + " " + house.AreaName + " " + house.EstateName;
             House.PhotoUrl = string.IsNullOrWhiteSpace(House.PhotoUrl) ? "NullPic.jpg" : House.PhotoUrl;
+            //Visible = House.EmpID == GlobalVariables.LoggedUser.EmpID;
 
             CheckCollected();
 

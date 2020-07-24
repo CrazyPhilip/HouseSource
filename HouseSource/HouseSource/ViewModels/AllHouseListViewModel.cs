@@ -161,7 +161,8 @@ namespace HouseSource.ViewModels
                 PanType = "有效",
                 Floor = "",
                 MinPrice = "",
-                MaxPrice = ""
+                MaxPrice = "",
+                EmpID = ""
             };
 
             SortCommand = new Command<string>(async (t) =>

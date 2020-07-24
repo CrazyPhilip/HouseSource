@@ -45,9 +45,13 @@ namespace HouseSource.Models
         [JsonProperty("Page", NullValueHandling = NullValueHandling.Ignore)]
         public string Page { get; set; }   //Comment
 
+        [JsonProperty("EmpID", NullValueHandling = NullValueHandling.Ignore)]
+        public string EmpID { get; set; }   //Comment
 
+        [JsonIgnore]
         public string MaxPrice { get; set; }    //楼层
 
+        [JsonIgnore]
         public string MinPrice { get; set; }    //楼层
 
     }

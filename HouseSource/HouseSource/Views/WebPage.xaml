@@ -11,7 +11,7 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <Style TargetType="Button">
-                <Setter Property="FontFamily" Value="{StaticResource font}"/>
+                <Setter Property="FontFamily" Value="FontAwesome"/>
                 <Setter Property="FontSize" Value="14"/>
                 <Setter Property="HorizontalOptions" Value="Center"/>
                 <Setter Property="VerticalOptions" Value="Center"/>

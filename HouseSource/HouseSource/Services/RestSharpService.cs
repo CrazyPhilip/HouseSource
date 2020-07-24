@@ -16,7 +16,9 @@ namespace HouseSource.Services
         private static readonly Lazy<RestSharpService> lazy = new Lazy<RestSharpService>(() => new RestSharpService());
         
         public static RestSharpService Instance { get { return lazy.Value; } }
-        
+
+        //public static JsonSerializerSettings settings = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore, MissingMemberHandling = MissingMemberHandling.Ignore };
+
         private RestSharpService() 
         { 
         
@@ -118,10 +120,11 @@ namespace HouseSource.Services
                 + "&PanType=" + housePara.PanType
                 + "&SearchContent=" + housePara.SearchContent
                 + "&Page=" + housePara.Page
-                + "&EmpID=";
+                + "&EmpID=" + housePara.EmpID;
 
             string content = await RestSharpHelper<string>.GetAsyncWithoutDeserialization(url);
             content = GetSubString(content, "{", "}");
+            
             HouseRD houseRD = JsonConvert.DeserializeObject<HouseRD>(content);
 
             return houseRD;

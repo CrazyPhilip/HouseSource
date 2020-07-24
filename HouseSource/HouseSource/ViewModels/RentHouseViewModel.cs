@@ -1,5 +1,13 @@
-﻿using System;
+﻿using HouseSource.Models;
+using HouseSource.ResponseData;
+using HouseSource.Services;
+using HouseSource.Utils;
+using HouseSource.Views;
+using Plugin.Toast;
+using Plugin.Toast.Abstractions;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 using Xamarin.Forms;
 
@@ -48,6 +56,31 @@ namespace HouseSource.ViewModels
             set { SetProperty(ref status, value); }
         }
 
+        private string searchContent;   //搜索关键字
+        public string SearchContent
+        {
+            get { return searchContent; }
+            set { SetProperty(ref searchContent, value); }
+        }
+
+        private ObservableCollection<HouseItemInfo> houseItemList;    //售房列表
+        public ObservableCollection<HouseItemInfo> HouseItemList
+        {
+            get { return houseItemList; }
+            set { SetProperty(ref houseItemList, value); }
+        }
+
+        private List<HouseItemInfo> rentHouseItemList { get; set; }    //租房列表
+        private List<HouseInfo> rentHouseList { get; set; }    //租房列表  原始
+
+        private HousePara saleHousePara;   //请求参数
+        public HousePara SaleHousePara
+        {
+            get { return saleHousePara; }
+            set { SetProperty(ref saleHousePara, value); }
+        }
+
+
         public Command SearchCommand { get; set; }
         public Command<string> SortCommand { get; set; }
         public Command<string> TappedCommand { get; set; }
@@ -66,6 +99,27 @@ namespace HouseSource.ViewModels
             Square = SquareList[0];
             Status = StatusList[0];
 
+            HouseItemList = new ObservableCollection<HouseItemInfo>();
+            rentHouseItemList = new List<HouseItemInfo>();
+            rentHouseList = new List<HouseInfo>();
+
+            SaleHousePara = new HousePara
+            {
+                DistrictName = "区域",
+                CountF = "房型",
+                Price = "价格",
+                Square = "面积",
+                PropertyUsage = "用途",
+                EstateName = "",
+                BuildNo = "",
+                RoomNo = "",
+                PanType = "有效",
+                Floor = "",
+                MinPrice = "",
+                MaxPrice = "",
+                EmpID = GlobalVariables.LoggedUser.EmpID
+            };
+
             SortCommand = new Command<string>(async (t) =>
             {
                 switch (t)
@@ -75,7 +129,8 @@ namespace HouseSource.ViewModels
                         {
                             string result = await Application.Current.MainPage.DisplayActionSheet("区域", "取消", null, DistrictList);
                             District = result == null || result == "取消" ? District : result;
-
+                            SaleHousePara.DistrictName = District == "全部区域" ? "区域" : District.TrimEnd('区');
+                            GetHouseList();
                         }
                         break;
 
@@ -84,8 +139,8 @@ namespace HouseSource.ViewModels
                         {
                             string result = await Application.Current.MainPage.DisplayActionSheet("房型", "取消", null, RoomStyleList);
                             RoomStyle = result == null || result == "取消" ? RoomStyle : result;
-                            //SaleHousePara.DistrictName = District == "全部区域" ? "区域" : District.TrimEnd('区');
-                            //GetHouseList();
+                            SaleHousePara.CountF = RoomStyle == "全部房型" ? "房型" : RoomStyle;
+                            GetHouseList();
                         }
                         break;
 
@@ -94,8 +149,8 @@ namespace HouseSource.ViewModels
                         {
                             string result = await Application.Current.MainPage.DisplayActionSheet("价格", "取消", null, SalePriceList);
                             SalePrice = result == null || result == "取消" ? SalePrice : result;
-                            //SaleHousePara.CountF = RoomStyle == "全部房型" ? "房型" : RoomStyle;
-                            //GetHouseList();
+                            SaleHousePara.Price = SalePrice == "全部价格" ? "价格" : SalePrice;
+                            GetHouseList();
                         }
                         break;
 
@@ -104,8 +159,8 @@ namespace HouseSource.ViewModels
                         {
                             string result = await Application.Current.MainPage.DisplayActionSheet("面积", "取消", null, SquareList);
                             Square = result == null || result == "取消" ? Square : result;
-                            //SaleHousePara.Price = SalePrice == "全部价格" ? "价格" : SalePrice;
-                            //GetHouseList();
+                            SaleHousePara.Square = Square == "全部面积" ? "面积" : Square;
+                            GetHouseList();
                         }
                         break;
 
@@ -114,8 +169,8 @@ namespace HouseSource.ViewModels
                         {
                             string result = await Application.Current.MainPage.DisplayActionSheet("状态", "取消", null, StatusList);
                             Status = result == null || result == "取消" ? Status : result;
-                            //SaleHousePara.Square = Square == "全部面积" ? "面积" : Square;
-                            //GetHouseList();
+                            SaleHousePara.PanType = Status == "全部状态" ? "状态" : Status;
+                            GetHouseList();
                         }
                         break;
 
@@ -126,14 +181,88 @@ namespace HouseSource.ViewModels
 
             SearchCommand = new Command(() =>
             {
-                //GetHouseList();
+                GetHouseList();
             }, () => { return true; });
 
             TappedCommand = new Command<string>((h) =>
             {
-
+                rentHouseList.ForEach((item) =>
+                {
+                    if (item.PropertyID == h)
+                    {
+                        HouseDetailPage houseDetailPage = new HouseDetailPage(item);
+                        Application.Current.MainPage.Navigation.PushAsync(houseDetailPage);
+                    }
+                });
             }, (h) => { return true; });
 
+            GetHouseList();
+        }
+
+        /// <summary>
+        /// 获取房源列表
+        /// </summary>
+        private async void GetHouseList()
+        {
+            try
+            {
+                if (!Tools.IsNetConnective())
+                {
+                    CrossToastPopUp.Current.ShowToastError("无网络连接，请检查网络。", ToastLength.Short);
+                    return;
+                }
+
+                SaleHousePara.SearchContent = SearchContent;
+                HouseRD houseRD = await RestSharpService.GetHouseAsync(SaleHousePara, "出租");
+
+                List<HouseItemInfo> list = new List<HouseItemInfo>();
+                if (houseRD.Buildings != null)
+                {
+
+                    foreach (var h in houseRD.Buildings)
+                    {
+                        HouseItemInfo houseItemInfo = new HouseItemInfo
+                        {
+                            //houseItemInfo.HouseTitle = h.Title == "" ? h.DistrictName + " " + h.AreaName + " " + h.EstateName : h.Title;
+                            HouseTitle = h.DistrictName + " " + h.AreaName + " " + h.EstateName,
+                            RoomStyle = ((h.CountF.Length == 0 || h.CountF == " ") ? "-" : h.CountF) + "室"
+                            + ((h.CountT.Length == 0 || h.CountT == " ") ? "-" : h.CountT) + "厅"
+                            + ((h.CountW.Length == 0 || h.CountW == " ") ? "-" : h.CountW) + "卫",
+                            Square = (h.Square.Length > 5 ? h.Square.Substring(0, 5) : h.Square) + "㎡",
+                            EstateName = h.EstateName,
+                            Price = h.Price.Substring(0, h.Price.Length - 2) + "万元",
+                            SinglePrice = h.Trade == "出售" ? h.RentPrice.Substring(0, h.RentPrice.Length - 2) + "元/平" : "",
+                            PhotoUrl = (h.PhotoUrl == "" ? "NullPic.jpg" : h.PhotoUrl),
+                            PropertyID = h.PropertyID
+                        };
+
+                        switch (h.Privy)
+                        {
+                            case "0": houseItemInfo.PanType = "公盘"; break;
+                            case "1": houseItemInfo.PanType = "私盘"; break;
+                            case "2": houseItemInfo.PanType = "特盘"; break;
+                            default: houseItemInfo.PanType = "封盘"; break;
+                        }
+
+                        houseItemInfo.PropertyDecoration = h.PropertyDecoration;
+                        houseItemInfo.PropertyLook = h.PropertyLook;
+
+                        list.Add(houseItemInfo);
+                    }
+
+                    rentHouseList.Clear();
+                    rentHouseItemList.Clear();
+                    HouseItemList.Clear();
+
+                    rentHouseList.AddRange(houseRD.Buildings);
+                    rentHouseItemList.AddRange(list);
+                    rentHouseItemList.ForEach(item => { HouseItemList.Add(item); });
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }

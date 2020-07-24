@@ -1,5 +1,13 @@
-﻿using System;
+﻿using HouseSource.Models;
+using HouseSource.ResponseData;
+using HouseSource.Services;
+using HouseSource.Utils;
+using HouseSource.Views;
+using Plugin.Toast;
+using Plugin.Toast.Abstractions;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 using Xamarin.Forms;
 
@@ -48,6 +56,30 @@ namespace HouseSource.ViewModels
             set { SetProperty(ref status, value); }
         }
 
+        private string searchContent;   //搜索关键字
+        public string SearchContent
+        {
+            get { return searchContent; }
+            set { SetProperty(ref searchContent, value); }
+        }
+
+        private HousePara saleHousePara;   //请求参数
+        public HousePara SaleHousePara
+        {
+            get { return saleHousePara; }
+            set { SetProperty(ref saleHousePara, value); }
+        }
+
+        private ObservableCollection<HouseItemInfo> houseItemList;    //售房列表
+        public ObservableCollection<HouseItemInfo> HouseItemList
+        {
+            get { return houseItemList; }
+            set { SetProperty(ref houseItemList, value); }
+        }
+
+        private List<HouseItemInfo> saleHouseItemList { get; set; }    //售房列表
+        private List<HouseInfo> saleHouseList { get; set; }    //售房列表  原始
+
         public Command SearchCommand { get; set; }
         public Command<string> SortCommand { get; set; }
         public Command<string> TappedCommand { get; set; }
@@ -65,6 +97,27 @@ namespace HouseSource.ViewModels
             SalePrice = SalePriceList[0];
             Square = SquareList[0];
             Status = StatusList[0];
+
+            HouseItemList = new ObservableCollection<HouseItemInfo>();
+            saleHouseItemList = new List<HouseItemInfo>();
+            saleHouseList = new List<HouseInfo>();
+
+            SaleHousePara = new HousePara
+            {
+                DistrictName = "区域",
+                CountF = "房型",
+                Price = "价格",
+                Square = "面积",
+                PropertyUsage = "用途",
+                EstateName = "",
+                BuildNo = "",
+                RoomNo = "",
+                PanType = "有效",
+                Floor = "",
+                MinPrice = "",
+                MaxPrice = "",
+                EmpID = GlobalVariables.LoggedUser.EmpID
+            };
 
             SortCommand = new Command<string>(async (t) =>
             {
@@ -126,13 +179,90 @@ namespace HouseSource.ViewModels
 
             SearchCommand = new Command(() =>
             {
-                //GetHouseList();
+                GetHouseList();
             }, () => { return true; });
 
             TappedCommand = new Command<string>((h) =>
             {
-
+                saleHouseList.ForEach((item) =>
+                {
+                    if (item.PropertyID == h)
+                    {
+                        HouseDetailPage houseDetailPage = new HouseDetailPage(item);
+                        Application.Current.MainPage.Navigation.PushAsync(houseDetailPage);
+                    }
+                });
             }, (h) => { return true; });
+
+            GetHouseList();
+        }
+
+
+        /// <summary>
+        /// 获取房源列表
+        /// </summary>
+        private async void GetHouseList()
+        {
+            try
+            {
+                if (!Tools.IsNetConnective())
+                {
+                    CrossToastPopUp.Current.ShowToastError("无网络连接，请检查网络。", ToastLength.Short);
+                    return;
+                }
+
+                SaleHousePara.SearchContent = SearchContent;
+                HouseRD houseRD = await RestSharpService.GetHouseAsync(SaleHousePara, "出售");
+
+                List<HouseItemInfo> list = new List<HouseItemInfo>();
+                if (houseRD.Buildings != null)
+                {
+
+                    foreach (var h in houseRD.Buildings)
+                    {
+                        HouseItemInfo houseItemInfo = new HouseItemInfo
+                        {
+                            //houseItemInfo.HouseTitle = h.Title == "" ? h.DistrictName + " " + h.AreaName + " " + h.EstateName : h.Title;
+                            HouseTitle = h.DistrictName + " " + h.AreaName + " " + h.EstateName,
+                            RoomStyle = ((h.CountF.Length == 0 || h.CountF == " ") ? "-" : h.CountF) + "室"
+                            + ((h.CountT.Length == 0 || h.CountT == " ") ? "-" : h.CountT) + "厅"
+                            + ((h.CountW.Length == 0 || h.CountW == " ") ? "-" : h.CountW) + "卫",
+                            Square = (h.Square.Length > 5 ? h.Square.Substring(0, 5) : h.Square) + "㎡",
+                            EstateName = h.EstateName,
+                            Price = h.Price.Substring(0, h.Price.Length - 2) + "万元",
+                            SinglePrice = h.Trade == "出售" ? h.RentPrice.Substring(0, h.RentPrice.Length - 2) + "元/平" : "",
+                            PhotoUrl = (h.PhotoUrl == "" ? "NullPic.jpg" : h.PhotoUrl),
+                            PropertyID = h.PropertyID
+                        };
+
+                        switch (h.Privy)
+                        {
+                            case "0": houseItemInfo.PanType = "公盘"; break;
+                            case "1": houseItemInfo.PanType = "私盘"; break;
+                            case "2": houseItemInfo.PanType = "特盘"; break;
+                            default: houseItemInfo.PanType = "封盘"; break;
+                        }
+
+                        houseItemInfo.PropertyDecoration = h.PropertyDecoration;
+                        houseItemInfo.PropertyLook = h.PropertyLook;
+
+                        list.Add(houseItemInfo);
+                    }
+
+                    saleHouseList.Clear();
+                    saleHouseItemList.Clear();
+                    HouseItemList.Clear();
+
+                    saleHouseList.AddRange(houseRD.Buildings);
+                    saleHouseItemList.AddRange(list);
+                    saleHouseItemList.ForEach(item => { HouseItemList.Add(item); });
+
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }
