@@ -9,7 +9,8 @@
              xmlns:behaviors="clr-namespace:HouseSource.Behaviors"
              mc:Ignorable="d"
              NavigationPage.HasNavigationBar="False"
-             x:Class="HouseSource.Views.LoginPage">
+             x:Class="HouseSource.Views.LoginPage"
+             BackgroundImageSource="chengdu.png">
 
     <ContentPage.BindingContext>
         <viewModels:LoginViewModel/>
@@ -18,7 +19,7 @@
     <ContentPage.Resources>
         <Style x:Name="EntryStyle" TargetType="controls:MyEntry">
             <Setter Property="WidthRequest" Value="200"/>
-            <Setter Property="PlaceholderColor" Value="LightGray"/>
+            <Setter Property="PlaceholderColor" Value="White"/>
             <Setter Property="HorizontalOptions" Value="Center"/>
             <Setter Property="VerticalOptions" Value="Center"/>
             <Setter Property="HorizontalTextAlignment" Value="Center"/>
@@ -36,45 +37,36 @@
     </ContentPage.Resources>
 
     <ContentPage.Content>
-        <StackLayout>
-            <ff:CachedImage WidthRequest="128" HeightRequest="128" Source="erp_logo.png" VerticalOptions="EndAndExpand"/>
+        <StackLayout Padding="40,0">
+            <Label Text="欢迎使用" TextColor="White" FontSize="14" FontAttributes="Bold" Margin="0,50,0,0"/>
+            <Label Text="68房产管理APP独立经纪人版" TextColor="White" FontSize="18" FontAttributes="Bold"/>
+            
+            <Grid HeightRequest="300" RowDefinitions="40,40,40,40,40" ColumnDefinitions="*,*" RowSpacing="20" Margin="0,50">
+                <BoxView Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Color="WhiteSmoke" CornerRadius="5" Opacity="0.5"/>
+                <BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Color="WhiteSmoke" CornerRadius="5" Opacity="0.5"/>
 
-            <Label Text="欢迎使用68房产管理APP" HorizontalOptions="Center" VerticalOptions="Start" FontSize="22"/>
-            <Label Text="独立经纪人版" HorizontalOptions="Center" VerticalOptions="StartAndExpand" FontSize="18"/>
+                <controls:MyEntry Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Placeholder="手机号" Text="{Binding TelOrEmpNo}" Style="{DynamicResource EntryStyle}"/>
 
-            <Frame Style="{DynamicResource FrameStyle}">
-                <controls:MyEntry Placeholder="手机号" Text="{Binding TelOrEmpNo}" Style="{DynamicResource EntryStyle}"/>
-            </Frame>
-            <Frame Style="{DynamicResource FrameStyle}">
-                <StackLayout Orientation="Horizontal">
-                    <controls:MyEntry Placeholder="密码" Text="{Binding Password}" IsPassword="{Binding IsPassword}" Style="{DynamicResource EntryStyle}"/>
-                    <ImageButton Source="{Binding EyeSource}" Command="{Binding OpenEyeCommand}" HeightRequest="30" WidthRequest="30"
-                                 BackgroundColor="Transparent" HorizontalOptions="Center"/>
-                </StackLayout>
-            </Frame>
+                <controls:MyEntry Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Placeholder="密码" Text="{Binding Password}" IsPassword="{Binding IsPassword}" Style="{DynamicResource EntryStyle}"/>
+                <ImageButton Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Source="{Binding EyeSource}" Command="{Binding OpenEyeCommand}" HeightRequest="30" WidthRequest="30"
+                         BackgroundColor="Transparent" HorizontalOptions="End" Margin="20,0"/>
+                
+                <Button Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Text="登录" BackgroundColor="{DynamicResource MainColor}" TextColor="White"
+                    Padding="0" CornerRadius="5" Command="{Binding LoginCommand}"/>
 
-            <StackLayout WidthRequest="250" Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
-                <Label Text="密码忘了？" HorizontalOptions="StartAndExpand" VerticalOptions="Center">
-                    <Label.GestureRecognizers>
-                        <TapGestureRecognizer x:Name="FogotPwd" NumberOfTapsRequired="1" Command="{Binding ToResetPasswordCommand}"/>
-                    </Label.GestureRecognizers>
-                </Label>
-                <CheckBox x:Name="RememberPwd" IsChecked="{Binding IsRememberPwd}" HorizontalOptions="EndAndExpand" Color="{DynamicResource MainColor}">
+                <CheckBox Grid.Row="3" Grid.Column="0" x:Name="RememberPwd" IsChecked="{Binding IsRememberPwd}" HorizontalOptions="End" Color="{DynamicResource MainColor}">
                     <CheckBox.Behaviors>
                         <behaviors:EventToCommandBehavior EventName="CheckedChanged" Command="{Binding RememberPwdCommand}"/>
                     </CheckBox.Behaviors>
                 </CheckBox>
+                <Label Grid.Row="3" Grid.Column="1" Text="记住密码" HorizontalOptions="Start" VerticalOptions="CenterAndExpand" TextColor="White"/>
 
-                <Label Text="记住密码" HorizontalOptions="End" VerticalOptions="CenterAndExpand" TextColor="Black"/>
-            </StackLayout>
+                <Button Grid.Row="4" Grid.Column="0" Text="密码忘了" BackgroundColor="Transparent" TextColor="White"
+                    Command="{Binding ToResetPasswordCommand}"/>
 
-            <Button Text="登录" WidthRequest="250" HeightRequest="40" BackgroundColor="{DynamicResource MainColor}" TextColor="White" FontSize="18"
-                    HorizontalOptions="Center" BorderRadius="20" Padding="0" Command="{Binding LoginCommand}"/>
-            <Button Text="注册" BackgroundColor="Transparent" TextColor="{DynamicResource MainColor}" FontSize="18"
-                    HorizontalOptions="Center" VerticalOptions="StartAndExpand" Command="{Binding ToRegisterCommand}"/>
-
-
+                <Button Grid.Row="4" Grid.Column="1" Text="注册" BackgroundColor="Transparent" TextColor="White"
+                    Command="{Binding ToRegisterCommand}"/>
+            </Grid>
         </StackLayout>
-        
     </ContentPage.Content>
 </ContentPage>

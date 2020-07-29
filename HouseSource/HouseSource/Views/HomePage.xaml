@@ -131,10 +131,11 @@
 
                                         <ff:CachedImage Grid.Row="0" Grid.RowSpan="3" Source="{Binding PhotoUrl}" Aspect="AspectFill" DownsampleHeight="100" DownsampleWidth="100"/>
 
-                                        <Label Grid.Row="1" Text="{Binding HouseTitle}" TextColor="White" BackgroundColor="{DynamicResource MainColor}"
+                                        <BoxView Grid.Row="1" Grid.RowSpan="2" Color="LightGray" Opacity="0.5"/>
+                                        <Label Grid.Row="1" Text="{Binding HouseTitle}" TextColor="Black"
                                                        LineBreakMode="TailTruncation" FontAttributes="Bold"/>
 
-                                        <Label Grid.Row="2" BackgroundColor="{DynamicResource MainColor}">
+                                        <Label Grid.Row="2">
                                             <Label.FormattedText>
                                                 <FormattedString>
                                                     <Span Text="{Binding Price}" TextColor="Red"/>
