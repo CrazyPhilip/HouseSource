@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using RestSharp;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace HouseSource.Services
@@ -232,6 +233,31 @@ namespace HouseSource.Services
             if (responsePost.ErrorException != null)
             {
                 string message = "Error retrieving response. The Url is " + url;
+                var twilioException = new ApplicationException(message, responsePost.ErrorException);
+                throw twilioException;
+            }
+
+            if (responsePost.StatusCode >= System.Net.HttpStatusCode.BadRequest)
+            {
+                return "";
+            }
+
+            return responsePost.Content;
+        }
+
+        /// <summary>
+        /// Post Form表单 异步 不反序列化
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="form"></param>
+        /// <returns></returns>
+        public static async Task<string> PostFormAsyncWithoutDeserialization(RestRequest restRequest)
+        {
+            IRestResponse responsePost = await _restClient.ExecuteAsync(restRequest);
+
+            if (responsePost.ErrorException != null)
+            {
+                string message = "Error retrieving response. The Url is ";
                 var twilioException = new ApplicationException(message, responsePost.ErrorException);
                 throw twilioException;
             }

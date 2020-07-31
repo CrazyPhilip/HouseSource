@@ -77,24 +77,22 @@
                     <!--图片列表-->
                     <ScrollView Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
                         <StackLayout Orientation="Horizontal">
-                            <StackLayout BindableLayout.ItemsSource="{Binding HouseItemList}" Orientation="Vertical">
+                            <StackLayout BindableLayout.ItemsSource="{Binding ImageList}" Orientation="Horizontal">
                                 <BindableLayout.ItemTemplate>
                                     <DataTemplate>
-                                        <ff:CachedImage Grid.Row="0" Grid.Column="0" Grid.RowSpan="4" Source="{Binding PhotoUrl}" 
-                                                                HeightRequest="100" WidthRequest="100"
-                                                                DownsampleHeight="100" DownsampleWidth="100">
+                                        <ff:CachedImage Source="{Binding .}" HeightRequest="100" WidthRequest="100" DownsampleHeight="100" DownsampleWidth="100">
 
                                             <ff:CachedImage.GestureRecognizers>
                                                 <TapGestureRecognizer NumberOfTapsRequired="2"
-                                                              Command="{Binding BindingContext.TappedCommand, Source={x:Reference addHousePage}}"
-                                                              CommandParameter="{Binding PropertyID}"/>
+                                                              Command="{Binding BindingContext.DoubleTappedCommand, Source={x:Reference addHousePage}}"
+                                                              CommandParameter="{Binding .}"/>
                                             </ff:CachedImage.GestureRecognizers>
                                         </ff:CachedImage>
                                     </DataTemplate>
                                 </BindableLayout.ItemTemplate>
                             </StackLayout>
-                            
-                            <Button Text="添加" Command="{Binding AddImageCommand}"/>
+
+                            <Button Text="添加图片" Command="{Binding AddImageCommand}" BackgroundColor="#6ecbb8" TextColor="White"/>
                         </StackLayout>
                     </ScrollView>
 
@@ -119,7 +117,7 @@
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
-                    <Picker Grid.Row="4" Grid.Column="0" x:Name="BuildingPicker" Title="栋座" ItemsSource="{Binding BuildingList}" Style="{StaticResource PickerStyle}">
+                    <Picker Grid.Row="4" Grid.Column="0" x:Name="BuildingPicker" Title="栋座" SelectedItem="{Binding BuildNo}" ItemsSource="{Binding BuildingList}" Style="{StaticResource PickerStyle}">
                         <Picker.Behaviors>
                             <behaviors:EventToCommandBehavior EventName="SelectedIndexChanged" 
                                                           Command="{Binding GetUnitsCommand}" 
@@ -136,7 +134,7 @@
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
-                    <Picker Grid.Row="4" Grid.Column="1" Title="单元" ItemsSource="{Binding UnitList}" Style="{StaticResource PickerStyle}"/>
+                    <Picker Grid.Row="4" Grid.Column="1" Title="单元" SelectedItem="{Binding Unit}" ItemsSource="{Binding UnitList}" Style="{StaticResource PickerStyle}"/>
 
                     <!--楼层-->
                     <Label Grid.Row="5" Grid.Column="0" Style="{StaticResource NecessaryLabelStyle}">
@@ -148,9 +146,9 @@
                         </Label.FormattedText>
                     </Label>
                     <StackLayout Grid.Row="6" Grid.Column="0" Spacing="0" Orientation="Horizontal">
-                        <Entry Placeholder="楼层" Style="{StaticResource EntryStyle}" HorizontalOptions="FillAndExpand"/>
+                        <Entry Placeholder="楼层" Text="{Binding Para.Floor}" Style="{StaticResource EntryStyle}" HorizontalOptions="FillAndExpand"/>
                         <Label Text="/" VerticalOptions="Center"/>
-                        <Entry Placeholder="总楼层" Style="{StaticResource EntryStyle}" HorizontalOptions="FillAndExpand"/>
+                        <Entry Placeholder="总楼层" Text="{Binding Para.FloorAll}" Style="{StaticResource EntryStyle}" HorizontalOptions="FillAndExpand"/>
                     </StackLayout>
                     <!--<Picker Title="楼层" Style="{StaticResource PickerStyle}"/>-->
 
@@ -163,7 +161,7 @@
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
-                    <Entry Grid.Row="6" Grid.Column="1" Placeholder="请输入房号（最多两位数）" Style="{StaticResource EntryStyle}"/>
+                    <Entry Grid.Row="6" Grid.Column="1" Text="{Binding Para.RoomNo}" Placeholder="请输入房号（最多两位数）" Style="{StaticResource EntryStyle}"/>
 
                     <!--房源标题-->
                     <Label Grid.Row="7" Grid.Column="0" Style="{StaticResource NecessaryLabelStyle}">
@@ -174,7 +172,7 @@
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
-                    <Entry Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Placeholder="请输入房源标题（最多25个字）" Style="{StaticResource EntryStyle}"/>
+                    <Entry Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Para.Title}" Placeholder="请输入房源标题（最多25个字）" Style="{StaticResource EntryStyle}"/>
 
                     <!--交易类型-->
                     <Label Grid.Row="9" Grid.Column="0" Style="{StaticResource NecessaryLabelStyle}">
@@ -185,7 +183,7 @@
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
-                    <Picker Grid.Row="10" Grid.Column="0" Title="交易类型" ItemsSource="{Binding TradeList}" Style="{StaticResource PickerStyle}"/>
+                    <Picker Grid.Row="10" Grid.Column="0" Title="交易类型" SelectedItem="{Binding Para.Trade}" ItemsSource="{Binding TradeList}" Style="{StaticResource PickerStyle}"/>
 
                     <!--朝向-->
                     <Label Grid.Row="9" Grid.Column="1" Style="{StaticResource NecessaryLabelStyle}">
@@ -196,7 +194,7 @@
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
-                    <Picker Grid.Row="10" Grid.Column="1" Title="朝向" ItemsSource="{Binding DirectionList}" Style="{StaticResource PickerStyle}"/>
+                    <Picker Grid.Row="10" Grid.Column="1" Title="朝向" SelectedItem="{Binding Para.PropertyDirection}" ItemsSource="{Binding DirectionList}" Style="{StaticResource PickerStyle}"/>
 
                     <!--售价-->
                     <Label Grid.Row="11" Grid.Column="0" Style="{StaticResource NecessaryLabelStyle}">
@@ -207,7 +205,7 @@
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
-                    <Entry Grid.Row="12" Grid.Column="0" Placeholder="请输入售价" Style="{StaticResource EntryStyle}"/>
+                    <Entry Grid.Row="12" Grid.Column="0" Text="{Binding Para.Price}" Placeholder="请输入售价" Style="{StaticResource EntryStyle}"/>
 
                     <!--面积-->
                     <Label Grid.Row="11" Grid.Column="1" Style="{StaticResource NecessaryLabelStyle}">
@@ -218,7 +216,7 @@
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
-                    <Entry Grid.Row="12" Grid.Column="1"  Placeholder="请输入建筑面积" Style="{StaticResource EntryStyle}"/>
+                    <Entry Grid.Row="12" Grid.Column="1"  Text="{Binding Para.Square}" Placeholder="请输入建筑面积" Style="{StaticResource EntryStyle}"/>
 
                     <!--户型-->
                     <Label Grid.Row="13" Grid.Column="0" Style="{StaticResource NecessaryLabelStyle}">
@@ -230,20 +228,20 @@
                         </Label.FormattedText>
                     </Label>
                     <StackLayout Grid.Row="14" Grid.Column="0" Grid.ColumnSpan="2" Spacing="0" Orientation="Horizontal">
-                        <Entry Placeholder="0-9" Style="{StaticResource EntryStyle}" HorizontalOptions="FillAndExpand"/>
+                        <Entry Placeholder="0-9" Text="{Binding Para.CountF}" Style="{StaticResource EntryStyle}" HorizontalOptions="FillAndExpand"/>
                         <Label Text="室" VerticalOptions="Center"/>
-                        <Entry Placeholder="0-9" Style="{StaticResource EntryStyle}" HorizontalOptions="FillAndExpand"/>
+                        <Entry Placeholder="0-9" Text="{Binding Para.CountT}" Style="{StaticResource EntryStyle}" HorizontalOptions="FillAndExpand"/>
                         <Label Text="厅" VerticalOptions="Center"/>
-                        <Entry Placeholder="0-9" Style="{StaticResource EntryStyle}" HorizontalOptions="FillAndExpand"/>
+                        <Entry Placeholder="0-9" Text="{Binding Para.CountW}" Style="{StaticResource EntryStyle}" HorizontalOptions="FillAndExpand"/>
                         <Label Text="卫" VerticalOptions="Center"/>
-                        <Entry Placeholder="0-9" Style="{StaticResource EntryStyle}" HorizontalOptions="FillAndExpand"/>
+                        <Entry Placeholder="0-9" Text="{Binding Para.CountY}" Style="{StaticResource EntryStyle}" HorizontalOptions="FillAndExpand"/>
                         <Label Text="阳台" VerticalOptions="Center"/>
                     </StackLayout>
                     <!--<Picker Grid.Row="10" Grid.Column="1"  Title="户型" ItemsSource="{Binding }" Style="{StaticResource PickerStyle}"/>-->
 
                     <!--对外展示-->
                     <StackLayout Grid.Row="15" Grid.Column="0" Orientation="Horizontal">
-                        <CheckBox/>
+                        <CheckBox IsChecked="{Binding FlagWeb}"/>
                         <Label Text="对外展示" FontAttributes="Bold" VerticalOptions="Center"/>
                     </StackLayout>
                     <Label Grid.Row="15" Grid.Column="1" Text="勾选可将房源概要信息同步至外网，保证信息安全。" LineBreakMode="WordWrap" VerticalOptions="Center"/>
@@ -257,7 +255,7 @@
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
-                    <Entry Grid.Row="17" Grid.Column="0" Placeholder="请输入业主姓名" Style="{StaticResource EntryStyle}"/>
+                    <Entry Grid.Row="17" Grid.Column="0" Text="{Binding Para.OwnerName}" Placeholder="请输入业主姓名" Style="{StaticResource EntryStyle}"/>
 
                     <!--业主电话-->
                     <Label Grid.Row="16" Grid.Column="1" Style="{StaticResource NecessaryLabelStyle}">
@@ -268,7 +266,7 @@
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
-                    <Entry Grid.Row="17" Grid.Column="1" Placeholder="请输入业主电话" Style="{StaticResource EntryStyle}"/>
+                    <Entry Grid.Row="17" Grid.Column="1" Text="{Binding Para.OwnerMobile}" Placeholder="请输入业主电话" Style="{StaticResource EntryStyle}"/>
                 </Grid>
 
                 <Label Text="以上为必填项，以下为选填项" TextColor="{DynamicResource MainColor}" Margin="10"  HorizontalOptions="Center" VerticalOptions="Center"/>
@@ -304,7 +302,7 @@
                             <BoxView Grid.Row="23" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="2" Color="WhiteSmoke" CornerRadius="5"/>
 
                             <StackLayout Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
-                                <CheckBox x:Name="MWWYCheckBox"/>
+                                <CheckBox x:Name="MWWYCheckBox" IsChecked="{Binding FlagMWWY}"/>
                                 <Label Text="满五唯一" VerticalOptions="Center" HorizontalOptions="CenterAndExpand">
                                     <Label.Triggers>
                                         <DataTrigger TargetType="Label" Binding="{Binding Source={x:Reference MWWYCheckBox}, Path=IsChecked, Mode=TwoWay}" Value="True">
@@ -313,7 +311,7 @@
                                     </Label.Triggers>
                                 </Label>
 
-                                <CheckBox x:Name="WDYCheckBox"/>
+                                <CheckBox x:Name="WDYCheckBox" IsChecked="{Binding FlagWDY}"/>
                                 <Label Text="无抵押" VerticalOptions="Center" HorizontalOptions="CenterAndExpand">
                                     <Label.Triggers>
                                         <DataTrigger TargetType="Label" Binding="{Binding Source={x:Reference WDYCheckBox}, Path=IsChecked, Mode=TwoWay}" Value="True">
@@ -322,7 +320,7 @@
                                     </Label.Triggers>
                                 </Label>
 
-                                <CheckBox x:Name="KDKCheckBox"/>
+                                <CheckBox x:Name="KDKCheckBox" IsChecked="{Binding FlagKDK}"/>
                                 <Label Text="可贷款" VerticalOptions="Center" HorizontalOptions="CenterAndExpand">
                                     <Label.Triggers>
                                         <DataTrigger TargetType="Label" Binding="{Binding Source={x:Reference KDKCheckBox}, Path=IsChecked, Mode=TwoWay}" Value="True">
@@ -331,7 +329,7 @@
                                     </Label.Triggers>
                                 </Label>
 
-                                <CheckBox x:Name="XSFYCheckBox"/>
+                                <CheckBox x:Name="XSFYCheckBox" IsChecked="{Binding FlagXSFY}"/>
                                 <Label Text="新上房源" VerticalOptions="Center" HorizontalOptions="CenterAndExpand">
                                     <Label.Triggers>
                                         <DataTrigger TargetType="Label" Binding="{Binding Source={x:Reference XSFYCheckBox}, Path=IsChecked, Mode=TwoWay}" Value="True">
@@ -343,52 +341,52 @@
 
                             <!--装修-->
                             <Label Grid.Row="1" Grid.Column="0" Text="装修" Style="{StaticResource UnnecessaryLabelStyle}"/>
-                            <Picker Grid.Row="2" Grid.Column="0" Title="装修" ItemsSource="{Binding DecorationList}" Style="{StaticResource PickerStyle}"/>
+                            <Picker Grid.Row="2" Grid.Column="0" Title="装修" SelectedItem="{Binding Para.PropertyDecoration}" ItemsSource="{Binding DecorationList}" Style="{StaticResource PickerStyle}"/>
 
                             <!--家具-->
                             <Label Grid.Row="1" Grid.Column="1" Text="家具" Style="{StaticResource UnnecessaryLabelStyle}"/>
-                            <Picker Grid.Row="2" Grid.Column="1" Title="家具" ItemsSource="{Binding FurnitureList}" Style="{StaticResource PickerStyle}"/>
+                            <Picker Grid.Row="2" Grid.Column="1" Title="家具" SelectedItem="{Binding Para.ZhuZhaiPropertyFurniture}" ItemsSource="{Binding FurnitureList}" Style="{StaticResource PickerStyle}"/>
 
                             <!--类型-->
                             <Label Grid.Row="3" Grid.Column="0" Text="类型" Style="{StaticResource UnnecessaryLabelStyle}"/>
-                            <Picker Grid.Row="4" Grid.Column="0" Title="类型" ItemsSource="{Binding PropertyTypeList}" Style="{StaticResource PickerStyle}"/>
+                            <Picker Grid.Row="4" Grid.Column="0" Title="类型" SelectedItem="{Binding Para.PropertyType}" ItemsSource="{Binding PropertyTypeList}" Style="{StaticResource PickerStyle}"/>
 
                             <!--房屋用途-->
                             <Label Grid.Row="3" Grid.Column="1" Text="房屋用途" Style="{StaticResource UnnecessaryLabelStyle}"/>
-                            <Picker Grid.Row="4" Grid.Column="1" Title="房屋用途" ItemsSource="{Binding PropertyUseTypeList}" Style="{StaticResource PickerStyle}"/>
+                            <Picker Grid.Row="4" Grid.Column="1" Title="房屋用途" SelectedItem="{Binding Para.PropertyUsage}" ItemsSource="{Binding PropertyUseTypeList}" Style="{StaticResource PickerStyle}"/>
 
                             <!--来源-->
                             <Label Grid.Row="5" Grid.Column="0" Text="来源" Style="{StaticResource UnnecessaryLabelStyle}"/>
-                            <Picker Grid.Row="6" Grid.Column="0" Title="来源" ItemsSource="{Binding PropertySourceList}" Style="{StaticResource PickerStyle}"/>
+                            <Picker Grid.Row="6" Grid.Column="0" Title="来源" SelectedItem="{Binding Para.PropertySource}" ItemsSource="{Binding PropertySourceList}" Style="{StaticResource PickerStyle}"/>
 
                             <!--产权-->
                             <Label Grid.Row="5" Grid.Column="1" Text="产权" Style="{StaticResource UnnecessaryLabelStyle}"/>
-                            <Picker Grid.Row="6" Grid.Column="1"  Title="产权" ItemsSource="{Binding PropertyRightList}" Style="{StaticResource PickerStyle}"/>
+                            <Picker Grid.Row="6" Grid.Column="1"  Title="产权" SelectedItem="{Binding Para.PropertyOwn}" ItemsSource="{Binding PropertyRightList}" Style="{StaticResource PickerStyle}"/>
 
                             <!--证件-->
                             <Label Grid.Row="7" Grid.Column="0" Text="证件" Style="{StaticResource UnnecessaryLabelStyle}"/>
-                            <Picker Grid.Row="8" Grid.Column="0" Title="证件" ItemsSource="{Binding CredentialsList}" Style="{StaticResource PickerStyle}"/>
+                            <Picker Grid.Row="8" Grid.Column="0" Title="证件" SelectedItem="{Binding Para.PropertyCertificate}" ItemsSource="{Binding CredentialsList}" Style="{StaticResource PickerStyle}"/>
 
                             <!--现状-->
                             <Label Grid.Row="7" Grid.Column="1" Text="现状" Style="{StaticResource UnnecessaryLabelStyle}"/>
-                            <Picker Grid.Row="8" Grid.Column="1" Title="现状" ItemsSource="{Binding StatusList}" Style="{StaticResource PickerStyle}"/>
+                            <Picker Grid.Row="8" Grid.Column="1" Title="现状" SelectedItem="{Binding Para.PropertyOccupy}" ItemsSource="{Binding StatusList}" Style="{StaticResource PickerStyle}"/>
 
                             <!--看房方式-->
                             <Label Grid.Row="9" Grid.Column="0" Text="看房方式" Style="{StaticResource UnnecessaryLabelStyle}"/>
-                            <Picker Grid.Row="10" Grid.Column="0" Title="看房方式" ItemsSource="{Binding LookWaysList}" Style="{StaticResource PickerStyle}"/>
-                            <Entry Grid.Row="10" Grid.Column="1" Placeholder="输入看房方式备注（8个字）" Style="{StaticResource EntryStyle}"/>
+                            <Picker Grid.Row="10" Grid.Column="0" Title="看房方式" SelectedItem="{Binding Para.PropertyLook}" ItemsSource="{Binding LookWaysList}" Style="{StaticResource PickerStyle}"/>
+                            <Entry Grid.Row="10" Grid.Column="1" Text="{Binding Para.KeyNo}" Placeholder="输入看房方式备注（8个字）" Style="{StaticResource EntryStyle}"/>
 
                             <!--付佣-->
                             <Label Grid.Row="11" Grid.Column="0" Text="付佣" Style="{StaticResource UnnecessaryLabelStyle}"/>
-                            <Picker Grid.Row="12" Grid.Column="0" Title="付佣" ItemsSource="{Binding CommissionPayList}" Style="{StaticResource PickerStyle}"/>
+                            <Picker Grid.Row="12" Grid.Column="0" Title="付佣" SelectedItem="{Binding Para.PropertyCommission}" ItemsSource="{Binding CommissionPayList}" Style="{StaticResource PickerStyle}"/>
 
                             <!--付款-->
                             <Label Grid.Row="11" Grid.Column="1" Text="付款" Style="{StaticResource UnnecessaryLabelStyle}"/>
-                            <Picker Grid.Row="12" Grid.Column="1" Title="付款" ItemsSource="{Binding PaymentList}" Style="{StaticResource PickerStyle}"/>
+                            <Picker Grid.Row="12" Grid.Column="1" Title="付款" SelectedItem="{Binding Para.PropertyBuy}" ItemsSource="{Binding PaymentList}" Style="{StaticResource PickerStyle}"/>
 
                             <!--权属-->
                             <Label Grid.Row="13" Grid.Column="0" Text="权属" Style="{StaticResource UnnecessaryLabelStyle}"/>
-                            <Picker Grid.Row="14" Grid.Column="0" Title="权属" ItemsSource="{Binding OwnershipList}" Style="{StaticResource PickerStyle}"/>
+                            <Picker Grid.Row="14" Grid.Column="0" Title="权属" SelectedItem="{Binding Para.PropertyRight}" ItemsSource="{Binding OwnershipList}" Style="{StaticResource PickerStyle}"/>
 
                             <!--交房日-->
                             <Label Grid.Row="13" Grid.Column="1" Text="交房日" Style="{StaticResource UnnecessaryLabelStyle}"/>
@@ -400,23 +398,23 @@
 
                             <!--建房年代-->
                             <Label Grid.Row="15" Grid.Column="1" Text="建房年代" Style="{StaticResource UnnecessaryLabelStyle}"/>
-                            <Picker Grid.Row="16" Grid.Column="1" Title="建房年代" ItemsSource="{Binding BuiltYearList}" Style="{StaticResource PickerStyle}"/>
+                            <Picker Grid.Row="16" Grid.Column="1" Title="建房年代" SelectedItem="{Binding Para.CompleteYear}" ItemsSource="{Binding BuiltYearList}" Style="{StaticResource PickerStyle}"/>
 
                             <!--房源备注-->
                             <Label Grid.Row="17" Grid.Column="0" Grid.ColumnSpan="2" Text="房源备注" Style="{StaticResource UnnecessaryLabelStyle}"/>
-                            <Editor Grid.Row="18" Grid.Column="0" Grid.ColumnSpan="2" Placeholder="输入房源备注（300字）" FontSize="14"/>
+                            <Editor Grid.Row="18" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Para.Remark}" Placeholder="输入房源备注（300字）" FontSize="14"/>
 
                             <!--房源介绍-->
                             <Label Grid.Row="19" Grid.Column="0" Grid.ColumnSpan="2" Text="房源介绍" Style="{StaticResource UnnecessaryLabelStyle}"/>
-                            <Editor Grid.Row="20" Grid.Column="0" Grid.ColumnSpan="2" Placeholder="输入房源介绍（300字）" FontSize="14"/>
+                            <Editor Grid.Row="20" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Para.PropertyIntroduce}" Placeholder="输入房源介绍（300字）" FontSize="14"/>
 
                             <!--业主介绍-->
                             <Label Grid.Row="21" Grid.Column="0" Grid.ColumnSpan="2" Text="业主介绍" Style="{StaticResource UnnecessaryLabelStyle}"/>
-                            <Editor Grid.Row="22" Grid.Column="0" Grid.ColumnSpan="2" Placeholder="输入业主介绍（300字）" FontSize="14"/>
+                            <Editor Grid.Row="22" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Para.OwnerIntroduce}" Placeholder="输入业主介绍（300字）" FontSize="14"/>
 
                             <!--服务介绍-->
                             <Label Grid.Row="23" Grid.Column="0" Grid.ColumnSpan="2" Text="服务介绍" Style="{StaticResource UnnecessaryLabelStyle}"/>
-                            <Editor Grid.Row="24" Grid.Column="0" Grid.ColumnSpan="2" Placeholder="输入服务介绍（300字）" FontSize="14"/>
+                            <Editor Grid.Row="24" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Para.ServiceIntroduce}" Placeholder="输入服务介绍（300字）" FontSize="14"/>
 
                         </Grid>
                     </Frame>

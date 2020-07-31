@@ -411,13 +411,13 @@ namespace HouseSource.ViewModels
             //string TelReg = @"^(\d{3,4}-)?\d{6,8}$";   //电话
             string CellPhoneReg = @"^[1]+[3,4,5,7,8,9]+\d{9}$";   //手机
 
-            if (ClientName == null || ClientName == "")
+            if (string.IsNullOrWhiteSpace(ClientName))
             {
                 CrossToastPopUp.Current.ShowToastError("客源姓名不能为空，请填写姓名", ToastLength.Long);
                 return false;
             }
 
-            if (ClientPhoneNum == null || ClientPhoneNum == "")
+            if (string.IsNullOrWhiteSpace(ClientPhoneNum))
             {
                 CrossToastPopUp.Current.ShowToastError("客源电话不能为空，请填写姓名", ToastLength.Long);
                 return false;
@@ -428,25 +428,25 @@ namespace HouseSource.ViewModels
                 return false;
             }
 
-            if (Trade == null || Trade == "")
+            if (string.IsNullOrWhiteSpace(Trade))
             {
                 CrossToastPopUp.Current.ShowToastError("交易类型不能为空", ToastLength.Long);
                 return false;
             }
 
-            if (CensusRegister == null || CensusRegister == "")
+            if (string.IsNullOrWhiteSpace(CensusRegister))
             {
                 CrossToastPopUp.Current.ShowToastError("户籍不能为空，请选择", ToastLength.Long);
                 return false;
             }
 
-            if (Marriage == null || Marriage == "")
+            if (string.IsNullOrWhiteSpace(Marriage))
             {
                 CrossToastPopUp.Current.ShowToastError("婚姻不能为空，请选择", ToastLength.Long);
                 return false;
             }
 
-            if (Usage == null || Usage == "")
+            if (string.IsNullOrWhiteSpace(Usage))
             {
                 CrossToastPopUp.Current.ShowToastError("用途不能为空，请选择", ToastLength.Long);
                 return false;
@@ -465,7 +465,7 @@ namespace HouseSource.ViewModels
             }
 
             //预算
-            if (MinBudget != null && MinBudget != "")
+            if (!string.IsNullOrWhiteSpace(MinBudget))
             {
                 if (!Regex.IsMatch(MinBudget, FloatNumReg))
                 {
@@ -474,7 +474,7 @@ namespace HouseSource.ViewModels
                 }
             }
 
-            if (MaxBudget != null && MaxBudget != "")
+            if (!string.IsNullOrWhiteSpace(MaxBudget))
             {
                 if (!Regex.IsMatch(MaxBudget, FloatNumReg))
                 {
@@ -483,7 +483,7 @@ namespace HouseSource.ViewModels
                 }
             }
 
-            if (MinBudget != null && MinBudget != "" && MaxBudget != null && MaxBudget != "")
+            if (!string.IsNullOrWhiteSpace(MinBudget) && !string.IsNullOrWhiteSpace(MaxBudget))
             {
                 if (float.Parse(MinBudget) > float.Parse(MaxBudget))
                 {
@@ -493,7 +493,7 @@ namespace HouseSource.ViewModels
             }
 
             //面积
-            if (MinArea != null && MinArea != "")
+            if (!string.IsNullOrWhiteSpace(MinArea))
             {
                 if (!Regex.IsMatch(MinArea, FloatNumReg))
                 {
@@ -502,7 +502,7 @@ namespace HouseSource.ViewModels
                 }
             }
 
-            if (MaxArea != null && MaxArea != "")
+            if (!string.IsNullOrWhiteSpace(MaxArea))
             {
                 if (!Regex.IsMatch(MaxArea, FloatNumReg))
                 {
@@ -511,7 +511,7 @@ namespace HouseSource.ViewModels
                 }
             }
 
-            if (MinArea != null && MinArea != "" && MaxArea != null && MaxArea != "")
+            if (!string.IsNullOrWhiteSpace(MinArea) && !string.IsNullOrWhiteSpace(MaxArea))
             {
                 if (float.Parse(MinArea) > float.Parse(MaxArea))
                 {
@@ -521,7 +521,7 @@ namespace HouseSource.ViewModels
             }
 
             //楼层
-            if (MinFloor != null && MinFloor != "")
+            if (!string.IsNullOrWhiteSpace(MinFloor))
             {
                 if (!Regex.IsMatch(MinFloor, IntNumReg))
                 {
@@ -530,7 +530,7 @@ namespace HouseSource.ViewModels
                 }
             }
 
-            if (MaxFloor != null && MaxFloor != "")
+            if (!string.IsNullOrWhiteSpace(MaxFloor))
             {
                 if (!Regex.IsMatch(MaxFloor, IntNumReg))
                 {
@@ -539,7 +539,7 @@ namespace HouseSource.ViewModels
                 }
             }
 
-            if (MinFloor != null && MinFloor != "" && MaxFloor != null && MaxFloor != "")
+            if (!string.IsNullOrWhiteSpace(MinFloor) && !string.IsNullOrWhiteSpace(MaxFloor))
             {
                 if (int.Parse(MinFloor) > int.Parse(MaxFloor))
                 {
@@ -548,7 +548,7 @@ namespace HouseSource.ViewModels
                 }
             }
             //房数
-            if (MinRooms != null && MinRooms != "")
+            if (!string.IsNullOrWhiteSpace(MinRooms))
             {
                 if (!Regex.IsMatch(MinRooms, IntNumReg))
                 {
@@ -557,7 +557,7 @@ namespace HouseSource.ViewModels
                 }
             }
 
-            if (MaxRooms != null && MaxRooms != "")
+            if (!string.IsNullOrWhiteSpace(MaxRooms))
             {
                 if (!Regex.IsMatch(MaxRooms, IntNumReg))
                 {
@@ -566,7 +566,7 @@ namespace HouseSource.ViewModels
                 }
             }
 
-            if (MinRooms != null && MinRooms != "" && MaxRooms != null && MaxRooms != "")
+            if (!string.IsNullOrWhiteSpace(MinRooms) && !string.IsNullOrWhiteSpace(MaxRooms))
             {
                 if (int.Parse(MinRooms) > int.Parse(MaxRooms))
                 {

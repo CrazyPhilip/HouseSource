@@ -160,8 +160,8 @@ namespace HouseSource.Models
         [JsonProperty("Status", NullValueHandling = NullValueHandling.Ignore)]
         public string Status { get; set; }   //Comment
 
-        [JsonProperty("photos", NullValueHandling = NullValueHandling.Ignore)]
-        public string photos { get; set; }   //Comment
-
+        //[JsonProperty("photos", NullValueHandling = NullValueHandling.Ignore)]
+        //public string photos { get; set; }   //Comment
+        //public List<string> photos { get; set; }
     }
 }

@@ -93,6 +93,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="HybridWebViewRenderer.cs" />
+    <Compile Include="ImagePickerService.cs" />
     <Compile Include="JavascriptWebViewClient.cs" />
     <Compile Include="JSBridge.cs" />
     <Compile Include="MainActivity.cs" />

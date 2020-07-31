@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
 using HouseSource.Utils;
+using RestSharp;
 
 namespace HouseSource.Services
 {
@@ -249,7 +250,38 @@ namespace HouseSource.Services
             return content;
         }
         
-        
+        public static async Task<CommonRD> AddNewHouse(AddHousePara addHousePara, IList<string> photos)
+        {
+            string url = "NewHouseData";
+            //string httpContent = JsonConvert.SerializeObject(addClientPara);
+
+            //string httpContent = "";
+            //Type type = addHousePara.GetType();
+            //foreach (var item in type.GetProperties())
+            //{
+            //    httpContent += (item.Name + "=" + item.GetValue(addHousePara, null) + "&");
+            //}
+            //httpContent = httpContent.TrimEnd('&');
+
+            var requestPost = new RestRequest(url, Method.POST);
+            requestPost.AddHeader("content-type", "multipart/form-data");
+            //requestPost.AddParameter("multipart/form-data", form, ParameterType.RequestBody);
+            Type type = addHousePara.GetType();
+            foreach (var item in type.GetProperties())
+            {
+                //httpContent += (item.Name + "=" + item.GetValue(addHousePara, null) + "&");
+                requestPost.AddParameter(item.Name, item.GetValue(addHousePara, null));
+            }
+
+            foreach (var item in photos)
+            {
+                requestPost.AddFile("photos", item);
+            }
+
+            string content = await RestSharpHelper<string>.PostFormAsyncWithoutDeserialization(requestPost);
+            CommonRD commonRD = JsonConvert.DeserializeObject<CommonRD>(content);
+            return commonRD;
+        }
         #endregion
 
         #region 消息
@@ -388,6 +420,7 @@ namespace HouseSource.Services
             return content;
         }
         #endregion
+
 
         /// <summary>
         /// 获取办理业务的链接
