@@ -14,5 +14,9 @@ namespace HouseSource.ResponseData
         [JsonProperty("InquiryFollowInfo", NullValueHandling = NullValueHandling.Ignore)]
         public InquiryFollowItemInfo[] InquiryFollowInfo { get; set; }   //Comment
 
+        [JsonProperty("FollowInfo", NullValueHandling = NullValueHandling.Ignore)]
+        public InquiryFollowItemInfo[] FollowInfo { get; set; }   //Comment
+
+
     }
 }

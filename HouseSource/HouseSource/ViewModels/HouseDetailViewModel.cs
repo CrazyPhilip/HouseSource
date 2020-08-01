@@ -58,6 +58,10 @@ namespace HouseSource.ViewModels
         }
 
         public Command ShareCommand { get; set; }
+        public Command CallOwnerCommand { get; set; }
+        public Command SeeFollowUpCommand { get; set; }
+        public Command WriteFollowUpCommand { get; set; }
+        public Command EditCommand { get; set; }
         public Command CollectCommand { get; set; }
         public Command CallCommand { get; set; }
         public Command<string> CarouselTappedCommand { get; set; }
@@ -67,7 +71,7 @@ namespace HouseSource.ViewModels
             House = houseInfo;
             HouseTitle = house.DistrictName + " " + house.AreaName + " " + house.EstateName;
             House.PhotoUrl = string.IsNullOrWhiteSpace(House.PhotoUrl) ? "NullPic.jpg" : House.PhotoUrl;
-            //Visible = House.EmpID == GlobalVariables.LoggedUser.EmpID;
+            Visible = House.EmpID == GlobalVariables.LoggedUser.EmpID;
 
             CheckCollected();
 
@@ -77,6 +81,87 @@ namespace HouseSource.ViewModels
             {
                 var page = new ShareView(House.PropertyID);
                 PopupNavigation.Instance.PushAsync(page);
+            }, () => { return true; });
+
+            CallOwnerCommand = new Command(async () =>
+            {
+                string action = await Application.Current.MainPage.DisplayActionSheet("联系业主" + House.ownermobile, "取消", null, "打电话", "发短信");
+                if (action == "打电话")
+                {
+                    try
+                    {
+                        if (!string.IsNullOrWhiteSpace(House.tel))
+                        {
+                            PhoneDialer.Open(House.tel);
+                        }
+                        else
+                        {
+                            CrossToastPopUp.Current.ShowToastError("电话号码为空", ToastLength.Long);
+                        }
+                    }
+                    catch (FeatureNotSupportedException)
+                    {
+                        // Phone Dialer is not supported on this device.
+                        CrossToastPopUp.Current.ShowToastError("该设备不支持拨号", ToastLength.Long);
+                    }
+                    catch (Exception)
+                    {
+                        // Other error has occurred.
+                    }
+                }
+                else if (action == "发短信")
+                {
+                    try
+                    {
+                        if (!string.IsNullOrWhiteSpace(House.tel))
+                        {
+                            string result = await Application.Current.MainPage.DisplayPromptAsync("短信", "请输入短消息", "发送", "取消", "短消息（140个字以内）", 140, null);
+
+                            if (result == null)
+                            {
+                                CrossToastPopUp.Current.ShowToastWarning("已取消", ToastLength.Long);
+                            }
+                            else if (result == "")
+                            {
+                                CrossToastPopUp.Current.ShowToastWarning("请输入短消息（140字以内）", ToastLength.Long);
+                            }
+                            else
+                            {
+                                var message = new SmsMessage()
+                                {
+                                    Body = result,
+                                    Recipients = new List<string>() { House.tel }
+                                };
+                                await Sms.ComposeAsync(message);
+                            }
+                        }
+                        else
+                        {
+                            CrossToastPopUp.Current.ShowToastError("电话号码为空", ToastLength.Long);
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        throw;
+                    }
+                }
+            }, () => { return true; });
+
+            SeeFollowUpCommand = new Command(() =>
+            {
+                SeeFollowUpPage seeFollowUpPage = new SeeFollowUpPage(House.PropertyID, true);
+                Application.Current.MainPage.Navigation.PushAsync(seeFollowUpPage);
+            }, () => { return true; });
+
+            WriteFollowUpCommand = new Command(() =>
+            {
+                WriteFollowUpPage writeFollowUpPage = new WriteFollowUpPage(House.PropertyID, true);
+                Application.Current.MainPage.Navigation.PushAsync(writeFollowUpPage);
+            }, () => { return true; });
+
+            EditCommand = new Command(() =>
+            {
+
             }, () => { return true; });
 
             CallCommand = new Command(async () =>

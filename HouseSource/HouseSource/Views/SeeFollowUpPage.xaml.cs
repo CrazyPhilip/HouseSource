@@ -13,11 +13,11 @@ namespace HouseSource.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class SeeFollowUpPage : ContentPage
     {
-        public SeeFollowUpPage(string inquiryID)
+        public SeeFollowUpPage(string id, bool isProperty)
         {
             InitializeComponent();
-
-            BindingContext = new SeeFollowViewModel(inquiryID);
+            
+            BindingContext = new SeeFollowViewModel(id, isProperty);
         }
     }
 }

@@ -250,6 +250,12 @@ namespace HouseSource.Services
             return content;
         }
         
+        /// <summary>
+        /// 新增房源
+        /// </summary>
+        /// <param name="addHousePara"></param>
+        /// <param name="photos"></param>
+        /// <returns></returns>
         public static async Task<CommonRD> AddNewHouse(AddHousePara addHousePara, IList<string> photos)
         {
             string url = "NewHouseData";
@@ -281,6 +287,42 @@ namespace HouseSource.Services
             string content = await RestSharpHelper<string>.PostFormAsyncWithoutDeserialization(requestPost);
             CommonRD commonRD = JsonConvert.DeserializeObject<CommonRD>(content);
             return commonRD;
+        }
+
+        /// <summary>
+        /// 获取房源跟进信息
+        /// </summary>
+        /// <param name="propertyID"></param>
+        /// <returns></returns>
+        public static async Task<InquiryFollowRD> GetHouseFollowInfo(string propertyID)
+        {
+            string url = "GetHouseFollowInfo?DBName=cd&PropertyID=" + propertyID;
+
+            string content = await RestSharpHelper<string>.GetAsyncWithoutDeserialization(url);
+            content = GetSubString(content, "{", "}");
+            InquiryFollowRD inquiryFollowRD = JsonConvert.DeserializeObject<InquiryFollowRD>(content);
+            return inquiryFollowRD;
+        }
+
+        /// <summary>
+        /// 新增房源跟进信息
+        /// </summary>
+        /// <param name="propertyID"></param>
+        /// <param name="_content"></param>
+        /// <param name="alertType"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static async Task<string> NewHouseFollow(string propertyID, string _content,string alertType, string type)
+        {
+            string url = "NewHouseFollow?DBName=cd&PropertyID=" + propertyID
+                + "&EmpNo=" + GlobalVariables.LoggedUser.EmpNo
+                + "&Content=" + _content
+                + "&AlertType=" + alertType
+                + "&FollowType=" + type;
+
+            string content = await RestSharpHelper<string>.GetAsyncWithoutDeserialization(url);
+            content = GetSubString(content, "{", "}");
+            return content;
         }
         #endregion
 
@@ -421,6 +463,49 @@ namespace HouseSource.Services
         }
         #endregion
 
+        #region 报表
+        /// <summary>
+        /// 获取业绩
+        /// </summary>
+        /// <param name="timeOption"></param>
+        /// <returns></returns>
+        public static async Task<string> GetAchievement(string timeOption)
+        {
+            string url = "queryAchievement?DBName=cd&EmpID=" + GlobalVariables.LoggedUser.EmpID + "&TimeOptions=" + timeOption;
+
+            string content = await RestSharpHelper<string>.GetAsyncWithoutDeserialization(url);
+            content = GetSubString(content, "{", "}");
+            return content;
+        }
+
+        /// <summary>
+        /// 获取工作量
+        /// </summary>
+        /// <param name="timeOption"></param>
+        /// <returns></returns>
+        public static async Task<string> GetWorkLoad(string timeOption)
+        {
+            string url = "queryWorkload?DBName=cd&EmpID=" + GlobalVariables.LoggedUser.EmpID + "&TimeOptions=" + timeOption;
+
+            string content = await RestSharpHelper<string>.GetAsyncWithoutDeserialization(url);
+            content = GetSubString(content, "{", "}");
+            return content;
+        }
+
+        /// <summary>
+        /// 获取工作量排名
+        /// </summary>
+        /// <param name="timeOption"></param>
+        /// <returns></returns>
+        public static async Task<string> GetWorkLoadRank(string timeOption)
+        {
+            string url = "queryWorkloadRank?DBName=cd&EmpID=" + GlobalVariables.LoggedUser.EmpID + "&TimeOptions=" + timeOption;
+
+            string content = await RestSharpHelper<string>.GetAsyncWithoutDeserialization(url);
+            content = GetSubString(content, "{", "}");
+            return content;
+        }
+        #endregion
 
         /// <summary>
         /// 获取办理业务的链接

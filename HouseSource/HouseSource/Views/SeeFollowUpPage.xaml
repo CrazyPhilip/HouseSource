@@ -7,7 +7,7 @@
              x:Class="HouseSource.Views.SeeFollowUpPage"
              Title="跟进信息">
     <ContentPage.Content>
-        <StackLayout BindableLayout.ItemsSource="{Binding InquiryFollowInfoList}" Padding="10,0">
+        <StackLayout BindableLayout.ItemsSource="{Binding FollowInfoList}" Padding="10,0">
             <BindableLayout.ItemTemplate>
                 <DataTemplate>
                     <Expander>

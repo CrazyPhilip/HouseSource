@@ -13,11 +13,11 @@ namespace HouseSource.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class WriteFollowUpPage : ContentPage
     {
-        public WriteFollowUpPage(string inquiryID)
+        public WriteFollowUpPage(string inquiryID, bool isProperty)
         {
             InitializeComponent();
 
-            BindingContext = new WriteFollowViewModel(inquiryID);
+            BindingContext = new WriteFollowViewModel(inquiryID, isProperty);
         }
     }
 }

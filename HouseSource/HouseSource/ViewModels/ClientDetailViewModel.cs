@@ -28,7 +28,7 @@ namespace HouseSource.ViewModels
             NavigateCommand = new Command<Type>(async (pageName) =>
             {
                 //Type type = Type.GetType(pageName);
-                Page page = (Page)Activator.CreateInstance(pageName, Client.InquiryID);
+                Page page = (Page)Activator.CreateInstance(pageName, Client.InquiryID, false);
                 await Application.Current.MainPage.Navigation.PushAsync(page);
             }, (pageName) => { return true; });
 

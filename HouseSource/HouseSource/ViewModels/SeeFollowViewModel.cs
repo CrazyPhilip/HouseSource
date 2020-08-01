@@ -13,23 +13,23 @@ namespace HouseSource.ViewModels
 {
     public class SeeFollowViewModel : BaseViewModel
     {
-		private ObservableCollection<InquiryFollowItemInfo> inquiryFollowInfoList;   //Comment
-		public ObservableCollection<InquiryFollowItemInfo> InquiryFollowInfoList
+		private ObservableCollection<InquiryFollowItemInfo> followInfoList;   //Comment
+		public ObservableCollection<InquiryFollowItemInfo> FollowInfoList
 		{
-			get { return inquiryFollowInfoList; }
-			set { SetProperty(ref inquiryFollowInfoList, value); }
+			get { return followInfoList; }
+			set { SetProperty(ref followInfoList, value); }
 		}
 
-		public SeeFollowViewModel(string inquiryID)
+		public SeeFollowViewModel(string id, bool isProperty)
 		{
-			InitSeeFollowPage(inquiryID);
+			InitSeeFollowPage(id, isProperty);
 
 		}
 
 		/// <summary>
 		/// 初始化看跟进页面
 		/// </summary>
-		private async void InitSeeFollowPage(string inquiryID)
+		private async void InitSeeFollowPage(string id, bool isProperty)
 		{
 			try
 			{
@@ -39,14 +39,20 @@ namespace HouseSource.ViewModels
 					return;
 				}
 
-				InquiryFollowRD inquiryFollowRD = await RestSharpService.GetInquiryFollowInfo(inquiryID);
+				InquiryFollowRD inquiryFollowRD = new InquiryFollowRD();
+				inquiryFollowRD = isProperty ? await RestSharpService.GetHouseFollowInfo(id) : await RestSharpService.GetInquiryFollowInfo(id);
 
-				InquiryFollowInfoList = inquiryFollowRD != null ? new ObservableCollection<InquiryFollowItemInfo>(inquiryFollowRD.InquiryFollowInfo) : new ObservableCollection<InquiryFollowItemInfo>();
-
+                if (isProperty)
+				{
+					FollowInfoList = inquiryFollowRD.Msg == "success" ? new ObservableCollection<InquiryFollowItemInfo>(inquiryFollowRD.FollowInfo) : new ObservableCollection<InquiryFollowItemInfo>();
+				}
+				else
+				{
+					FollowInfoList = inquiryFollowRD.Msg == "success" ? new ObservableCollection<InquiryFollowItemInfo>(inquiryFollowRD.InquiryFollowInfo) : new ObservableCollection<InquiryFollowItemInfo>();
+				}
 			}
 			catch (Exception)
 			{
-
 				throw;
 			}
 		}

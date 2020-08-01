@@ -18,11 +18,25 @@ namespace HouseSource.ViewModels
             set { SetProperty(ref followTypeList, value); }
         }
 
+        private List<string> alertList;   //提醒范围列表
+        public List<string> AlertList
+        {
+            get { return alertList; }
+            set { SetProperty(ref alertList, value); }
+        }
+
         private string followType;   //跟进类型
         public string FollowType
         {
             get { return followType; }
             set { SetProperty(ref followType, value); }
+        }
+
+        private string alert;   //提醒范围
+        public string Alert
+        {
+            get { return alert; }
+            set { SetProperty(ref alert, value); }
         }
 
         private string content;   //跟进内容
@@ -32,13 +46,31 @@ namespace HouseSource.ViewModels
             set { SetProperty(ref content, value); }
         }
 
+        private bool visible;   //Comment
+        public bool Visible
+        {
+            get { return visible; }
+            set { SetProperty(ref visible, value); }
+        }
+
         public string InquiryID { get; set; }
+        public string PropertyID { get; set; }
 
         public Command CommitCommand { get; set; }
 
-        public WriteFollowViewModel(string inquiryID)
+        public WriteFollowViewModel(string id, bool isProperty)
         {
-            InquiryID = inquiryID;
+            if (isProperty)
+            {
+                PropertyID = id;
+                Visible = isProperty;
+                AlertList = new List<string> { "本部", "本人" };
+            }
+            else
+            {
+                InquiryID = id;
+                Visible = isProperty;
+            }
 
             FollowTypeList = new List<string>()
             {
@@ -73,8 +105,9 @@ namespace HouseSource.ViewModels
                     CrossToastPopUp.Current.ShowToastError("跟进内容为空", ToastLength.Short);
                     return;
                 }
+                string _Content = "";
 
-                string _Content = await RestSharpService.NewInquiryFollow(InquiryID, Content, FollowType);
+                _Content = Visible ? await RestSharpService.NewHouseFollow(PropertyID, Content, Alert, FollowType) : await RestSharpService.NewInquiryFollow(InquiryID, Content, FollowType);
 
                 if (string.IsNullOrWhiteSpace(_Content))
                 {

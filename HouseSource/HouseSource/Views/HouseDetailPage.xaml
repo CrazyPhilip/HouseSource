@@ -164,10 +164,10 @@
                         </Label>
                         <BoxView Color="LightGray" HeightRequest="1" HorizontalOptions="Fill" IsVisible="{Binding Visible}"/>
                         <Grid Margin="5" RowDefinitions="*,*" ColumnDefinitions="*,*" IsVisible="{Binding Visible}">
-                            <Button Grid.Row="0" Grid.Column="0" Text="联系业主"/>
-                            <Button Grid.Row="0" Grid.Column="1" Text="看跟进"/>
-                            <Button Grid.Row="1" Grid.Column="0" Text="写跟进"/>
-                            <Button Grid.Row="1" Grid.Column="1" Text="修改房源"/>
+                            <Button Grid.Row="0" Grid.Column="0" Text="联系业主" Command="{Binding CallOwnerCommand}"/>
+                            <Button Grid.Row="0" Grid.Column="1" Text="看跟进" Command="{Binding SeeFollowUpCommand}"/>
+                            <Button Grid.Row="1" Grid.Column="0" Text="写跟进" Command="{Binding WriteFollowUpCommand}"/>
+                            <Button Grid.Row="1" Grid.Column="1" Text="修改房源" Command="{Binding EditCommand}"/>
                         </Grid>
                     </StackLayout>
                 </StackLayout>

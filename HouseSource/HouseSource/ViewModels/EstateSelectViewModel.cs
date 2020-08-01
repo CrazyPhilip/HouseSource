@@ -102,6 +102,7 @@ namespace HouseSource.ViewModels
 			if (vm != null)
 			{
 				vm.Estate = e;
+				vm.Para.Title = e.DistrictName + " " + e.EstateName + " ";
 				vm.GetBuildings();
 			}
 

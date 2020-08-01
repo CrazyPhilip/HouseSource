@@ -507,19 +507,19 @@ namespace HouseSource.ViewModels
             //string TelReg = @"^(\d{3,4}-)?\d{6,8}$";   //电话
             string CellPhoneReg = @"^[1]+[3,4,5,7,8,9]+\d{9}$";   //手机
 
-            if (string.IsNullOrWhiteSpace(Para.CityName))
+            if (string.IsNullOrWhiteSpace(Estate.CityName))
             {
                 CrossToastPopUp.Current.ShowToastError("房源城市不能为空，请重新选择楼盘", ToastLength.Long);
                 return false;
             }
 
-            if (string.IsNullOrWhiteSpace(Para.DistrictName))
+            if (string.IsNullOrWhiteSpace(Estate.DistrictName))
             {
                 CrossToastPopUp.Current.ShowToastError("房源城市不能为空，请重新选择楼盘", ToastLength.Long);
                 return false;
             }
 
-            if (string.IsNullOrWhiteSpace(Para.EstateID))
+            if (string.IsNullOrWhiteSpace(Estate.EstateID))
             {
                 CrossToastPopUp.Current.ShowToastError("房源城市不能为空，请重新选择楼盘", ToastLength.Long);
                 return false;
@@ -534,32 +534,6 @@ namespace HouseSource.ViewModels
             if (string.IsNullOrWhiteSpace(Unit))
             {
                 CrossToastPopUp.Current.ShowToastError("单元不能为空，请重新填写栋座", ToastLength.Long);
-                return false;
-            }
-
-            if (string.IsNullOrWhiteSpace(Para.Title))
-            {
-                CrossToastPopUp.Current.ShowToastError("房源标题不能为空，请重新选择楼盘", ToastLength.Long);
-                return false;
-            }
-
-            if (string.IsNullOrWhiteSpace(Para.RoomNo))
-            {
-                CrossToastPopUp.Current.ShowToastError("房号不能为空，请重新选择楼盘", ToastLength.Long);
-                return false;
-            }
-            else
-            {
-                if (!Regex.IsMatch(Para.RoomNo, @"^[0-9a-zA-Z]+$"))
-                {
-                    CrossToastPopUp.Current.ShowToastError("房号格式不对，只能是数字或字母，请重新填写房号", ToastLength.Long);
-                    return false;
-                }
-            }
-
-            if (string.IsNullOrWhiteSpace(Para.Trade))
-            {
-                CrossToastPopUp.Current.ShowToastError("交易类型不能为空", ToastLength.Long);
                 return false;
             }
 
@@ -591,21 +565,35 @@ namespace HouseSource.ViewModels
                 }
             }
 
-            if (int.Parse(Para.Floor)>int.Parse(Para.FloorAll))
+            if (int.Parse(Para.Floor) > int.Parse(Para.FloorAll))
             {
                 CrossToastPopUp.Current.ShowToastError("总楼层不能小于楼层，请重新填写总楼层", ToastLength.Long);
                 return false;
             }
 
-            if (string.IsNullOrWhiteSpace(Para.CountF) || string.IsNullOrWhiteSpace(Para.CountT) || string.IsNullOrWhiteSpace(Para.CountW) || string.IsNullOrWhiteSpace(Para.CountY))
+            if (string.IsNullOrWhiteSpace(Para.RoomNo))
             {
-                CrossToastPopUp.Current.ShowToastError("户型不能为空，或者户型不全，请重新填写户型", ToastLength.Long);
+                CrossToastPopUp.Current.ShowToastError("房号不能为空，请重新选择楼盘", ToastLength.Long);
+                return false;
+            }
+            else
+            {
+                if (!Regex.IsMatch(Para.RoomNo, @"^[0-9a-zA-Z]+$"))
+                {
+                    CrossToastPopUp.Current.ShowToastError("房号格式不对，只能是数字或字母，请重新填写房号", ToastLength.Long);
+                    return false;
+                }
+            }
+
+            if (string.IsNullOrWhiteSpace(Para.Title))
+            {
+                CrossToastPopUp.Current.ShowToastError("房源标题不能为空，请重新选择楼盘", ToastLength.Long);
                 return false;
             }
 
-            if (!Regex.IsMatch(Para.CountF, IntNumReg) || !Regex.IsMatch(Para.CountT, IntNumReg) || !Regex.IsMatch(Para.CountW, IntNumReg) || !Regex.IsMatch(Para.CountY, IntNumReg) )
+            if (string.IsNullOrWhiteSpace(Para.Trade))
             {
-                CrossToastPopUp.Current.ShowToastError("户型格式不对，只能是数字，请重新填写户型", ToastLength.Long);
+                CrossToastPopUp.Current.ShowToastError("交易类型不能为空", ToastLength.Long);
                 return false;
             }
 
@@ -636,6 +624,19 @@ namespace HouseSource.ViewModels
             if (!Regex.IsMatch(Para.Square, FloatNumReg))
             {
                 CrossToastPopUp.Current.ShowToastError("面积格式不对，只能是数字，请重新填写面积", ToastLength.Long);
+                return false;
+            }
+
+
+            if (string.IsNullOrWhiteSpace(Para.CountF) || string.IsNullOrWhiteSpace(Para.CountT) || string.IsNullOrWhiteSpace(Para.CountW) || string.IsNullOrWhiteSpace(Para.CountY))
+            {
+                CrossToastPopUp.Current.ShowToastError("户型不能为空，或者户型不全，请重新填写户型", ToastLength.Long);
+                return false;
+            }
+
+            if (!Regex.IsMatch(Para.CountF, IntNumReg) || !Regex.IsMatch(Para.CountT, IntNumReg) || !Regex.IsMatch(Para.CountW, IntNumReg) || !Regex.IsMatch(Para.CountY, IntNumReg) )
+            {
+                CrossToastPopUp.Current.ShowToastError("户型格式不对，只能是数字，请重新填写户型", ToastLength.Long);
                 return false;
             }
 

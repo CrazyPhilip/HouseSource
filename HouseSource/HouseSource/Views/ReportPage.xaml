@@ -16,12 +16,172 @@
     <ContentPage.BindingContext>
         <viewModels:ReportViewModel/>
     </ContentPage.BindingContext>
-    
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="SectionLabel" TargetType="Label">
+                <Setter Property="HorizontalOptions" Value="Start"/>
+                <Setter Property="VerticalOptions" Value="Center"/>
+                <Setter Property="TextColor" Value="Black"/>
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="FontAttributes" Value="Bold"/>
+            </Style>
+            <Style x:Key="ItemLabel" TargetType="Label">
+                <Setter Property="HorizontalOptions" Value="Center"/>
+                <Setter Property="VerticalOptions" Value="Center"/>
+                <Setter Property="TextColor" Value="Crimson"/>
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="FontAttributes" Value="Bold"/>
+            </Style>
+            <Style x:Key="ItemTitleLabel" TargetType="Label">
+                <Setter Property="HorizontalOptions" Value="Center"/>
+                <Setter Property="VerticalOptions" Value="Center"/>
+                <Setter Property="FontSize" Value="12"/>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
     <ContentPage.Content>
-        <StackLayout>
-            <ultimateChart:SupportLineChartExtended x:Name="chart" HeightRequest="200"
-                                                        DrawBorders="false" DoubleTapToZoomEnabled="false" ChartData="{Binding MyLineChartData}"
-                                                        XAxis="{Binding MyXAxisConfig}" DescriptionChart="{Binding Description}"/>
-        </StackLayout>
+        <ScrollView>
+            <StackLayout Padding="10,10,10,0">
+                <Label Text="业绩报表" Style="{StaticResource SectionLabel}" HorizontalOptions="Center" Margin="0,10"/>
+                
+                <!--本日-->
+                <Expander IsExpanded="True">
+                    <Expander.Header>
+                        <Frame CornerRadius="5" BackgroundColor="{DynamicResource ControlBackgroundColor}" HasShadow="False">
+                            <Label Text="本日" Style="{StaticResource SectionLabel}"/>
+                        </Frame>
+                    </Expander.Header>
+                    <Frame CornerRadius="5" BackgroundColor="{DynamicResource ControlBackgroundColor}" HasShadow="False">
+                        <Grid RowDefinitions="30,30,30,30,30,30,30,30,30,30" ColumnDefinitions="*,*,*,*" Padding="10,0">
+
+                            <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" Text="业绩" Style="{StaticResource SectionLabel}"/>
+
+                            <Label Grid.Row="1" Grid.Column="0" Text="{Binding TodayReport.companyRank}" Style="{StaticResource ItemLabel}"/>
+                            <Label Grid.Row="2" Grid.Column="0" Text="业绩排名" Style="{StaticResource ItemTitleLabel}"/>
+                            <Label Grid.Row="1" Grid.Column="1" Text="{Binding TodayReport.receivableNum}" Style="{StaticResource ItemLabel}"/>
+                            <Label Grid.Row="2" Grid.Column="1" Text="应收业绩" Style="{StaticResource ItemTitleLabel}"/>
+                            <Label Grid.Row="1" Grid.Column="2" Text="{Binding TodayReport.paidNum}" Style="{StaticResource ItemLabel}"/>
+                            <Label Grid.Row="2" Grid.Column="2" Text="实收业绩" Style="{StaticResource ItemTitleLabel}"/>
+                            <Label Grid.Row="1" Grid.Column="3" Text="{Binding TodayReport.nrNum}" Style="{StaticResource ItemLabel}"/>
+                            <Label Grid.Row="2" Grid.Column="3" Text="未收业绩" Style="{StaticResource ItemTitleLabel}"/>
+
+                            <Label Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4" Text="工作量" Style="{StaticResource SectionLabel}"/>
+
+                            <Label Grid.Row="4" Grid.Column="0" Text="{Binding TodayReport.companyRank2}" Style="{StaticResource ItemLabel}"/>
+                            <Label Grid.Row="5" Grid.Column="0" Text="工作量排名" Style="{StaticResource ItemTitleLabel}"/>
+                            <Label Grid.Row="6" Grid.Column="0" Text="{Binding TodayReport.ffzs}" Style="{StaticResource ItemLabel}"/>
+                            <Label Grid.Row="7" Grid.Column="0" Text="房增" Style="{StaticResource ItemTitleLabel}"/>
+                            <Label Grid.Row="6" Grid.Column="1" Text="{Binding TodayReport.kkzs}" Style="{StaticResource ItemLabel}"/>
+                            <Label Grid.Row="7" Grid.Column="1" Text="客增" Style="{StaticResource ItemTitleLabel}"/>
+                            <Label Grid.Row="6" Grid.Column="2" Text="{Binding TodayReport.fgj}" Style="{StaticResource ItemLabel}"/>
+                            <Label Grid.Row="7" Grid.Column="2" Text="房跟" Style="{StaticResource ItemTitleLabel}"/>
+                            <Label Grid.Row="6" Grid.Column="3" Text="{Binding TodayReport.kgj}" Style="{StaticResource ItemLabel}"/>
+                            <Label Grid.Row="7" Grid.Column="3" Text="客跟" Style="{StaticResource ItemTitleLabel}"/>
+                            <Label Grid.Row="8" Grid.Column="0" Text="{Binding TodayReport.ffcs3}" Style="{StaticResource ItemLabel}"/>
+                            <Label Grid.Row="9" Grid.Column="0" Text="照片" Style="{StaticResource ItemTitleLabel}"/>
+                            <Label Grid.Row="8" Grid.Column="1" Text="{Binding TodayReport.ffcs4}" Style="{StaticResource ItemLabel}"/>
+                            <Label Grid.Row="9" Grid.Column="1" Text="钥匙" Style="{StaticResource ItemTitleLabel}"/>
+                            <Label Grid.Row="8" Grid.Column="2" Text="{Binding TodayReport.ffcs}" Style="{StaticResource ItemLabel}"/>
+                            <Label Grid.Row="9" Grid.Column="2" Text="普通看房" Style="{StaticResource ItemTitleLabel}"/>
+                            <Label Grid.Row="8" Grid.Column="3" Text="{Binding TodayReport.ffcs2}" Style="{StaticResource ItemLabel}"/>
+                            <Label Grid.Row="9" Grid.Column="3" Text="带看" Style="{StaticResource ItemTitleLabel}"/>
+                        </Grid>
+                    </Frame>
+                </Expander>
+
+                <!--本周-->
+                <Expander>
+                    <Expander.Header>
+                        <Frame CornerRadius="5" BackgroundColor="{DynamicResource ControlBackgroundColor}" HasShadow="False">
+                            <Label Text="本周" Style="{StaticResource SectionLabel}"/>
+                        </Frame>
+                    </Expander.Header>
+                    <Frame CornerRadius="5" BackgroundColor="{DynamicResource ControlBackgroundColor}" HasShadow="False">
+                        <Grid RowDefinitions="30,30,30,30,30,30,30,30,30,30" ColumnDefinitions="*,*,*,*" Padding="10,0">
+
+                            <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" Text="业绩" Style="{StaticResource SectionLabel}"/>
+                            
+                            <Label Grid.Row="1" Grid.Column="0" Text="{Binding WeekReport.companyRank}" Style="{StaticResource ItemLabel}"/>
+                            <Label Grid.Row="2" Grid.Column="0" Text="业绩排名" Style="{StaticResource ItemTitleLabel}"/>
+                            <Label Grid.Row="1" Grid.Column="1" Text="{Binding WeekReport.receivableNum}" Style="{StaticResource ItemLabel}"/>
+                            <Label Grid.Row="2" Grid.Column="1" Text="应收业绩" Style="{StaticResource ItemTitleLabel}"/>
+                            <Label Grid.Row="1" Grid.Column="2" Text="{Binding WeekReport.paidNum}" Style="{StaticResource ItemLabel}"/>
+                            <Label Grid.Row="2" Grid.Column="2" Text="实收业绩" Style="{StaticResource ItemTitleLabel}"/>
+                            <Label Grid.Row="1" Grid.Column="3" Text="{Binding WeekReport.nrNum}" Style="{StaticResource ItemLabel}"/>
+                            <Label Grid.Row="2" Grid.Column="3" Text="未收业绩" Style="{StaticResource ItemTitleLabel}"/>
+
+                            <Label Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4" Text="工作量" Style="{StaticResource SectionLabel}"/>
+
+                            <Label Grid.Row="4" Grid.Column="0" Text="{Binding WeekReport.companyRank2}" Style="{StaticResource ItemLabel}"/>
+                            <Label Grid.Row="5" Grid.Column="0" Text="工作量排名" Style="{StaticResource ItemTitleLabel}"/>
+                            <Label Grid.Row="6" Grid.Column="0" Text="{Binding WeekReport.ffzs}" Style="{StaticResource ItemLabel}"/>
+                            <Label Grid.Row="7" Grid.Column="0" Text="房增" Style="{StaticResource ItemTitleLabel}"/>
+                            <Label Grid.Row="6" Grid.Column="1" Text="{Binding WeekReport.kkzs}" Style="{StaticResource ItemLabel}"/>
+                            <Label Grid.Row="7" Grid.Column="1" Text="客增" Style="{StaticResource ItemTitleLabel}"/>
+                            <Label Grid.Row="6" Grid.Column="2" Text="{Binding WeekReport.fgj}" Style="{StaticResource ItemLabel}"/>
+                            <Label Grid.Row="7" Grid.Column="2" Text="房跟" Style="{StaticResource ItemTitleLabel}"/>
+                            <Label Grid.Row="6" Grid.Column="3" Text="{Binding WeekReport.kgj}" Style="{StaticResource ItemLabel}"/>
+                            <Label Grid.Row="7" Grid.Column="3" Text="客跟" Style="{StaticResource ItemTitleLabel}"/>
+                            <Label Grid.Row="8" Grid.Column="0" Text="{Binding WeekReport.ffcs3}" Style="{StaticResource ItemLabel}"/>
+                            <Label Grid.Row="9" Grid.Column="0" Text="照片" Style="{StaticResource ItemTitleLabel}"/>
+                            <Label Grid.Row="8" Grid.Column="1" Text="{Binding WeekReport.ffcs4}" Style="{StaticResource ItemLabel}"/>
+                            <Label Grid.Row="9" Grid.Column="1" Text="钥匙" Style="{StaticResource ItemTitleLabel}"/>
+                            <Label Grid.Row="8" Grid.Column="2" Text="{Binding WeekReport.ffcs}" Style="{StaticResource ItemLabel}"/>
+                            <Label Grid.Row="9" Grid.Column="2" Text="普通看房" Style="{StaticResource ItemTitleLabel}"/>
+                            <Label Grid.Row="8" Grid.Column="3" Text="{Binding WeekReport.ffcs2}" Style="{StaticResource ItemLabel}"/>
+                            <Label Grid.Row="9" Grid.Column="3" Text="带看" Style="{StaticResource ItemTitleLabel}"/>
+                        </Grid>
+                    </Frame>
+                </Expander>
+
+                <!--本月-->
+                <Expander>
+                    <Expander.Header>
+                        <Frame CornerRadius="5" BackgroundColor="{DynamicResource ControlBackgroundColor}" HasShadow="False">
+                            <Label Text="本月" Style="{StaticResource SectionLabel}"/>
+                        </Frame>
+                    </Expander.Header>
+                    <Frame CornerRadius="5" BackgroundColor="{DynamicResource ControlBackgroundColor}" HasShadow="False">
+                        <Grid RowDefinitions="30,30,30,30,30,30,30,30,30,30" ColumnDefinitions="*,*,*,*" Padding="10,0">
+
+                            <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" Text="业绩" Style="{StaticResource SectionLabel}"/>
+
+                            <Label Grid.Row="1" Grid.Column="0" Text="{Binding MonthReport.companyRank}" Style="{StaticResource ItemLabel}"/>
+                            <Label Grid.Row="2" Grid.Column="0" Text="业绩排名" Style="{StaticResource ItemTitleLabel}"/>
+                            <Label Grid.Row="1" Grid.Column="1" Text="{Binding MonthReport.receivableNum}" Style="{StaticResource ItemLabel}"/>
+                            <Label Grid.Row="2" Grid.Column="1" Text="应收业绩" Style="{StaticResource ItemTitleLabel}"/>
+                            <Label Grid.Row="1" Grid.Column="2" Text="{Binding MonthReport.paidNum}" Style="{StaticResource ItemLabel}"/>
+                            <Label Grid.Row="2" Grid.Column="2" Text="实收业绩" Style="{StaticResource ItemTitleLabel}"/>
+                            <Label Grid.Row="1" Grid.Column="3" Text="{Binding MonthReport.nrNum}" Style="{StaticResource ItemLabel}"/>
+                            <Label Grid.Row="2" Grid.Column="3" Text="未收业绩" Style="{StaticResource ItemTitleLabel}"/>
+
+                            <Label Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4" Text="工作量" Style="{StaticResource SectionLabel}"/>
+
+                            <Label Grid.Row="4" Grid.Column="0" Text="{Binding MonthReport.companyRank2}" Style="{StaticResource ItemLabel}"/>
+                            <Label Grid.Row="5" Grid.Column="0" Text="工作量排名" Style="{StaticResource ItemTitleLabel}"/>
+                            <Label Grid.Row="6" Grid.Column="0" Text="{Binding MonthReport.ffzs}" Style="{StaticResource ItemLabel}"/>
+                            <Label Grid.Row="7" Grid.Column="0" Text="房增" Style="{StaticResource ItemTitleLabel}"/>
+                            <Label Grid.Row="6" Grid.Column="1" Text="{Binding MonthReport.kkzs}" Style="{StaticResource ItemLabel}"/>
+                            <Label Grid.Row="7" Grid.Column="1" Text="客增" Style="{StaticResource ItemTitleLabel}"/>
+                            <Label Grid.Row="6" Grid.Column="2" Text="{Binding MonthReport.fgj}" Style="{StaticResource ItemLabel}"/>
+                            <Label Grid.Row="7" Grid.Column="2" Text="房跟" Style="{StaticResource ItemTitleLabel}"/>
+                            <Label Grid.Row="6" Grid.Column="3" Text="{Binding MonthReport.kgj}" Style="{StaticResource ItemLabel}"/>
+                            <Label Grid.Row="7" Grid.Column="3" Text="客跟" Style="{StaticResource ItemTitleLabel}"/>
+                            <Label Grid.Row="8" Grid.Column="0" Text="{Binding MonthReport.ffcs3}" Style="{StaticResource ItemLabel}"/>
+                            <Label Grid.Row="9" Grid.Column="0" Text="照片" Style="{StaticResource ItemTitleLabel}"/>
+                            <Label Grid.Row="8" Grid.Column="1" Text="{Binding MonthReport.ffcs4}" Style="{StaticResource ItemLabel}"/>
+                            <Label Grid.Row="9" Grid.Column="1" Text="钥匙" Style="{StaticResource ItemTitleLabel}"/>
+                            <Label Grid.Row="8" Grid.Column="2" Text="{Binding MonthReport.ffcs}" Style="{StaticResource ItemLabel}"/>
+                            <Label Grid.Row="9" Grid.Column="2" Text="普通看房" Style="{StaticResource ItemTitleLabel}"/>
+                            <Label Grid.Row="8" Grid.Column="3" Text="{Binding MonthReport.ffcs2}" Style="{StaticResource ItemLabel}"/>
+                            <Label Grid.Row="9" Grid.Column="3" Text="带看" Style="{StaticResource ItemTitleLabel}"/>
+                        </Grid>
+                    </Frame>
+                </Expander>
+            </StackLayout>
+            
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>
