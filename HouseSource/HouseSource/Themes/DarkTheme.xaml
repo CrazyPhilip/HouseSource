@@ -10,7 +10,10 @@
     <Color x:Key="SecondaryTextColor">WhiteSmoke</Color>
     <Color x:Key="TertiaryTextColor">LightGray</Color>
 
-    <Color x:Key="MainColor">#6ECBB8</Color>
+    <Color x:Key="PrimaryColor">Teal</Color>
+    <Color x:Key="SecondaryColor">White</Color>
+
+    <Color x:Key="MainColor">#01acf2</Color>
     <Color x:Key="DeepBlue">#353f48</Color>
     <Color x:Key="SkyBlue">#01acf2</Color>
     <Color x:Key="LightBlue">#83d7f9</Color>

@@ -8,8 +8,8 @@
             x:Class="HouseSource.Views.MainPage"
             NavigationPage.HasNavigationBar="False"
             BackgroundColor="{DynamicResource PageBackgroundColor}"
-            SelectedTabColor="{StaticResource MainColor}"
-            UnselectedTabColor="LightGray">
+            SelectedTabColor="{DynamicResource MainColor}"
+            UnselectedTabColor="{DynamicResource DeepBlue}">
     
     <views:HomePage/>
     <views:MapPage/>

@@ -298,6 +298,7 @@ namespace HouseSource.ViewModels
             }
 
             Para = new AddHousePara();
+            Estate = new EstateItemInfo();
 
             //BedroomList = new List<string>();
             //DiningroomList = new List<string>(); 
