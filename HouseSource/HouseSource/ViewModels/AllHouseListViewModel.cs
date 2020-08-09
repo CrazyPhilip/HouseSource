@@ -10,6 +10,8 @@ using System.Collections.ObjectModel;
 using System.Text;
 using Xamarin.Forms;
 using HouseSource.Views;
+using Xamarin.Forms.Internals;
+using System.Collections;
 
 namespace HouseSource.ViewModels
 {
@@ -85,6 +87,13 @@ namespace HouseSource.ViewModels
             set { SetProperty(ref isLoading, value); }
         }
 
+        private bool visible;   //Comment
+        public bool Visible
+        {
+            get { return visible; }
+            set { SetProperty(ref visible, value); }
+        }
+
         private ObservableCollection<HouseItemInfo> houseItemList;    //售房列表
         public ObservableCollection<HouseItemInfo> HouseItemList
         {
@@ -119,8 +128,21 @@ namespace HouseSource.ViewModels
             set { SetProperty(ref searchContent, value); }
         }
 
+        private ObservableCollection<string> sortList;   //选项列表
+        public ObservableCollection<string> SortList
+        {
+            get { return sortList; }
+            set { SetProperty(ref sortList, value); }
+        }
+
+        //public bool[] radios { get; set; }
+        public BitArray radios { get; set; }
+        public BitArray tempRadios { get; set; }
+        
         public Command SearchCommand { get; set; }
+        public Command VisibleCommand { get; set; }
         public Command<string> SortCommand { get; set; }
+        public Command<string> OnSortChangedCommand { get; set; }
         public Command<string> TappedCommand { get; set; }
 
         public AllHouseListViewModel(string search)
@@ -165,7 +187,197 @@ namespace HouseSource.ViewModels
                 EmpID = ""
             };
 
-            SortCommand = new Command<string>(async (t) =>
+            SortList = new ObservableCollection<string>();
+
+            //radios = new bool[5] { false, false, false, false, false };
+            radios = new BitArray(5);
+            tempRadios = new BitArray(5);
+
+            SortCommand = new Command<string>((t) =>
+            {
+                Visible = !Visible;
+                if (!Visible)
+                    return;
+
+                SortList.Clear();
+                switch (t)
+                {
+                    //分类
+                    case "0":
+                        {
+                            tempRadios[0] = true;
+                            radios = radios.Or(tempRadios).And(tempRadios);   //先或再与，保证只有一个true
+                            tempRadios[0] = false;
+                            //for (int i = 0; i < 5; i++)
+                            //{
+                            //    radios[i] = false;
+                            //}
+                            //radios[0] = true;
+
+                            //SortList.Clear();
+                            SortTypeList.ForEach(item => { SortList.Add(item); });
+                        }
+                        break;
+
+                    //区域
+                    case "1":
+                        {
+                            tempRadios[1] = true;
+                            radios = radios.Or(tempRadios).And(tempRadios);
+                            tempRadios[1] = false;
+                            //for (int i = 0; i < 5; i++)
+                            //{
+                            //    radios[i] = false;
+                            //}
+                            //radios[1] = true;
+
+                            //SortList.Clear();
+                            DistrictList.ForEach(item => { SortList.Add(item); });
+                        }
+                        break;
+
+                    //房型
+                    case "2":
+                        {
+                            tempRadios[2] = true;
+                            radios = radios.Or(tempRadios).And(tempRadios);
+                            tempRadios[2] = false;
+                            //for (int i = 0; i < 5; i++)
+                            //{
+                            //    radios[i] = false;
+                            //}
+                            //radios[2] = true;
+
+                            //SortList.Clear();
+                            RoomStyleList.ForEach(item => { SortList.Add(item); });
+                        }
+                        break;
+
+                    //价格
+                    case "3":
+                        {
+                            tempRadios[3] = true;
+                            radios = radios.Or(tempRadios).And(tempRadios);
+                            tempRadios[3] = false;
+                            //for (int i = 0; i < 5; i++)
+                            //{
+                            //    radios[i] = false;
+                            //}
+                            //radios[3] = true;
+
+                            //SortList.Clear();
+                            SalePriceList.ForEach(item => { SortList.Add(item); });
+                        }
+                        break;
+
+                    //面积
+                    case "4":
+                        {
+                            tempRadios[4] = true;
+                            radios = radios.Or(tempRadios).And(tempRadios);
+                            tempRadios[4] = false;
+                            //for (int i = 0; i < 5; i++)
+                            //{
+                            //    radios[i] = false;
+                            //}
+                            //radios[4] = true;
+
+                            //SortList.Clear();
+                            SquareList.ForEach(item => { SortList.Add(item); });
+                        }
+                        break;
+
+                    default:
+                        break;
+                }
+            }, (t) => { return true; });
+
+            OnSortChangedCommand = new Command<string>((t) =>
+            {
+                int index = 0;
+                foreach (var item in radios)
+                {
+                    if ((bool)item)
+                        break;
+                    index++;
+                }
+
+                switch (index)
+                {
+                    //分类
+                    case 0:
+                        {
+                            SortType = t;
+                            if (SortType == "出售")
+                            {
+                                if (saleHouseItemList.Count == 0)
+                                {
+                                    GetHouseList();
+                                }
+                                else
+                                {
+                                    HouseItemList.Clear();
+                                    saleHouseItemList.ForEach(item => { HouseItemList.Add(item); });
+                                }
+                            }
+                            else if (SortType == "出租")
+                            {
+                                if (rentHouseItemList.Count == 0)
+                                {
+                                    GetHouseList();
+                                }
+                                else
+                                {
+                                    HouseItemList.Clear();
+                                    rentHouseItemList.ForEach(item => { HouseItemList.Add(item); });
+                                }
+                            }
+                        }
+                        break;
+
+                    //区域
+                    case 1:
+                        {
+                            District = t;
+                            SaleHousePara.DistrictName = District == "全部区域" ? "区域" : District.TrimEnd('区');
+                            GetHouseList();
+                        }
+                        break;
+
+                    //房型
+                    case 2:
+                        {
+                            RoomStyle = t;
+                            SaleHousePara.CountF = RoomStyle == "全部房型" ? "房型" : RoomStyle;
+                            GetHouseList();
+                        }
+                        break;
+
+                    //价格
+                    case 3:
+                        {
+                            SalePrice = t;
+                            SaleHousePara.Price = SalePrice == "全部价格" ? "价格" : SalePrice;
+                            GetHouseList();
+                        }
+                        break;
+
+                    //面积
+                    case 4:
+                        {
+                            Square = t;
+                            SaleHousePara.Square = Square == "全部面积" ? "面积" : Square;
+                            GetHouseList();
+                        }
+                        break;
+
+                    default:
+                        break;
+                }
+                Visible = false;
+            }, (t) => { return true; });
+
+            /*SortCommand = new Command<string>(async (t) =>
             {
                 switch (t)
                 {
@@ -245,7 +457,12 @@ namespace HouseSource.ViewModels
                     default:
                         break;
                 }
-            }, (t) => { return true; });
+            }, (t) => { return true; });*/
+
+            VisibleCommand = new Command(() =>
+            {
+                Visible = !Visible;
+            }, () => { return true; });
 
             SearchCommand = new Command(() =>
             {

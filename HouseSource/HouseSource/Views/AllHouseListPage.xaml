@@ -5,6 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:HouseSource.ViewModels"
              xmlns:controls="clr-namespace:HouseSource.Controls"
+             xmlns:behaviors="clr-namespace:HouseSource.Behaviors"
              xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              mc:Ignorable="d"
              x:Class="HouseSource.Views.AllHouseListPage"
@@ -16,52 +17,128 @@
         <ResourceDictionary>
             <Style x:Key="LabelStyle" TargetType="Label">
                 <Setter Property="FontFamily" Value="FontAwesome"/>
-                <Setter Property="FontSize" Value="14"/>
-                <Setter Property="HorizontalOptions" Value="Center"/>
-                <Setter Property="VerticalOptions" Value="Center"/>
+                <Setter Property="FontSize" Value="12"/>
+                <Setter Property="HorizontalOptions" Value="Fill"/>
+                <Setter Property="VerticalOptions" Value="Fill"/>
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                <Setter Property="VerticalTextAlignment" Value="Center"/>
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
 
     <ContentPage.Content>
-        <Grid Padding="10,0" RowDefinitions="30, 40, Auto" ColumnDefinitions="1*, 1*, 1*, 1*, 1*">
-
-            <!--筛选条件-->
-            <Label Grid.Row="0" Grid.Column="0" Text="{Binding SortType,StringFormat='{0}&#xf0d7;'}" Style="{DynamicResource LabelStyle}">
+        <Grid Padding="10,0" RowDefinitions="30, 30, Auto" ColumnDefinitions="1*, 1*, 1*, 1*, 1*">
+            
+            <!--搜索-->
+            <Frame Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" IsClippedToBounds="True" Padding="5" CornerRadius="5" BorderColor="LightGray" HasShadow="True">
+                <controls:MyEntry Placeholder="输入楼盘名/片区搜索房源" Text="{Binding SearchContent}" FontSize="14"/>
+            </Frame>
+            <ImageButton Grid.Row="0" Grid.Column="4" Source="search.png" BackgroundColor="Transparent" Command="{Binding SearchCommand}"/>
+            
+            <!--筛选条件
+            <Label Grid.Row="1" Grid.Column="0" Text="{Binding SortType,StringFormat='{0}&#xf0d7;'}" Style="{DynamicResource LabelStyle}">
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding SortCommand}" CommandParameter="0"/>
                     </Label.GestureRecognizers>
                 </Label>
 
-            <Label Grid.Row="0" Grid.Column="1" Text="{Binding District,StringFormat='{0}&#xf0d7;'}" Style="{DynamicResource LabelStyle}">
+            <Label Grid.Row="1" Grid.Column="1" Text="{Binding District,StringFormat='{0}&#xf0d7;'}" Style="{DynamicResource LabelStyle}">
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding SortCommand}" CommandParameter="1"/>
                     </Label.GestureRecognizers>
                 </Label>
 
-            <Label Grid.Row="0" Grid.Column="2" Text="{Binding RoomStyle,StringFormat='{0}&#xf0d7;'}" Style="{DynamicResource LabelStyle}">
+            <Label Grid.Row="1" Grid.Column="2" Text="{Binding RoomStyle,StringFormat='{0}&#xf0d7;'}" Style="{DynamicResource LabelStyle}">
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding SortCommand}" CommandParameter="2"/>
                     </Label.GestureRecognizers>
                 </Label>
 
-            <Label Grid.Row="0" Grid.Column="3" Text="{Binding SalePrice,StringFormat='{0}&#xf0d7;'}" Style="{DynamicResource LabelStyle}">
+            <Label Grid.Row="1" Grid.Column="3" Text="{Binding SalePrice,StringFormat='{0}&#xf0d7;'}" Style="{DynamicResource LabelStyle}">
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding SortCommand}" CommandParameter="3"/>
                     </Label.GestureRecognizers>
                 </Label>
 
-            <Label Grid.Row="0" Grid.Column="4" Text="{Binding Square,StringFormat='{0}&#xf0d7;'}" Style="{DynamicResource LabelStyle}">
+            <Label Grid.Row="1" Grid.Column="4" Text="{Binding Square,StringFormat='{0}&#xf0d7;'}" Style="{DynamicResource LabelStyle}">
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding SortCommand}" CommandParameter="4"/>
                     </Label.GestureRecognizers>
-                </Label>
+                </Label>-->
+            <Label Grid.Row="1" Grid.Column="0" Text="{Binding SortType,StringFormat='{0}&#xf0d7;'}" Style="{DynamicResource LabelStyle}">
+                <Label.Behaviors>
+                    <behaviors:RadioBehavior x:Name="TradeRadio" GroupName="SortGroup"/>
+                </Label.Behaviors>
+                <Label.Triggers>
+                    <DataTrigger TargetType="Label" Binding="{Binding Source={x:Reference TradeRadio}, Path=IsChecked}" Value="True">
+                        <Setter Property="FontAttributes" Value="Bold" />
+                        <Setter Property="TextColor" Value="Crimson" />
+                    </DataTrigger>
+                </Label.Triggers>
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding SortCommand}" CommandParameter="0"/>
+                </Label.GestureRecognizers>
+            </Label>
 
-                <!--搜索-->
-            <Frame Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" IsClippedToBounds="True" Padding="5" CornerRadius="5" BackgroundColor="LightGray" >
-                <controls:MyEntry Placeholder="输入楼盘名/片区搜索房源" Text="{Binding SearchContent}" FontSize="14"/>
-            </Frame>
-            <ImageButton Grid.Row="1" Grid.Column="4" Source="search.png" BackgroundColor="Transparent" Command="{Binding SearchCommand}"/>
+            <Label Grid.Row="1" Grid.Column="1" Text="{Binding District,StringFormat='{0}&#xf0d7;'}" Style="{DynamicResource LabelStyle}">
+                <Label.Behaviors>
+                    <behaviors:RadioBehavior x:Name="DistrictRadio" GroupName="SortGroup"/>
+                </Label.Behaviors>
+                <Label.Triggers>
+                    <DataTrigger TargetType="Label" Binding="{Binding Source={x:Reference DistrictRadio}, Path=IsChecked}" Value="True">
+                        <Setter Property="FontAttributes" Value="Bold" />
+                        <Setter Property="TextColor" Value="Crimson" />
+                    </DataTrigger>
+                </Label.Triggers>
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding SortCommand}" CommandParameter="1"/>
+                </Label.GestureRecognizers>
+            </Label>
+
+            <Label Grid.Row="1" Grid.Column="2" Text="{Binding RoomStyle,StringFormat='{0}&#xf0d7;'}" Style="{DynamicResource LabelStyle}">
+                <Label.Behaviors>
+                    <behaviors:RadioBehavior x:Name="RoomStyleRadio" GroupName="SortGroup"/>
+                </Label.Behaviors>
+                <Label.Triggers>
+                    <DataTrigger TargetType="Label" Binding="{Binding Source={x:Reference RoomStyleRadio}, Path=IsChecked}" Value="True">
+                        <Setter Property="FontAttributes" Value="Bold" />
+                        <Setter Property="TextColor" Value="Crimson" />
+                    </DataTrigger>
+                </Label.Triggers>
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding SortCommand}" CommandParameter="2"/>
+                </Label.GestureRecognizers>
+            </Label>
+
+            <Label Grid.Row="1" Grid.Column="3" Text="{Binding SalePrice,StringFormat='{0}&#xf0d7;'}" Style="{DynamicResource LabelStyle}">
+                <Label.Behaviors>
+                    <behaviors:RadioBehavior x:Name="PriceRadio" GroupName="SortGroup"/>
+                </Label.Behaviors>
+                <Label.Triggers>
+                    <DataTrigger TargetType="Label" Binding="{Binding Source={x:Reference PriceRadio}, Path=IsChecked}" Value="True">
+                        <Setter Property="FontAttributes" Value="Bold" />
+                        <Setter Property="TextColor" Value="Crimson" />
+                    </DataTrigger>
+                </Label.Triggers>
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding SortCommand}" CommandParameter="3"/>
+                </Label.GestureRecognizers>
+            </Label>
+
+            <Label Grid.Row="1" Grid.Column="4" Text="{Binding Square,StringFormat='{0}&#xf0d7;'}" Style="{DynamicResource LabelStyle}">
+                <Label.Behaviors>
+                    <behaviors:RadioBehavior x:Name="SquareRadio" GroupName="SortGroup"/>
+                </Label.Behaviors>
+                <Label.Triggers>
+                    <DataTrigger TargetType="Label" Binding="{Binding Source={x:Reference SquareRadio}, Path=IsChecked}" Value="True">
+                        <Setter Property="FontAttributes" Value="Bold" />
+                        <Setter Property="TextColor" Value="Crimson" />
+                    </DataTrigger>
+                </Label.Triggers>
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding SortCommand}" CommandParameter="4"/>
+                </Label.GestureRecognizers>
+            </Label>
 
             <!--房源列表-->
             <!--
@@ -143,7 +220,7 @@
                     <StackLayout BindableLayout.ItemsSource="{Binding HouseItemList}" Orientation="Vertical">
                         <BindableLayout.ItemTemplate>
                             <DataTemplate>
-                                <Frame HeightRequest="110" Padding="5" CornerRadius="5" Style="{DynamicResource BaseFrame}">
+                                <Frame HeightRequest="100" Padding="5" CornerRadius="5" Style="{DynamicResource BaseFrame}">
                                     <Grid RowSpacing="0" RowDefinitions="*,*,*,*" ColumnDefinitions="100,*">
                                         <ff:CachedImage Grid.Row="0" Grid.Column="0" Grid.RowSpan="4" Source="{Binding PhotoUrl}" 
                                                                 HeightRequest="100" WidthRequest="100"
@@ -207,7 +284,29 @@
                 </ScrollView.Behaviors>-->
             </ScrollView>
 
-            <IndicatorView Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" Grid.ColumnSpan="2" IsVisible="{Binding IsLoading}"/>
+            <BoxView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="5" Color="Gray" Opacity="0.5" IsVisible="{Binding Visible}">
+                <BoxView.GestureRecognizers>
+                    <TapGestureRecognizer NumberOfTapsRequired="1" Command="{Binding VisibleCommand}"/>
+                </BoxView.GestureRecognizers>
+            </BoxView>
+            <Frame Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="5" BackgroundColor="White" CornerRadius="5" VerticalOptions="Start" IsVisible="{Binding Visible}">
+                <ScrollView>
+                    <StackLayout BindableLayout.ItemsSource="{Binding SortList}" Spacing="10">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate>
+                                <Label Text="{Binding .}" FontSize="16" HorizontalOptions="Fill" HeightRequest="30">
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer NumberOfTapsRequired="1" 
+                                                              Command="{Binding BindingContext.OnSortChangedCommand, Source={x:Reference allHouseListPage}}" 
+                                                              CommandParameter="{Binding .}"/>
+                                    </Label.GestureRecognizers>
+                                </Label>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </StackLayout>
+                </ScrollView>
+            </Frame>
+            <!--<IndicatorView Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" Grid.ColumnSpan="2" IsVisible="{Binding IsLoading}"/>-->
         </Grid>
     </ContentPage.Content>
 </ContentPage>
