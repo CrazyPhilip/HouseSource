@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:local="clr-namespace:HouseSource.Controls"
+             mc:Ignorable="d"
+             x:Name="fluentEntry"
+             x:Class="HouseSource.Controls.FluentEntry">
+
+    <!--<Frame BindingContext="{x:Reference fluentEntry}"
+           HasShadow="{Binding HasShadow}" 
+           BackgroundColor="{Binding InnerBackgroundColor}"
+           BorderColor="{Binding BorderColor}"
+           CornerRadius="{Binding CornerRadius}"
+           Padding="5"
+           VerticalOptions="Center"
+           HorizontalOptions="Fill">
+
+        <Grid ColumnDefinitions="30,*,*,30" HeightRequest="30">
+            <Image Grid.Column="0" Source="{Binding ImageSource}" Aspect="AspectFill"/>
+
+            <Label Grid.Column="1" Text="{Binding OptionName}" 
+                   TextColor="{Binding OptionColor}" 
+                   FontAttributes="Bold" FontSize="{Binding FontSize}"
+                   HorizontalOptions="Start" VerticalOptions="Center"/>
+
+            <local:MyEntry Grid.Column="2" Placeholder="{Binding Placeholder}" Text="{Binding Text}" PlaceholderColor="LightGray" 
+                           TextColor="{Binding TextColor}" FontSize="{Binding FontSize}"/>
+
+        </Grid>
+
+    </Frame>-->
+
+    <Grid ColumnDefinitions="30,*,*,30" HeightRequest="40" BindingContext="{x:Reference fluentEntry}">
+        <Image Grid.Column="0" Source="{Binding ImageSource}" Aspect="AspectFill"/>
+
+        <Label Grid.Column="1" Text="{Binding OptionName}" 
+                   TextColor="{Binding OptionColor}" 
+                   FontAttributes="Bold" FontSize="{Binding FontSize}"
+                   HorizontalOptions="Start" VerticalOptions="Center"/>
+
+        <local:MyEntry Grid.Column="2" Placeholder="{Binding Placeholder}" Text="{Binding Text}" PlaceholderColor="LightGray" 
+                           TextColor="{Binding TextColor}" FontSize="{Binding FontSize}"/>
+
+        <BoxView Grid.ColumnSpan="4" Color="WhiteSmoke" HeightRequest="1" HorizontalOptions="Fill" VerticalOptions="End"/>
+    </Grid>
+</ContentView>

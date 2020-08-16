@@ -72,7 +72,7 @@ namespace HouseSource.ViewModels
                 new Option { icon = "calculator1.png", option = "房贷计算器", page = "HouseSource.Views.LoanPage" },
                 new Option { icon = "calculator2.png", option = "税费计算器", page = "HouseSource.Views.TaxPage" },
                 new Option { icon = "add_house.png", option = "新增房源", page = "HouseSource.Views.AddHousePage"},
-                new Option { icon = "add_customer.png", option = "新增客源", page = "HouseSource.Views.AddClientPage"}
+                new Option { icon = "add_customer.png", option = "新增客源", page = "HouseSource.Views.AddClientPage2"}
 
             };
 
@@ -83,12 +83,11 @@ namespace HouseSource.ViewModels
             }, () => { return true; });
 
             //导航命令事件
-            NavigateCommand = new Command<string>(async (pageName) =>
+            NavigateCommand = new Command<string>((pageName) =>
             {
                 Type type = Type.GetType(pageName);
                 Page page = (Page)Activator.CreateInstance(type);
-                await Application.Current.MainPage.Navigation.PushAsync(page);
-
+                Application.Current.MainPage.Navigation.PushAsync(page);
             }, (pageName) => { return true; });
 
             TappedCommand = new Command<string>((h) =>

@@ -19440,6 +19440,9 @@ namespace HouseSource.Droid
 			// aapt resource value: 0x7F0E01FB
 			public const int collectionViewTheme = 2131624443;
 			
+			// aapt resource value: 0x7F0E01FC
+			public const int edit_AlertDialog_style = 2131624444;
+			
 			// aapt resource value: 0x7F0E00C6
 			public const int MainTheme = 2131624134;
 			

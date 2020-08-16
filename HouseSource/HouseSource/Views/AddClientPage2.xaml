@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:HouseSource.ViewModels"
+             xmlns:behaviors="clr-namespace:HouseSource.Behaviors"
+             xmlns:controls="clr-namespace:HouseSource.Controls"
+             mc:Ignorable="d"
+             x:Class="HouseSource.Views.AddClientPage2"
+             BackgroundColor="{DynamicResource PageBackgroundColor}"
+             x:Name="addClientPage2"
+             Title="新增客源">
+
+    <ContentPage.BindingContext>
+        <viewModels:AddClientViewModel/>
+    </ContentPage.BindingContext>
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="ButtonStyle" TargetType="Button">
+                <Setter Property="HeightRequest" Value="40"/>
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="VerticalOptions" Value="Center"/>
+                <Setter Property="TextColor" Value="White"/>
+                <Setter Property="Padding" Value="0"/>
+                <Setter Property="CornerRadius" Value="5"/>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout Padding="10,0">
+                <Frame CornerRadius="5" BackgroundColor="{DynamicResource ControlBackgroundColor}" HasShadow="False" Padding="0">
+                    <Grid RowDefinitions="*,*,*,*,*,*,*,*" RowSpacing="0">
+
+                        <!--第一组-->
+                        <!--姓名-->
+                        <controls:FluentEntry Grid.Row="0" OptionName="姓名" Placeholder="请输入客源姓名" Text="{Binding ClientName}"/>
+
+                        <!--电话-->
+                        <controls:FluentEntry Grid.Row="1" OptionName="电话" Placeholder="请输入客源电话" Text="{Binding ClientPhoneNum}"/>
+
+                        <!--户籍-->
+                        <controls:FluentPicker Grid.Row="2" OptionName="户籍类型" Title="请选择户籍类型" ItemsSource="{Binding CensusRegisterList}" SelectedItem="{Binding CensusRegister}"/>
+
+                        <!--婚姻-->
+                        <controls:FluentPicker Grid.Row="3" OptionName="婚姻状态" Title="请选择婚姻状态" ItemsSource="{Binding MarriageList}" SelectedItem="{Binding Marriage}"/>
+
+                        <!--交易-->
+                        <controls:FluentPicker Grid.Row="4" OptionName="交易类型" Title="请选择交易类型" ItemsSource="{Binding TradeList}" SelectedItem="{Binding Trade}"/>
+
+                        <!--用途-->
+                        <controls:FluentPicker Grid.Row="5" OptionName="用途" Title="请选择房屋用途" ItemsSource="{Binding UsageList}" SelectedItem="{Binding Usage}"/>
+
+                        <!--城区-->
+                        <controls:FluentPicker Grid.Row="6" OptionName="城区" Title="请选择城区" ItemsSource="{Binding DistrictList}" SelectedItem="{Binding District}">
+                            <controls:FluentPicker.Behaviors>
+                                <behaviors:EventToCommandBehavior EventName="SelectedIndexChanged" Command="{Binding DistrictPickerSelectedItemChangedCommand}"/>
+                            </controls:FluentPicker.Behaviors>
+                        </controls:FluentPicker>
+
+                        <!--片区-->
+                        <controls:FluentPicker Grid.Row="7" OptionName="片区" Title="请选择片区" ItemsSource="{Binding BlockList}" SelectedItem="{Binding Block}" />
+
+                    </Grid>
+                </Frame>
+
+                <Label Text="以上信息为必填项" HorizontalOptions="Center" VerticalOptions="Center" Margin="10" TextColor="{DynamicResource MainColor}"/>
+
+                <!--第二组-->
+                <Expander>
+                    <Expander.Header>
+                        <Frame CornerRadius="5" BackgroundColor="{DynamicResource ControlBackgroundColor}" HasShadow="False">
+                            <Label Text="添加更多信息" FontAttributes="Bold" FontSize="14" />
+                        </Frame>
+                    </Expander.Header>
+                    <Frame CornerRadius="5" BackgroundColor="{DynamicResource ControlBackgroundColor}" HasShadow="False" Padding="0">
+                        <Grid RowDefinitions="*,*,*,*,*,*,*,*,*,*,*" RowSpacing="0">
+                            <!--等级-->
+                            <controls:FluentPicker Grid.Row="0" OptionName="等级" Title="请选择等级" ItemsSource="{Binding LevelList}" SelectedItem="{Binding Level}"/>
+
+                            <!--装修-->
+                            <controls:FluentPicker Grid.Row="1" OptionName="装修" Title="请选择装修" ItemsSource="{Binding DecorationList}" SelectedItem="{Binding Decoration}"/>
+
+                            <!--类型-->
+                            <controls:FluentPicker Grid.Row="2" OptionName="类型" Title="请选择房屋类型" ItemsSource="{Binding HouseTypeList}" SelectedItem="{Binding HouseType}"/>
+
+                            <!--预算范围-->
+                            <controls:FluentEntry Grid.Row="3" OptionName="预算范围（万元）" Placeholder="请输入最低预算" Text="{Binding MinBudget}"/>
+                            <controls:FluentEntry Grid.Row="4" Placeholder="请输入最高预算" Text="{Binding MaxBudget}"/>
+
+                            <!--面积范围-->
+                            <controls:FluentEntry Grid.Row="5" OptionName="面积范围（平米）" Placeholder="请输入最小面积" Text="{Binding MinArea}"/>
+                            <controls:FluentEntry Grid.Row="6" Placeholder="请输入最大面积" Text="{Binding MaxArea}"/>
+
+                            <!--楼层范围-->
+                            <controls:FluentEntry Grid.Row="7" OptionName="楼层范围（楼）" Placeholder="请输入最低楼层" Text="{Binding MinFloor}"/>
+                            <controls:FluentEntry Grid.Row="8" Placeholder="请输入最高楼层" Text="{Binding MaxFloor}"/>
+
+                            <!--户型范围-->
+                            <controls:FluentEntry Grid.Row="9" OptionName="户型范围（室）" Placeholder="请输入最小房数" Text="{Binding MinRooms}"/>
+                            <controls:FluentEntry Grid.Row="10" Placeholder="请输入最大房数" Text="{Binding MaxRooms}"/>
+                        </Grid>
+                    </Frame>
+                </Expander>
+
+                <Button Text="清空" Command="{Binding ClearCommand}" Style="{StaticResource ButtonStyle}" BackgroundColor="LightGray"/>
+                <Button Text="确定新增" Command="{Binding AddCommand}" Style="{StaticResource ButtonStyle}" BackgroundColor="{DynamicResource MainColor}"/>
+
+            </StackLayout>
+
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

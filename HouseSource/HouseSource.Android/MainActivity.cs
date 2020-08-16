@@ -30,7 +30,7 @@ namespace HouseSource.Droid
             CarouselViewRenderer.Init();    //轮播图
             CachedImageRenderer.Init(true);
             UltimateXFSettup.Initialize(this);
-            Forms.SetFlags( new string[] { "RadioButton_Experimental", "Expander_Experimental" });
+            Forms.SetFlags( new string[] { "RadioButton_Experimental", "Expander_Experimental", "Shapes_Experimental" });
 
             base.OnCreate(savedInstanceState);
             Instance = this;

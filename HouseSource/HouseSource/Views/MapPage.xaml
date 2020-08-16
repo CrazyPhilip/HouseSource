@@ -18,7 +18,7 @@
     </ContentPage.BindingContext>
 
     <ContentPage.Content>
-        <controls:HybridWebView Uri="http://www.crazyphilip.space/map3.html"
+        <controls:HybridWebView Uri="http://www.crazyphilip.space:8087/map3.html"
                                 android:WebView.MixedContentMode="AlwaysAllow"
                                 android:WebView.EnableZoomControls="true" 
                                 android:WebView.DisplayZoomControls="True"/>
