@@ -25,7 +25,7 @@ namespace HouseSource.Services
         
         }
 
-        #region 会员注册登录
+        #region 会员注册登录修改密码
         /// <summary>
         /// 登录
         /// </summary>
@@ -62,6 +62,19 @@ namespace HouseSource.Services
         }
 
         /// <summary>
+        /// 检查是否已注册
+        /// </summary>
+        /// <param name="tel">手机号</param>
+        /// <returns></returns>
+        public static async Task<string> CheckIfRegister(string tel)
+        {
+            string url = "IfRegisterTel?DBName=cd&EmpNo=&Tel=" + tel;
+
+            string content = await RestSharpHelper<string>.GetAsyncWithoutDeserialization(url);
+            return GetSubString(content, "{", "}");
+        }
+
+        /// <summary>
         /// 注册
         /// </summary>
         /// <param name="tel">手机号</param>
@@ -72,6 +85,21 @@ namespace HouseSource.Services
         {
             string url = "ApplyForRegister?DBName=cd&EmpNo=&Tel=" + tel
                 + "&Password=" + password + "&EmpName=" + name + "&AccountStyle=独立经纪人&CompanyOrEstateName=";
+
+            string content = await RestSharpHelper<string>.GetAsyncWithoutDeserialization(url);
+            return GetSubString(content, "{", "}");
+        }
+
+        /// <summary>
+        /// 重置密码
+        /// </summary>
+        /// <param name="tel">手机号</param>
+        /// <param name="password">密码</param>
+        /// <returns></returns>
+        public static async Task<string> ResetPassword(string tel, string password)
+        {
+            string url = "ModTelPassword?DBName=cd&Tel=" + tel
+                + "&NewPassWord=" + password;
 
             string content = await RestSharpHelper<string>.GetAsyncWithoutDeserialization(url);
             return GetSubString(content, "{", "}");
