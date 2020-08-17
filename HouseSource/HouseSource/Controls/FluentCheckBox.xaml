@@ -9,16 +9,16 @@
     
     <Frame x:Name="frame"
            BindingContext="{x:Reference fluentCheckBox}"
-           HasShadow="{Binding HasShadow,FallbackValue='False'}" 
-           BorderColor="{Binding BorderColor,FallbackValue='LightGray'}"
-           CornerRadius="{Binding CornerRadius,FallbackValue='5'}"
+           HasShadow="{Binding HasShadow}" 
+           BorderColor="{Binding BorderColor}"
+           CornerRadius="{Binding CornerRadius}"
            Padding="10"
            VerticalOptions="Center"
            HorizontalOptions="Center">
 
         <Label Text="{Binding Text}" 
-                  TextColor="{Binding TextColor,FallbackValue='Black'}" 
-                  FontAttributes="Bold" FontSize="{Binding FontSize,FallbackValue=12}"
+                  TextColor="{Binding TextColor}" 
+                  FontAttributes="Bold" FontSize="{Binding FontSize}"
                   HorizontalOptions="Center" VerticalOptions="Center"/>
 
         <Frame.GestureRecognizers>
@@ -26,7 +26,7 @@
         </Frame.GestureRecognizers>
 
         <Frame.Triggers>
-            <DataTrigger TargetType="Frame" Binding="{Binding Source={x:Reference this},Path=IsChecked}" Value="True">
+            <DataTrigger TargetType="Frame" Binding="{Binding Source={x:Reference fluentCheckBox},Path=IsChecked}" Value="True">
                 <Setter Property="BackgroundColor" Value="{Binding CheckedBackgroundColor}"/>
             </DataTrigger>
         </Frame.Triggers>

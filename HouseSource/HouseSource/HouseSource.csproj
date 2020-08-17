@@ -26,8 +26,17 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Controls\FluentDatePicker.xaml.cs">
+      <DependentUpon>FluentDatePicker.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Controls\FluentEditor.xaml.cs">
+      <DependentUpon>FluentEditor.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\AddClientPage2.xaml.cs">
       <DependentUpon>AddClientPage2.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\AddHousePage2.xaml.cs">
+      <DependentUpon>AddHousePage2.xaml</DependentUpon>
     </Compile>
     <Compile Update="Views\AllHouseListPage.xaml.cs">
       <DependentUpon>AllHouseListPage.xaml</DependentUpon>
@@ -45,6 +54,9 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Controls\FluentPicker.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Controls\FluentSearchBar.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Themes\DarkTheme.xaml">

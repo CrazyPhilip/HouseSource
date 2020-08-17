@@ -4,7 +4,8 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
-             xmlns:viewModels="clr-namespace:HouseSource.ViewModels"
+             xmlns:viewModels="clr-namespace:HouseSource.ViewModels" 
+             xmlns:controls="clr-namespace:HouseSource.Controls"
              mc:Ignorable="d"
              x:Class="HouseSource.Views.CollectionPage"
              BackgroundColor="{DynamicResource PageBackgroundColor}"
@@ -41,7 +42,25 @@
                                     <Label Grid.Row="0" Grid.Column="1" Text="{Binding HouseTitle}" TextColor="{DynamicResource PrimaryTextColor}" 
                                                        LineBreakMode="CharacterWrap" FontAttributes="Bold"/>
 
-                                    <Label Grid.Row="1" Grid.Column="1" FontSize="12" LineBreakMode="CharacterWrap">
+                                    <StackLayout Grid.Row="1" Grid.Column="1" Padding="0" Margin="0" Spacing="5" Orientation="Horizontal">
+                                        <controls:LabelWithBorder FontSize="10" Text="{Binding PanType}" DrawableColor="{DynamicResource LightPink}" TextColor="White" CornerRadius="2" VerticalOptions="Center"/>
+                                        <controls:LabelWithBorder FontSize="10" Text="{Binding PropertyDecoration}" TextColor="{DynamicResource ThickPink}" BorderThickness="2" BorderColor="{DynamicResource ThickPink}" CornerRadius="2" VerticalOptions="Center"/>
+                                        <controls:LabelWithBorder FontSize="10" Text="{Binding PropertyLook}" TextColor="{DynamicResource ThickPink}" BorderThickness="2" BorderColor="{DynamicResource ThickPink}" CornerRadius="2" VerticalOptions="Center"/>
+                                    </StackLayout>
+
+                                    <Label Grid.Row="2" Grid.Column="1" FontSize="12" LineBreakMode="CharacterWrap">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding RoomStyle}"/>
+                                                <Span Text="|"/>
+                                                <Span Text="{Binding Square}"/>
+                                                <Span Text="|"/>
+                                                <Span Text="{Binding EstateName}"/>
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+
+                                    <!--<Label Grid.Row="1" Grid.Column="1" FontSize="12" LineBreakMode="CharacterWrap">
                                         <Label.FormattedText>
                                             <FormattedString>
                                                 <Span Text="{Binding RoomStyle}"/>
@@ -63,7 +82,7 @@
                                                 <Span Text="{Binding PropertyLook}"/>
                                             </FormattedString>
                                         </Label.FormattedText>
-                                    </Label>
+                                    </Label>-->
 
                                     <Label Grid.Row="3" Grid.Column="1">
                                         <Label.FormattedText>

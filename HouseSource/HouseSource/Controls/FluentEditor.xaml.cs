@@ -1,10 +1,16 @@
-﻿using Xamarin.Forms;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace HouseSource.Controls
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class FluentEntry : ContentView
+    public partial class FluentEditor : ContentView
     {
         public static readonly BindableProperty ImageSourceProperty = BindableProperty.Create(nameof(ImageSource), typeof(string), typeof(FluentEntry), string.Empty);
         public static readonly BindableProperty HasShadowProperty = BindableProperty.Create(nameof(HasShadow), typeof(bool), typeof(FluentEntry), false);
@@ -91,7 +97,7 @@ namespace HouseSource.Controls
             set => SetValue(TextProperty, value);
         }
 
-        public FluentEntry()
+        public FluentEditor()
         {
             InitializeComponent();
         }

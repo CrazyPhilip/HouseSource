@@ -1,0 +1,210 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:HouseSource.ViewModels"
+             xmlns:behaviors="clr-namespace:HouseSource.Behaviors" 
+             xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms" xmlns:controls="clr-namespace:HouseSource.Controls"
+             mc:Ignorable="d"
+             x:Class="HouseSource.Views.AddHousePage2"
+             BackgroundColor="{DynamicResource PageBackgroundColor}"
+             x:Name="addHousePage2"
+             Title="新增房源">
+
+    <ContentPage.BindingContext>
+        <viewModels:AddHouseViewModel/>
+    </ContentPage.BindingContext>
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="ButtonStyle" TargetType="Button">
+                <Setter Property="HeightRequest" Value="40"/>
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="VerticalOptions" Value="Center"/>
+                <Setter Property="TextColor" Value="White"/>
+                <Setter Property="Padding" Value="0"/>
+                <Setter Property="CornerRadius" Value="5"/>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout Padding="10,0">
+
+                <!--图片列表-->
+                <Frame CornerRadius="5" BackgroundColor="{DynamicResource ControlBackgroundColor}" HasShadow="False" Padding="0">
+                    <ScrollView Orientation="Horizontal" HeightRequest="100">
+                        <StackLayout Orientation="Horizontal">
+                            <StackLayout BindableLayout.ItemsSource="{Binding ImageList}" Orientation="Horizontal">
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate>
+                                        <ff:CachedImage Source="{Binding .}" HeightRequest="100" WidthRequest="100" DownsampleHeight="100" DownsampleWidth="100">
+
+                                            <ff:CachedImage.GestureRecognizers>
+                                                <TapGestureRecognizer NumberOfTapsRequired="2"
+                                                              Command="{Binding BindingContext.DoubleTappedCommand, Source={x:Reference addHousePage2}}"
+                                                              CommandParameter="{Binding .}"/>
+                                            </ff:CachedImage.GestureRecognizers>
+                                        </ff:CachedImage>
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                            </StackLayout>
+
+                            <Button Text="添加图片" Command="{Binding AddImageCommand}" BackgroundColor="#6ecbb8" TextColor="White"/>
+                        </StackLayout>
+                    </ScrollView>
+                </Frame>
+
+                <Frame CornerRadius="5" BackgroundColor="{DynamicResource ControlBackgroundColor}" HasShadow="False" Padding="0">
+                    <Grid RowDefinitions="*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*" RowSpacing="0">
+
+                        <!--小区-->
+                        <controls:FluentEntry Grid.Row="0" OptionName="小区" Placeholder="请选择小区" Text="{Binding Estate.EstateName}" IsReadOnly="True">
+                            <controls:FluentEntry.GestureRecognizers>
+                                <TapGestureRecognizer NumberOfTapsRequired="1" Command="{Binding ToEstateSelectCommand}"/>
+                            </controls:FluentEntry.GestureRecognizers>
+                        </controls:FluentEntry>
+
+                        <!--栋座-->
+                        <controls:FluentPicker Grid.Row="1" x:Name="BuildingPicker" OptionName="栋座" Title="请选择栋座" SelectedItem="{Binding BuildNo}" ItemsSource="{Binding BuildingList}">
+                            <controls:FluentPicker.Behaviors>
+                                <behaviors:EventToCommandBehavior EventName="SelectedIndexChanged" Command="{Binding GetUnitsCommand}" 
+                                                          CommandParameter="{Binding Path=SelectedIndex,Source={x:Reference BuildingPicker}}"/>
+                            </controls:FluentPicker.Behaviors>
+                        </controls:FluentPicker>
+
+                        <!--单元-->
+                        <controls:FluentPicker Grid.Row="2" OptionName="单元" Title="请选择单元" ItemsSource="{Binding UnitList}" SelectedItem="{Binding Unit}"/>
+
+                        <!--楼层-->
+                        <controls:FluentEntry Grid.Row="3" OptionName="楼层（楼）" Placeholder="请输入楼层" Text="{Binding Para.Floor}"/>
+                        <controls:FluentEntry Grid.Row="4" OptionName="总楼层（楼）" Placeholder="请输入总楼层" Text="{Binding Para.FloorAll}"/>
+
+                        <!--房号-->
+                        <controls:FluentEntry Grid.Row="5" OptionName="房号" Placeholder="请输入房号（最多两位数）" Text="{Binding Para.RoomNo}"/>
+
+                        <!--房源标题-->
+                        <controls:FluentEntry Grid.Row="6" OptionName="房源标题" Placeholder="请输入房源标题（最多25个字）" Text="{Binding Para.Title}"/>
+
+                        <!--交易类型-->
+                        <controls:FluentPicker Grid.Row="7" OptionName="交易类型" Title="请选择交易类型" ItemsSource="{Binding TradeList}" SelectedItem="{Binding Para.Trade}"/>
+
+                        <!--朝向-->
+                        <controls:FluentPicker Grid.Row="8" OptionName="朝向" Title="请选择朝向" ItemsSource="{Binding DirectionList}" SelectedItem="{Binding Para.PropertyDirection}"/>
+
+                        <!--售价-->
+                        <controls:FluentEntry Grid.Row="9" OptionName="售价（万元）" Placeholder="请输入售价" Text="{Binding Para.Price}"/>
+
+                        <!--面积-->
+                        <controls:FluentEntry Grid.Row="10" OptionName="面积（平米）" Placeholder="请输入建筑面积" Text="{Binding Para.Square}"/>
+
+                        <!--户型-->
+                        <controls:FluentEntry Grid.Row="11" OptionName="户型" Placeholder="室" Text="{Binding Para.CountF}"/>
+                        <controls:FluentEntry Grid.Row="12" Placeholder="厅" Text="{Binding Para.CountT}"/>
+                        <controls:FluentEntry Grid.Row="13" Placeholder="卫" Text="{Binding Para.CountW}"/>
+                        <controls:FluentEntry Grid.Row="14" Placeholder="阳台" Text="{Binding Para.CountY}"/>
+
+                        <!--业主姓名-->
+                        <controls:FluentEntry Grid.Row="15" OptionName="业主" Placeholder="请输入业主姓名" Text="{Binding Para.OwnerName}"/>
+
+                        <!--业主电话-->
+                        <controls:FluentEntry Grid.Row="16" OptionName="业主电话" Placeholder="请输入业主电话" Text="{Binding Para.OwnerMobile}"/>
+
+                        <!--对外展示-->
+                        <Grid Grid.Row="17" ColumnDefinitions="30,*,*,30">
+                            <CheckBox Grid.Column="0" IsChecked="{Binding FlagWeb}"/>
+                            <Label Grid.Column="1" Text="对外展示" FontAttributes="Bold" VerticalOptions="Center" FontSize="12"/>
+                            <Label Grid.Column="2" Grid.ColumnSpan="2" Text="勾选可将房源概要信息同步至外网，保证信息安全。" LineBreakMode="WordWrap" VerticalOptions="Center" FontSize="12"/>
+                        </Grid>
+
+                    </Grid>
+                </Frame>
+
+                <Label Text="以上为必填信息" TextColor="{DynamicResource MainColor}" Margin="10"  HorizontalOptions="Center" VerticalOptions="Center"/>
+
+                <Expander>
+                    <Expander.Header>
+                        <Frame CornerRadius="5" BackgroundColor="{DynamicResource ControlBackgroundColor}" HasShadow="False">
+                            <Label Text="添加更多信息" FontAttributes="Bold" FontSize="14" />
+                        </Frame>
+                    </Expander.Header>
+                    <Frame CornerRadius="5" BackgroundColor="{DynamicResource ControlBackgroundColor}" HasShadow="False" Padding="0">
+                        <Grid RowDefinitions="40,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,120,120,120,120" RowSpacing="0">
+
+                            <StackLayout Grid.Row="0" Orientation="Horizontal" HorizontalOptions="Center">
+                                <controls:FluentCheckBox Text="满五唯一" IsChecked="{Binding FlagMWWY}" CheckedBackgroundColor="#6ecbb8"/>
+                                <controls:FluentCheckBox Text="无抵押" IsChecked="{Binding FlagWDY}" CheckedBackgroundColor="#6ecbb8"/>
+                                <controls:FluentCheckBox Text="可贷款" IsChecked="{Binding FlagKDK}" CheckedBackgroundColor="#6ecbb8"/>
+                                <controls:FluentCheckBox Text="新上房源" IsChecked="{Binding FlagXSFY}" CheckedBackgroundColor="#6ecbb8"/>
+                            </StackLayout>
+
+                            <!--装修-->
+                            <controls:FluentPicker Grid.Row="1" OptionName="装修" Title="请选择装修类型" SelectedItem="{Binding Para.PropertyDecoration}" ItemsSource="{Binding DecorationList}"/>
+
+                            <!--家具-->
+                            <controls:FluentPicker Grid.Row="2" OptionName="家具" Title="请选择家具配套" SelectedItem="{Binding Para.ZhuZhaiPropertyFurniture}" ItemsSource="{Binding FurnitureList}"/>
+
+                            <!--类型-->
+                            <controls:FluentPicker Grid.Row="3" OptionName="房屋类型" Title="请选择房屋类型" SelectedItem="{Binding Para.PropertyType}" ItemsSource="{Binding PropertyTypeList}"/>
+
+                            <!--房屋用途-->
+                            <controls:FluentPicker Grid.Row="4" OptionName="房屋用途" Title="请选择房屋用途" SelectedItem="{Binding Para.PropertyUsage}" ItemsSource="{Binding PropertyUseTypeList}"/>
+
+                            <!--来源-->
+                            <controls:FluentPicker Grid.Row="5" OptionName="来源" Title="请选择来源" SelectedItem="{Binding Para.PropertySource}" ItemsSource="{Binding PropertySourceList}"/>
+
+                            <!--产权-->
+                            <controls:FluentPicker Grid.Row="6" OptionName="产权" Title="请选择产权" SelectedItem="{Binding Para.PropertyOwn}" ItemsSource="{Binding PropertyRightList}"/>
+
+                            <!--证件-->
+                            <controls:FluentPicker Grid.Row="7" OptionName="证件" Title="请选择证件" SelectedItem="{Binding Para.PropertyCertificate}" ItemsSource="{Binding CredentialsList}"/>
+
+                            <!--现状-->
+                            <controls:FluentPicker Grid.Row="8" OptionName="现状" Title="请选择现状" SelectedItem="{Binding Para.PropertyOccupy}" ItemsSource="{Binding StatusList}"/>
+
+                            <!--看房方式-->
+                            <controls:FluentPicker Grid.Row="9" OptionName="看房方式" Title="请选择看房方式" SelectedItem="{Binding Para.PropertyLook}" ItemsSource="{Binding LookWaysList}"/>
+                            <controls:FluentEntry Grid.Row="10" Placeholder="输入备注（8个字）" Text="{Binding Para.KeyNo}"/>
+
+                            <!--付佣-->
+                            <controls:FluentPicker Grid.Row="11" OptionName="付佣" Title="请选择付佣" SelectedItem="{Binding Para.PropertyCommission}" ItemsSource="{Binding CommissionPayList}"/>
+
+                            <!--付款-->
+                            <controls:FluentPicker Grid.Row="12" OptionName="付款" Title="请选择付款方式" SelectedItem="{Binding Para.PropertyBuy}" ItemsSource="{Binding PaymentList}"/>
+
+                            <!--权属-->
+                            <controls:FluentPicker Grid.Row="13" OptionName="权属" Title="请选择权属" SelectedItem="{Binding Para.PropertyRight}" ItemsSource="{Binding OwnershipList}"/>
+
+                            <!--交房日-->
+                            <controls:FluentDatePicker Grid.Row="14" OptionName="交房日" Date="{Binding ReleaseDate}"/>
+                            
+                            <!--挂牌日-->
+                            <controls:FluentDatePicker Grid.Row="15" OptionName="挂牌日" Date="{Binding EntrustDate}"/>
+
+                            <!--建房年代-->
+                            <controls:FluentPicker Grid.Row="16" OptionName="建房年代" Title="请选择建房年代" SelectedItem="{Binding Para.CompleteYear}" ItemsSource="{Binding BuiltYearList}"/>
+
+                            <!--房源备注-->
+                            <controls:FluentEditor Grid.Row="17" OptionName="房源备注" Text="{Binding Para.Remark}" Placeholder="请输入房源备注（300字）"/>
+
+                            <!--房源介绍-->
+                            <controls:FluentEditor Grid.Row="18" OptionName="房源介绍" Text="{Binding Para.PropertyIntroduce}" Placeholder="请输入房源介绍（300字）"/>
+                            
+                            <!--业主介绍-->
+                            <controls:FluentEditor Grid.Row="19" OptionName="业主介绍" Text="{Binding Para.OwnerIntroduce}" Placeholder="请输入业主介绍（300字）"/>
+
+                            <!--服务介绍-->
+                            <controls:FluentEditor Grid.Row="20" OptionName="服务介绍" Text="{Binding Para.ServiceIntroduce}" Placeholder="请输入服务介绍（300字）"/>
+
+                        </Grid>
+                    </Frame>
+                </Expander>
+
+                <Button Text="清空" Command="{Binding ClearCommand}" Style="{StaticResource ButtonStyle}" BackgroundColor="LightGray"/>
+                <Button Text="确定新增" Command="{Binding AddCommand}" Style="{StaticResource ButtonStyle}" BackgroundColor="#6ecbb8"/>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

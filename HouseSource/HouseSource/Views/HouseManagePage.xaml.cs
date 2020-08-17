@@ -19,7 +19,7 @@ namespace HouseSource.Views
 
         private void ToolbarItem_Clicked(object sender, EventArgs e)
         {
-            AddHousePage addHousePage = new AddHousePage();
+            AddHousePage2 addHousePage = new AddHousePage2();
             Application.Current.MainPage.Navigation.PushAsync(addHousePage);
         }
     }

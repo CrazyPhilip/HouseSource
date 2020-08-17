@@ -14,8 +14,8 @@ namespace HouseSource.Controls
     {
         public static readonly BindableProperty IsCheckedProperty = BindableProperty.Create(nameof(IsChecked), typeof(bool), typeof(FluentCheckBox), false, BindingMode.TwoWay);
 
-        //public static readonly BindableProperty HasShadowProperty = BindableProperty.Create(nameof(HasShadow), typeof(bool), typeof(FluentCheckBox), false);
-        //private static readonly BindableProperty InnerBackgroundColorProperty = BindableProperty.Create(nameof(InnerBackgroundColor), typeof(Color), typeof(FluentCheckBox), Color.White);
+        public static readonly BindableProperty HasShadowProperty = BindableProperty.Create(nameof(HasShadow), typeof(bool), typeof(FluentCheckBox), false);
+        private static readonly BindableProperty TextColorProperty = BindableProperty.Create(nameof(TextColor), typeof(Color), typeof(FluentCheckBox), Color.Black);
         public static readonly BindableProperty CheckedBackgroundColorProperty = BindableProperty.Create(nameof(CheckedBackgroundColor), typeof(Color), typeof(FluentCheckBox), Color.LightPink);
         public static readonly BindableProperty UncheckedBackgroundColorProperty = BindableProperty.Create(nameof(UncheckedBackgroundColor), typeof(Color), typeof(FluentCheckBox), Color.White);
         public static readonly BindableProperty BorderColorProperty = BindableProperty.Create(nameof(BorderColor), typeof(Color), typeof(FluentCheckBox), Color.LightGray);
@@ -28,6 +28,18 @@ namespace HouseSource.Controls
         {
             get => (bool)GetValue(IsCheckedProperty);
             set => SetValue(IsCheckedProperty, value);
+        }
+
+        public bool HasShadow
+        {
+            get => (bool)GetValue(HasShadowProperty);
+            set => SetValue(HasShadowProperty, value);
+        }
+
+        public Color TextColor
+        {
+            get => (Color)GetValue(TextColorProperty);
+            set => SetValue(TextColorProperty, value);
         }
 
         public Color CheckedBackgroundColor

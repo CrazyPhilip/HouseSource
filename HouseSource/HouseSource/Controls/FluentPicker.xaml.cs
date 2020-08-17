@@ -20,7 +20,7 @@ namespace HouseSource.Controls
         public static readonly BindableProperty TitleProperty = BindableProperty.Create(nameof(Title), typeof(string), typeof(FluentPicker), "请选择");
         public static readonly BindableProperty ItemsSourceProperty = BindableProperty.Create(nameof(ItemsSource), typeof(IList), typeof(FluentPicker), defaultBindingMode: BindingMode.TwoWay);
         public static readonly BindableProperty SelectedItemProperty = BindableProperty.Create(nameof(SelectedItem), typeof(string), typeof(FluentPicker), null, defaultBindingMode: BindingMode.TwoWay, propertyChanged: OnSelectedItemChanged);
-        public static readonly BindableProperty SelectedItemIndexProperty = BindableProperty.Create(nameof(SelectedIndex), typeof(int), typeof(FluentPicker), -1, defaultBindingMode: BindingMode.TwoWay, propertyChanged: OnSelectedIndexChanged);
+        public static readonly BindableProperty SelectedIndexProperty = BindableProperty.Create(nameof(SelectedIndex), typeof(int), typeof(FluentPicker), -1, defaultBindingMode: BindingMode.TwoWay, propertyChanged: OnSelectedIndexChanged);
         
         public event EventHandler SelectedIndexChanged;
 
@@ -138,8 +138,8 @@ namespace HouseSource.Controls
 
         public int SelectedIndex
         {
-            get => (int)GetValue(SelectedItemIndexProperty);
-            set => SetValue(SelectedItemIndexProperty, value);
+            get => (int)GetValue(SelectedIndexProperty);
+            set => SetValue(SelectedIndexProperty, value);
         }
 
         public FluentPicker()

@@ -28,7 +28,7 @@
     </ContentPage.Resources>
 
     <ContentPage.Content>
-        <Grid Padding="10,0" RowDefinitions="30, 40, Auto" ColumnDefinitions="1*, 1*, 1*, 1*">
+        <Grid Padding="10,0" RowDefinitions="30, 30, *" ColumnDefinitions="1*, 1*, 1*, 1*">
 
             <!--筛选条件-->
             <Label Grid.Row="0" Grid.Column="0" Text="{Binding District,StringFormat='{0}&#xf0d7;'}" Style="{DynamicResource LabelStyle}">
@@ -62,11 +62,12 @@
             </Label>
 
             <!--搜索-->
-            <Frame Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" IsClippedToBounds="True" Padding="5" CornerRadius="5" BackgroundColor="LightGray" >
+            <controls:FluentSearchBar Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Placeholder="输入楼盘名/片区搜索房源" Text="{Binding SearchContent}" Command="{Binding SearchCommand}"/>
+            <!--<Frame Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" IsClippedToBounds="True" Padding="5" CornerRadius="5" BackgroundColor="LightGray" >
                 <controls:MyEntry Placeholder="输入楼盘名/片区搜索房源" Text="{Binding SearchContent}" FontSize="14"/>
             </Frame>
-            <ImageButton Grid.Row="1" Grid.Column="2" Source="search.png" BackgroundColor="Transparent" Command="{Binding SearchCommand}"/>
-            
+            <ImageButton Grid.Row="1" Grid.Column="2" Source="search.png" BackgroundColor="Transparent" Command="{Binding SearchCommand}"/>-->
+
 
             <!--房源列表-->
             <!--
@@ -157,7 +158,25 @@
                                         <Label Grid.Row="0" Grid.Column="1" Text="{Binding HouseTitle}" TextColor="{DynamicResource PrimaryTextColor}" 
                                                        LineBreakMode="CharacterWrap" FontAttributes="Bold"/>
 
-                                        <Label Grid.Row="1" Grid.Column="1" FontSize="12" LineBreakMode="CharacterWrap">
+                                        <StackLayout Grid.Row="1" Grid.Column="1" Padding="0" Margin="0" Spacing="5" Orientation="Horizontal">
+                                            <controls:LabelWithBorder FontSize="10" Text="{Binding PanType}" DrawableColor="{DynamicResource LightPink}" TextColor="White" CornerRadius="2" VerticalOptions="Center"/>
+                                            <controls:LabelWithBorder FontSize="10" Text="{Binding PropertyDecoration}" TextColor="{DynamicResource ThickPink}" BorderThickness="2" BorderColor="{DynamicResource ThickPink}" CornerRadius="2" VerticalOptions="Center"/>
+                                            <controls:LabelWithBorder FontSize="10" Text="{Binding PropertyLook}" TextColor="{DynamicResource ThickPink}" BorderThickness="2" BorderColor="{DynamicResource ThickPink}" CornerRadius="2" VerticalOptions="Center"/>
+                                        </StackLayout>
+
+                                        <Label Grid.Row="2" Grid.Column="1" FontSize="12" LineBreakMode="CharacterWrap">
+                                            <Label.FormattedText>
+                                                <FormattedString>
+                                                    <Span Text="{Binding RoomStyle}"/>
+                                                    <Span Text="|"/>
+                                                    <Span Text="{Binding Square}"/>
+                                                    <Span Text="|"/>
+                                                    <Span Text="{Binding EstateName}"/>
+                                                </FormattedString>
+                                            </Label.FormattedText>
+                                        </Label>
+
+                                        <!--<Label Grid.Row="1" Grid.Column="1" FontSize="12" LineBreakMode="CharacterWrap">
                                             <Label.FormattedText>
                                                 <FormattedString>
                                                     <Span Text="{Binding RoomStyle}"/>
@@ -179,7 +198,7 @@
                                                     <Span Text="{Binding PropertyLook}"/>
                                                 </FormattedString>
                                             </Label.FormattedText>
-                                        </Label>
+                                        </Label>-->
 
                                         <Label Grid.Row="3" Grid.Column="1">
                                             <Label.FormattedText>

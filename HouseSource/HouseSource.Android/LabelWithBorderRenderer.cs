@@ -44,14 +44,18 @@ namespace HouseSource.Droid
                 if (Control != null)
                 {
                     GradientDrawable gd = new GradientDrawable();
-                    gd.SetShape(ShapeType.Rectangle);
-                    gd.SetGradientType(GradientType.LinearGradient);
-                    gd.SetCornerRadius(model.CornerRadius * 4);
-                    gd.SetStroke(model.BorderThickness, model.BorderColor.ToAndroid());
-                    gd.SetColor(model.DrawableColor.ToAndroid());
 
-                    Control.SetPadding(2, 2, 2, 2);
-                    Control.SetBackground(gd);
+                    if (!string.IsNullOrEmpty(model.Text))
+                    {
+                        gd.SetShape(ShapeType.Rectangle);
+                        gd.SetGradientType(GradientType.LinearGradient);
+                        gd.SetCornerRadius(model.CornerRadius * 4);
+                        gd.SetStroke(model.BorderThickness, model.BorderColor.ToAndroid());
+                        gd.SetColor(model.DrawableColor.ToAndroid());
+
+                        Control.SetPadding(2, 2, 2, 2);
+                        Control.SetBackground(gd);
+                    }
                 }
             }
 

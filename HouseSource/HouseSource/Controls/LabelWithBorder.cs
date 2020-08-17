@@ -36,10 +36,8 @@ namespace HouseSource.Controls
             set { SetValue(CornerRadiusProperty, value); }
         }
 
-
         public LabelWithBorder()
         {
-
         }
     }
 }

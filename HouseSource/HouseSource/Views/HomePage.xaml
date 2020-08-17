@@ -37,7 +37,7 @@
         <ScrollView>
             <Grid RowSpacing="5" ColumnSpacing="5" RowDefinitions="250, 180, 80, 40, Auto" ColumnDefinitions="1*, 1*">
 
-                <CarouselView Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"  x:Name="carousel" ItemsSource="{Binding CarouselList}">
+                <CarouselView Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" x:Name="carousel" ItemsSource="{Binding CarouselList}" IndicatorView="indicatorView">
                     <CarouselView.ItemTemplate>
                         <DataTemplate>
                             <ff:CachedImage Source="{Binding .}" BackgroundColor="Transparent" Aspect="AspectFill">
@@ -51,12 +51,16 @@
                     </CarouselView.ItemTemplate>
                 </CarouselView>
 
-                <Frame Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Style="{DynamicResource BaseFrame}" Padding="10,0" HeightRequest="40" BorderColor="LightGray" HasShadow="True" VerticalOptions="Start" Margin="20">
+                <IndicatorView Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" x:Name="indicatorView" IndicatorColor="LightGray" SelectedIndicatorColor="DarkGray" HorizontalOptions="Center" VerticalOptions="End" Margin="10"/>
+
+                <controls:FluentSearchBar Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Placeholder="输入楼盘名/片区搜索房源" Text="{Binding SearchContent}" Command="{Binding SearchCommand}" VerticalOptions="Start" Margin="20"/>
+
+                <!--<Frame Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Style="{DynamicResource BaseFrame}" Padding="10,0" HeightRequest="40" BorderColor="LightGray" HasShadow="True" VerticalOptions="Start" Margin="20">
                     <StackLayout Orientation="Horizontal" HorizontalOptions="Fill">
                         <controls:MyEntry Placeholder="输入楼盘名/片区搜索房源" Text="{Binding SearchContent}" HorizontalTextAlignment="Center" HorizontalOptions="FillAndExpand" FontSize="14"/>
                         <ImageButton Source="search.png" Command="{Binding SearchCommand}" BackgroundColor="Transparent"/>
                     </StackLayout>
-                </Frame>
+                </Frame>-->
 
                 <!--
                 <CollectionView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding OptionList}" EmptyView="无选项" SelectionMode="None" ItemSizingStrategy="MeasureAllItems">

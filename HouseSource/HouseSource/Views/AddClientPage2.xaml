@@ -67,7 +67,7 @@
                     </Grid>
                 </Frame>
 
-                <Label Text="以上信息为必填项" HorizontalOptions="Center" VerticalOptions="Center" Margin="10" TextColor="{DynamicResource MainColor}"/>
+                <Label Text="以上为必填信息" HorizontalOptions="Center" VerticalOptions="Center" Margin="10" TextColor="{DynamicResource MainColor}"/>
 
                 <!--第二组-->
                 <Expander>
@@ -107,7 +107,7 @@
                 </Expander>
 
                 <Button Text="清空" Command="{Binding ClearCommand}" Style="{StaticResource ButtonStyle}" BackgroundColor="LightGray"/>
-                <Button Text="确定新增" Command="{Binding AddCommand}" Style="{StaticResource ButtonStyle}" BackgroundColor="{DynamicResource MainColor}"/>
+                <Button Text="确定新增" Command="{Binding AddCommand}" Style="{StaticResource ButtonStyle}" BackgroundColor="#6ecbb8"/>
 
             </StackLayout>
 

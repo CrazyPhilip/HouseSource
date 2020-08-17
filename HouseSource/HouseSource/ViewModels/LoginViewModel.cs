@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using HouseSource.Views;
 using System.IO;
 using Xamarin.Essentials;
+using System.Threading;
 
 namespace HouseSource.ViewModels
 {
@@ -50,7 +51,14 @@ namespace HouseSource.ViewModels
 			set { SetProperty(ref isPassword, value); }
 		}
 
-		private string isRememberFileName { get; set; }
+        private bool isLoading;   //准备中
+        public bool IsLoading
+		{
+            get { return isLoading; }
+            set { SetProperty(ref isLoading, value); }
+        }
+
+        private string isRememberFileName { get; set; }
 
 		private string autoLoginFileName { get; set; }
 
@@ -64,6 +72,8 @@ namespace HouseSource.ViewModels
 		{
 			//TelOrEmpNo = "18428333654";
 			//Password = "Philip1995641418";
+
+			//IsLoading = true;
 
 			isRememberFileName = Path.Combine(FileSystem.CacheDirectory, "log_isRemember.dat");
 			autoLoginFileName = Path.Combine(FileSystem.CacheDirectory, "log_autoLogin.dat");
@@ -98,6 +108,7 @@ namespace HouseSource.ViewModels
 					Password = pwd;
 					Login();
 				}
+				//IsLoading = false;
 			}
 
 			IsPassword = true;

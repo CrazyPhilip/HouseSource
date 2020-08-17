@@ -7,7 +7,9 @@
             mc:Ignorable="d"
             x:Class="HouseSource.Views.ClientManagePage"
             BackgroundColor="{DynamicResource PageBackgroundColor}"
-            BarBackgroundColor="{StaticResource MainColor}"
+            BarBackgroundColor="{DynamicResource ControlBackgroundColor}"
+            SelectedTabColor="{DynamicResource MainColor}"
+            UnselectedTabColor="LightGray"
             x:Name="clientManagePage"
             Title="客源管理">
 
