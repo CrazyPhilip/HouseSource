@@ -8,13 +8,11 @@ using Plugin.Toast;
 using Plugin.Toast.Abstractions;
 using Newtonsoft.Json.Linq;
 using System.Threading.Tasks;
-using HouseSource.Views;
-using Newtonsoft.Json;
-using HouseSource.Models;
+
 
 namespace HouseSource.ViewModels
 {
-    public class RegisterViewModel : BaseViewModel
+    class ResetPasswordViewModel : BaseViewModel
     {
         private string telOrEmpNo;   //手机号
         public string TelOrEmpNo
@@ -37,12 +35,7 @@ namespace HouseSource.ViewModels
             set { SetProperty(ref password, value); }
         }
 
-        private string realName;   //真实名字
-        public string RealName
-        {
-            get { return realName; }
-            set { SetProperty(ref realName, value); }
-        }
+
 
         private bool isEnable;   //可否点击
         public bool IsEnable
@@ -72,7 +65,7 @@ namespace HouseSource.ViewModels
         public Command SendCodeCommand { get; set; }
         public Command RegisterCommand { get; set; }
 
-        public RegisterViewModel()
+        public ResetPasswordViewModel()
         {
             AuthCodeButtonText = "发送验证码";
             IsEnable = true;
@@ -100,16 +93,17 @@ namespace HouseSource.ViewModels
                         return;
                     }
 
+
                     string ifExist = await RestSharpService.CheckIfRegister(TelOrEmpNo);
 
                     if (!string.IsNullOrWhiteSpace(ifExist))
                     {
                         JObject jObject = JObject.Parse(ifExist);
-                        if (jObject["Msg"].ToString() == "TelExist")
+                        if (jObject["Msg"].ToString() == "NoExist")
                         {
-                            CrossToastPopUp.Current.ShowToastSuccess("手机号已经注册", ToastLength.Long);
+                            CrossToastPopUp.Current.ShowToastSuccess("手机号未注册", ToastLength.Long);
                         }
-                        else    // 获取验证码前 需要先检查手机号 是否已注册
+                        else  // 获取验证码前 需要先检查手机号 是否未注册
                         {
                             string result = await RestSharpService.SendCode(TelOrEmpNo);
                             if (string.IsNullOrWhiteSpace(result))
@@ -125,7 +119,7 @@ namespace HouseSource.ViewModels
                             }
                         }
                     }
-                    else  
+                    else   
                     {
                         CrossToastPopUp.Current.ShowToastError("服务器错误", ToastLength.Short);
                         return;
@@ -143,7 +137,7 @@ namespace HouseSource.ViewModels
             {
                 if (CheckInput())
                 {
-                    Register();
+                    ResetPassword();
                 }
             }, () => { return true; });
 
@@ -180,19 +174,15 @@ namespace HouseSource.ViewModels
                 return false;
             }
 
-            if (string.IsNullOrWhiteSpace(RealName))
-            {
-                CrossToastPopUp.Current.ShowToastError("真实姓名为空", ToastLength.Short);
-                return false;
-            }
+
 
             return true;
         }
 
         /// <summary>
-        /// 注册
+        ///重置密码
         /// </summary>
-        private async void Register()
+        private async void ResetPassword()
         {
             try
             {
@@ -202,34 +192,21 @@ namespace HouseSource.ViewModels
                     return;
                 }
 
-                string content = await RestSharpService.Register(TelOrEmpNo, Password, RealName);
+                string content = await RestSharpService.ResetPassword(TelOrEmpNo, Password);
 
                 if (!string.IsNullOrWhiteSpace(content))
                 {
                     JObject jObject = JObject.Parse(content);
                     if (jObject["Msg"].ToString() == "success")
                     {
-                        CrossToastPopUp.Current.ShowToastSuccess("注册成功", ToastLength.Long);
-                        // 注册成功后 ，自动保存全局的登录信息，并跳转界面 ，content中有除 PhotoUrl的其他变量
-
-                        GlobalVariables.LoggedUser = JsonConvert.DeserializeObject<UserInfo>(content);
-                        //Console.Write(GlobalVariables.LoggedUser.ToString());
-                        GlobalVariables.LoggedUser.PhotoUrl = null;  //注册成功后的headPic为空
-                        GlobalVariables.IsLogged = true;
-                        GlobalVariables.LoggedUser.EmpNo = TelOrEmpNo;
-
-
-
-                        MainPage mainPage = new MainPage();
-                        await Application.Current.MainPage.Navigation.PushAsync(mainPage);
-
+                        CrossToastPopUp.Current.ShowToastSuccess("密码重置成功", ToastLength.Long);
                     }
                 }
                 else
                 {
-                    CrossToastPopUp.Current.ShowToastError("注册失败", ToastLength.Short);
+                    CrossToastPopUp.Current.ShowToastError("密码重置失败，请稍后重试", ToastLength.Short);
                 }
-                
+
             }
             catch (Exception)
             {

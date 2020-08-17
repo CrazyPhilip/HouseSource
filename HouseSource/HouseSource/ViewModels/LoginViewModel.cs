@@ -50,7 +50,9 @@ namespace HouseSource.ViewModels
 			set { SetProperty(ref isPassword, value); }
 		}
 
-		private string fileName { get; set; }
+		private string isRememberFileName { get; set; }
+
+		private string autoLoginFileName { get; set; }
 
 		public Command LoginCommand { get; set; }   //登录命令事件
 		public Command ToRegisterCommand { get; set; }   //注册命令事件
@@ -63,10 +65,11 @@ namespace HouseSource.ViewModels
 			//TelOrEmpNo = "18428333654";
 			//Password = "Philip1995641418";
 
-			fileName = Path.Combine(FileSystem.CacheDirectory, "log.dat");
-			if (File.Exists(fileName))
+			isRememberFileName = Path.Combine(FileSystem.CacheDirectory, "log_isRemember.dat");
+			autoLoginFileName = Path.Combine(FileSystem.CacheDirectory, "log_autoLogin.dat");
+			if (File.Exists(isRememberFileName))
 			{
-				string[] text = File.ReadAllLines(fileName);
+				string[] text = File.ReadAllLines(isRememberFileName);
 				string check = text[0].Substring(6);
 				string tel = text[1].Substring(8);
 				string pwd = text[2].Substring(9);
@@ -76,6 +79,24 @@ namespace HouseSource.ViewModels
 					TelOrEmpNo = tel;
 					Password = pwd;
 					IsRememberPwd = true;
+				}
+			}
+			//记住密码和自动登录没关系？ 
+			if (File.Exists(autoLoginFileName))
+			{
+				string[] text = File.ReadAllLines(autoLoginFileName);
+				string loginState = text[0].Substring(11);
+				string tel = text[1].Substring(8);
+				string pwd = text[2].Substring(9);
+				string loginDate = text[3].Substring(10);
+				DateTime nowDate = DateTime.Now;
+				DateTime lastLoginDate = DateTime.Parse(loginDate);
+				TimeSpan ts = nowDate - lastLoginDate;
+				if (loginState == "True" && ts.TotalDays <= 30) 
+				{
+					TelOrEmpNo = tel;
+					Password = pwd;
+					Login();
 				}
 			}
 
@@ -109,12 +130,12 @@ namespace HouseSource.ViewModels
 					if (IsRememberPwd)
 					{
 						text = "State:Checked\n" + "Account:" + TelOrEmpNo + "\n" + "Password:" + Password;
-						File.WriteAllText(fileName, text);
+						File.WriteAllText(isRememberFileName, text);
 					}
 					else
 					{
 						text = "State:Unchecked\nAccount:\nPassword:\n";
-						File.WriteAllText(fileName, text);
+						File.WriteAllText(isRememberFileName, text);
 					}
 				}
 				else
@@ -180,9 +201,11 @@ namespace HouseSource.ViewModels
 						GlobalVariables.LoggedUser = JsonConvert.DeserializeObject<UserInfo>(result);
 						GlobalVariables.IsLogged = true;
 						GlobalVariables.LoggedUser.EmpNo = TelOrEmpNo;
-
-
-
+						//提供自动登录的信息  除非用户手动退出登录 LoginState变为False
+						string dateNow = DateTime.Now.ToString();
+						string text = "LoginState:True\n" + "Account:" + TelOrEmpNo + "\n" + "Password:" + Password + "\n" + "LoginDate:" + dateNow;
+						File.WriteAllText(autoLoginFileName, text);
+					
 						MainPage mainPage = new MainPage();
 						await Application.Current.MainPage.Navigation.PushAsync(mainPage);
 					}

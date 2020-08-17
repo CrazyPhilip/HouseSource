@@ -11,6 +11,8 @@ using Plugin.Toast;
 using Plugin.Toast.Abstractions;
 using HouseSource.Services;
 using Newtonsoft.Json.Linq;
+using System.IO;
+using Xamarin.Essentials;
 
 namespace HouseSource.ViewModels
 {
@@ -143,8 +145,8 @@ namespace HouseSource.ViewModels
         {
             GlobalVariables.IsLogged = false;
 
-            //string fileName = Path.Combine(FileSystem.CacheDirectory, "log.dat");
-            //File.Delete(fileName);
+            string fileName = Path.Combine(FileSystem.CacheDirectory, "log_autoLogin.dat");
+            File.Delete(fileName);
 
             LoginPage loginPage = new LoginPage();
             Application.Current.MainPage.Navigation.PushAsync(loginPage);
