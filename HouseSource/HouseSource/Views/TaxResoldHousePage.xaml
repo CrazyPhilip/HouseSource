@@ -404,7 +404,7 @@
 
                 <StackLayout Orientation="Horizontal" Margin="0,0,0,20">
                     <Button Text="清空" Command="{Binding ClearCommand}" Style="{DynamicResource ButtonStyle}" BackgroundColor="LightGray"/>
-                    <Button Text="开始计算" Command="{Binding CalculateCommand}" Style="{DynamicResource ButtonStyle}" BackgroundColor="{DynamicResource MainColor}"/>
+                    <Button Text="开始计算" Command="{Binding CalculateCommand}" Style="{DynamicResource ButtonStyle}" BackgroundColor="{DynamicResource PrimaryColor}"/>
                 </StackLayout>
             </StackLayout>
         </ScrollView>

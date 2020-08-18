@@ -171,7 +171,7 @@
                         Style="{StaticResource PickerStyle}"/>
                 </Grid>
 
-                <Label Text="以上信息为必填项" HorizontalOptions="Center" VerticalOptions="Center" Margin="10" TextColor="{DynamicResource MainColor}"/>
+                <Label Text="以上信息为必填项" HorizontalOptions="Center" VerticalOptions="Center" Margin="10" TextColor="{DynamicResource PrimaryColor}"/>
 
                 <Expander>
                     <Expander.Header>

@@ -29,13 +29,13 @@
 
                 <Button Grid.Row="3" Grid.Column="1" Text="联系客户" Padding="0" CornerRadius="15" TextColor="White" 
                         Command="{Binding BindingContext.CallCommand, Source={x:Reference clientDetailPage}}" 
-                        BackgroundColor="{DynamicResource MainColor}"/>
+                        BackgroundColor="{DynamicResource PrimaryColor}"/>
                 <Button Grid.Row="3" Grid.Column="2" Text="看跟进" Padding="0" CornerRadius="15" TextColor="White" 
                         Command="{Binding BindingContext.NavigateCommand, Source={x:Reference clientDetailPage}}" CommandParameter="{x:Type views:SeeFollowUpPage}"
-                        BackgroundColor="{DynamicResource MainColor}"/>
+                        BackgroundColor="{DynamicResource PrimaryColor}"/>
                 <Button Grid.Row="3" Grid.Column="3" Text="写跟进" Padding="0" CornerRadius="15" TextColor="White" 
                         Command="{Binding BindingContext.NavigateCommand, Source={x:Reference clientDetailPage}}" CommandParameter="{x:Type views:WriteFollowUpPage}"
-                        BackgroundColor="{DynamicResource MainColor}"/>
+                        BackgroundColor="{DynamicResource PrimaryColor}"/>
             </Grid>
 
             <Label Text="客户需求" FontSize="16" TextColor="Black"/>

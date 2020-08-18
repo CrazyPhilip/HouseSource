@@ -270,7 +270,7 @@
 
                 </Grid>
 
-                <Label Text="以上为必填项，以下为选填项" TextColor="{DynamicResource MainColor}" Margin="10"  HorizontalOptions="Center" VerticalOptions="Center"/>
+                <Label Text="以上为必填项，以下为选填项" TextColor="{DynamicResource PrimaryColor}" Margin="10"  HorizontalOptions="Center" VerticalOptions="Center"/>
 
                 <Expander>
                     <Expander.Header>

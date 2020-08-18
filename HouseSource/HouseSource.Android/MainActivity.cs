@@ -2,7 +2,6 @@
 using Android.Content.PM;
 using Android.Runtime;
 using Android.OS;
-using CarouselView.FormsPlugin.Android;
 using FFImageLoading.Forms.Platform;
 using Rg.Plugins.Popup;
 using UltimateXF.Droid;
@@ -27,10 +26,9 @@ namespace HouseSource.Droid
             ToolbarResource = Resource.Layout.Toolbar;
 
             Popup.Init(this, savedInstanceState);   //弹出框
-            CarouselViewRenderer.Init();    //轮播图
             CachedImageRenderer.Init(true);
             UltimateXFSettup.Initialize(this);
-            Forms.SetFlags( new string[] { "RadioButton_Experimental", "Expander_Experimental", "Shapes_Experimental" });
+            Forms.SetFlags( new string[] { "RadioButton_Experimental", "Expander_Experimental", "Shapes_Experimental", "Brush_Experimental" });
 
             base.OnCreate(savedInstanceState);
             Instance = this;

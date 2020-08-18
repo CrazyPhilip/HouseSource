@@ -15,50 +15,37 @@
 
     <ContentPage.Resources>
         <Style x:Key="EntryStyle" TargetType="controls:MyEntry">
-            <Setter Property="WidthRequest" Value="250"/>
-            <Setter Property="PlaceholderColor" Value="LightGray"/>
+            <Setter Property="WidthRequest" Value="200"/>
+            <Setter Property="PlaceholderColor" Value="White"/>
             <Setter Property="HorizontalOptions" Value="Center"/>
             <Setter Property="VerticalOptions" Value="Center"/>
             <Setter Property="HorizontalTextAlignment" Value="Center"/>
-            <Setter Property="FontSize" Value="18"/>
-        </Style>
-        <Style x:Key="FrameStyle" TargetType="Frame">
-            <Setter Property="HeightRequest" Value="40"/>
-            <Setter Property="BorderColor" Value="#6ecbb8"/>
-            <Setter Property="HasShadow" Value="False"/>
-            <Setter Property="CornerRadius" Value="25"/>
-            <Setter Property="Padding" Value="0"/>
-            <Setter Property="HorizontalOptions" Value="Fill"/>
-            <Setter Property="VerticalOptions" Value="Center"/>
         </Style>
     </ContentPage.Resources>
 
     <ContentPage.Content>
-        <Grid RowDefinitions="200,40,40,40,40,40,40,40,40" ColumnDefinitions="3*, 1*" VerticalOptions="CenterAndExpand" Margin="40,0">
-            <ff:CachedImage Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" WidthRequest="128" HeightRequest="128" Source="erp_logo.png" VerticalOptions="CenterAndExpand"/>
-            <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Text="欢迎使用68房产管理APP独立经纪人版" HorizontalOptions="Center" VerticalOptions="Start" FontSize="18"/>
+        <Grid RowDefinitions="40,40,40,40,40,40,40,40,40,40" ColumnDefinitions="3*, 1*" VerticalOptions="CenterAndExpand" Padding="40,0">
 
-            <Frame Grid.Row="2" Grid.Column="0" Style="{StaticResource FrameStyle}">
-                <controls:MyEntry Placeholder="手机号" Text="{Binding TelOrEmpNo}" Keyboard="Telephone" MaxLength="11" Style="{StaticResource EntryStyle}"/>
-            </Frame>
+            <BoxView Grid.Row="2" Grid.Column="0" Color="LightGray" CornerRadius="5" Opacity="0.5"/>
+            <BoxView Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Color="LightGray" CornerRadius="5" Opacity="0.5"/>
+            <BoxView Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Color="LightGray" CornerRadius="5" Opacity="0.5"/>
+            <BoxView Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Color="LightGray" CornerRadius="5" Opacity="0.5"/>
 
-            <Button Grid.Row="2" Grid.Column="1" Text="{Binding AuthCodeButtonText}" HeightRequest="40" BackgroundColor="{Binding ButtonColor}" TextColor="White" FontSize="12"
-                    HorizontalOptions="Center" BorderRadius="20" Padding="0" Command="{Binding SendCodeCommand}"/>
+            <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="注册" HorizontalOptions="Center" VerticalOptions="Start" FontSize="18"/>
 
-            <Frame Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource FrameStyle}">
-                <controls:MyEntry Placeholder="短信验证码" Text="{Binding Code}" Keyboard="Numeric" MaxLength="6" Style="{StaticResource EntryStyle}"/>
-            </Frame>
+                <controls:MyEntry Grid.Row="2" Grid.Column="0" Placeholder="手机号" Text="{Binding TelOrEmpNo}" Keyboard="Telephone" MaxLength="11" Style="{DynamicResource EntryStyle}"/>
+           
+            <Button Grid.Row="2" Grid.Column="1" Text="{Binding AuthCodeButtonText}" HeightRequest="40" BackgroundColor="{Binding ButtonColor}" TextColor="White"
+                    CornerRadius="5" Padding="0" Command="{Binding SendCodeCommand}"/>
 
-            <Frame Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource FrameStyle}">
-                <controls:MyEntry Placeholder="登录密码" Text="{Binding Password}" MaxLength="20" Style="{StaticResource EntryStyle}"/>
-            </Frame>
+            <controls:MyEntry Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Placeholder="短信验证码" Text="{Binding Code}" Keyboard="Numeric" MaxLength="6" Style="{DynamicResource EntryStyle}"/>
 
-            <Frame Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource FrameStyle}">
-                <controls:MyEntry Placeholder="真实姓名" Text="{Binding RealName}" Style="{StaticResource EntryStyle}"/>
-            </Frame>
+            <controls:MyEntry Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Placeholder="登录密码" Text="{Binding Password}" MaxLength="20" Style="{DynamicResource EntryStyle}"/>
 
-            <Button Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Text="注册" HeightRequest="40" BackgroundColor="{DynamicResource MainColor}" TextColor="White" FontSize="18"
-                    HorizontalOptions="Center" BorderRadius="20" Padding="0" Command="{Binding RegisterCommand}"/>
+            <controls:MyEntry Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Placeholder="真实姓名" Text="{Binding RealName}" Style="{DynamicResource EntryStyle}"/>
+            
+            <Button Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Text="注册" BackgroundColor="{DynamicResource PrimaryColor}" TextColor="White"
+                    Padding="0" CornerRadius="5" Command="{Binding RegisterCommand}"/>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:controls="clr-namespace:HouseSource.Controls" 
+             xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             mc:Ignorable="d"
+             x:Name="houseItemView"
+             x:Class="HouseSource.Controls.HouseItemView">
+
+    <Frame BindingContext="{x:Reference houseItemView}"
+           HasShadow="{Binding HasShadow}" 
+           BackgroundColor="{Binding InnerBackgroundColor}"
+           BorderColor="{Binding BorderColor}"
+           CornerRadius="{Binding CornerRadius}"
+           Padding="5"
+           VerticalOptions="Center"
+           HorizontalOptions="Fill">
+        <Grid RowDefinitions="*,*,*,*" ColumnDefinitions="1*,2*" RowSpacing="0" ColumnSpacing="10">
+            <ff:CachedImage Grid.Row="0" Grid.Column="0" Grid.RowSpan="4" Source="{Binding House.PhotoUrl}" 
+                            DownsampleHeight="100" DownsampleWidth="100" Aspect="AspectFill"/>
+
+            <Label Grid.Row="0" Grid.Column="1" Text="{Binding House.HouseTitle}" TextColor="{DynamicResource PrimaryTextColor}" 
+                   LineBreakMode="CharacterWrap" FontAttributes="Bold"/>
+
+            <StackLayout Grid.Row="1" Grid.Column="1" Padding="0" Margin="0" Spacing="5" Orientation="Horizontal">
+                <controls:LabelWithBorder FontSize="10" Text="{Binding House.PanType}" DrawableColor="{DynamicResource LightPink}" TextColor="White" CornerRadius="2" VerticalOptions="Center"/>
+                <controls:LabelWithBorder FontSize="10" Text="{Binding House.PropertyDecoration}" TextColor="{DynamicResource ThickPink}" BorderThickness="2" BorderColor="{DynamicResource ThickPink}" CornerRadius="2" VerticalOptions="Center"/>
+                <controls:LabelWithBorder FontSize="10" Text="{Binding House.PropertyLook}" TextColor="{DynamicResource ThickPink}" BorderThickness="2" BorderColor="{DynamicResource ThickPink}" CornerRadius="2" VerticalOptions="Center"/>
+            </StackLayout>
+
+            <Label Grid.Row="2" Grid.Column="1" FontSize="12" LineBreakMode="CharacterWrap">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="{Binding House.RoomStyle}"/>
+                        <Span Text="|"/>
+                        <Span Text="{Binding House.Square}"/>
+                        <Span Text="|"/>
+                        <Span Text="{Binding House.EstateName}"/>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+
+            <Label Grid.Row="3" Grid.Column="1">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="{Binding House.Price}" TextColor="Red"/>
+                        <Span Text="{Binding House.SinglePrice}"/>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+        </Grid>
+        
+        <Frame.GestureRecognizers>
+            <TapGestureRecognizer NumberOfTapsRequired="1" Command="{Binding TappedCommand}"/>
+        </Frame.GestureRecognizers>
+    </Frame>
+</ContentView>

@@ -69,7 +69,7 @@
                     </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <StackLayout HeightRequest="80" WidthRequest="80" Padding="5" Orientation="Vertical" BackgroundColor="{StaticResource MainColor}">
+                            <StackLayout HeightRequest="80" WidthRequest="80" Padding="5" Orientation="Vertical" BackgroundColor="{StaticResource PrimaryColor}">
                                     <ff:CachedImage Source="{Binding icon}" HeightRequest="50" WidthRequest="50"/>
                                     <Label Text="{Binding option}" HorizontalOptions="Center" VerticalOptions="Center" FontSize="14" TextColor="White" FontAttributes="Bold"/>
 
@@ -182,6 +182,7 @@
                                                               CommandParameter="{Binding PropertyID}"/>
                                     </Frame.GestureRecognizers>
                                 </Frame>
+                                
                                 <!--<Frame Style="{StaticResource BaseFrame}" HeightRequest="140" WidthRequest="140" Margin="5,0">
                                     <Grid RowSpacing="0" RowDefinitions="100, 20, 20">
 

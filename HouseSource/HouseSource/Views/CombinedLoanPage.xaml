@@ -135,7 +135,7 @@
                         </Label.Behaviors>
                         <Label.Triggers>
                             <DataTrigger TargetType="Label" Binding="{Binding Source={x:Reference CTotalPriceRadio}, Path=IsChecked}" Value="True">
-                                <Setter Property="TextColor" Value="{DynamicResource MainColor}" />
+                                <Setter Property="TextColor" Value="{DynamicResource PrimaryColor}" />
                                 <Setter Property="FontSize" Value="16" />
                                 <Setter Property="FontAttributes" Value="Bold" />
                             </DataTrigger>
@@ -148,7 +148,7 @@
                         </Label.Behaviors>
                         <Label.Triggers>
                             <DataTrigger TargetType="Label" Binding="{Binding Source={x:Reference CTotalLoanRadio}, Path=IsChecked}" Value="True">
-                                <Setter Property="TextColor" Value="{DynamicResource MainColor}" />
+                                <Setter Property="TextColor" Value="{DynamicResource PrimaryColor}" />
                                 <Setter Property="FontSize" Value="16" />
                                 <Setter Property="FontAttributes" Value="Bold" />
                             </DataTrigger>
@@ -176,7 +176,7 @@
                         </Label.Behaviors>
                         <Label.Triggers>
                             <DataTrigger TargetType="Label" Binding="{Binding Source={x:Reference CAveCapAndIntRadio}, Path=IsChecked}" Value="True">
-                                <Setter Property="TextColor" Value="{DynamicResource MainColor}" />
+                                <Setter Property="TextColor" Value="{DynamicResource PrimaryColor}" />
                                 <Setter Property="FontSize" Value="16" />
                                 <Setter Property="FontAttributes" Value="Bold" />
                             </DataTrigger>
@@ -188,7 +188,7 @@
                         </Label.Behaviors>
                         <Label.Triggers>
                             <DataTrigger TargetType="Label" Binding="{Binding Source={x:Reference CAveCapRadio}, Path=IsChecked}" Value="True">
-                                <Setter Property="TextColor" Value="{DynamicResource MainColor}" />
+                                <Setter Property="TextColor" Value="{DynamicResource PrimaryColor}" />
                                 <Setter Property="FontSize" Value="16" />
                                 <Setter Property="FontAttributes" Value="Bold" />
                             </DataTrigger>
@@ -302,7 +302,7 @@
 
                 <StackLayout Orientation="Horizontal" Margin="0,0,0,20">
                     <Button Text="清空" Command="{Binding ClearCommand}" Style="{DynamicResource ButtonStyle}" BackgroundColor="LightGray"/>
-                    <Button Text="开始计算" Command="{Binding CalculateCommand}" Style="{DynamicResource ButtonStyle}" BackgroundColor="{DynamicResource MainColor}"/>
+                    <Button Text="开始计算" Command="{Binding CalculateCommand}" Style="{DynamicResource ButtonStyle}" BackgroundColor="{DynamicResource PrimaryColor}"/>
                 </StackLayout>
             </StackLayout>
         </ScrollView>

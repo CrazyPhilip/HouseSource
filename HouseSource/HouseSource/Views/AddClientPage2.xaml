@@ -67,7 +67,7 @@
                     </Grid>
                 </Frame>
 
-                <Label Text="以上为必填信息" HorizontalOptions="Center" VerticalOptions="Center" Margin="10" TextColor="{DynamicResource MainColor}"/>
+                <Label Text="以上为必填信息" HorizontalOptions="Center" VerticalOptions="Center" Margin="10" TextColor="{DynamicResource PrimaryColor}"/>
 
                 <!--第二组-->
                 <Expander>

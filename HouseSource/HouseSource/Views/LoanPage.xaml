@@ -9,7 +9,7 @@
             x:Name="loanPage"
             BackgroundColor="{DynamicResource PageBackgroundColor}"
             BarBackgroundColor="{DynamicResource ControlBackgroundColor}"
-            SelectedTabColor="{DynamicResource MainColor}"
+            SelectedTabColor="{DynamicResource PrimaryColor}"
             UnselectedTabColor="LightGray"
             Title="房贷计算器">
 

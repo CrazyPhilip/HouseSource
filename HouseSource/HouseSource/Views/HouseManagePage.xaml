@@ -8,7 +8,7 @@
             x:Class="HouseSource.Views.HouseManagePage"
             BackgroundColor="{DynamicResource PageBackgroundColor}"
             BarBackgroundColor="{DynamicResource ControlBackgroundColor}"
-            SelectedTabColor="{DynamicResource MainColor}"
+            SelectedTabColor="{DynamicResource PrimaryColor}"
             UnselectedTabColor="LightGray"
             x:Name="houseManagePage"
             Title="房源管理">

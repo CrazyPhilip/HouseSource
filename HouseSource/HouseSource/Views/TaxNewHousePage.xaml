@@ -175,7 +175,7 @@
                 </StackLayout>
 
                     <Button Grid.Row="3" Grid.Column="0" Text="清空" Command="{Binding ClearCommand}" Style="{DynamicResource ButtonStyle}" BackgroundColor="LightGray"/>
-                    <Button Grid.Row="3" Grid.Column="1" Text="开始计算" Command="{Binding CalculateCommand}" Style="{DynamicResource ButtonStyle}" BackgroundColor="{DynamicResource MainColor}"/>
+                    <Button Grid.Row="3" Grid.Column="1" Text="开始计算" Command="{Binding CalculateCommand}" Style="{DynamicResource ButtonStyle}" BackgroundColor="{DynamicResource PrimaryColor}"/>
 
                 </Grid>
             </StackLayout>

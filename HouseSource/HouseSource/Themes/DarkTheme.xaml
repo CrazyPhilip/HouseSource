@@ -10,15 +10,13 @@
     <Color x:Key="SecondaryTextColor">WhiteSmoke</Color>
     <Color x:Key="TertiaryTextColor">LightGray</Color>
 
-    <Color x:Key="PrimaryColor">Teal</Color>
-    <Color x:Key="SecondaryColor">White</Color>
+    <Color x:Key="PrimaryColor">SteelBlue</Color>
+    <Color x:Key="SecondaryColor">LightSkyBlue</Color>
+    <Color x:Key="TertiaryColor">SkyBlue</Color>
 
-    <Color x:Key="MainColor">#01acf2</Color>
-    <Color x:Key="DeepBlue">#353f48</Color>
-    <Color x:Key="SkyBlue">#01acf2</Color>
-    <Color x:Key="LightBlue">#83d7f9</Color>
     <Color x:Key="GrassGreen">#71c043</Color>
     <Color x:Key="ThickPink">#d93365</Color>
     <Color x:Key="LightPink">#e0557f</Color>
+    <Color x:Key="GrayCyan">#99CCCC</Color>
 
 </ResourceDictionary>

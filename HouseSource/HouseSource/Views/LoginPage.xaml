@@ -9,66 +9,61 @@
              xmlns:behaviors="clr-namespace:HouseSource.Behaviors"
              mc:Ignorable="d"
              NavigationPage.HasNavigationBar="False"
-             x:Class="HouseSource.Views.LoginPage"
-             BackgroundImageSource="chengdu.png">
+             x:Class="HouseSource.Views.LoginPage">
 
     <ContentPage.BindingContext>
         <viewModels:LoginViewModel/>
     </ContentPage.BindingContext>
 
     <ContentPage.Resources>
-        <Style x:Name="EntryStyle" TargetType="controls:MyEntry">
+        <Style x:Key="EntryStyle" TargetType="controls:MyEntry">
             <Setter Property="WidthRequest" Value="200"/>
             <Setter Property="PlaceholderColor" Value="White"/>
             <Setter Property="HorizontalOptions" Value="Center"/>
             <Setter Property="VerticalOptions" Value="Center"/>
             <Setter Property="HorizontalTextAlignment" Value="Center"/>
-            <Setter Property="FontSize" Value="18"/>
-        </Style>
-        <Style x:Name="FrameStyle" TargetType="Frame">
-            <Setter Property="WidthRequest" Value="250"/>
-            <Setter Property="HeightRequest" Value="40"/>
-            <Setter Property="BorderColor" Value="#6ecbb8"/>
-            <Setter Property="CornerRadius" Value="20"/>
-            <Setter Property="Padding" Value="0"/>
-            <Setter Property="HorizontalOptions" Value="Center"/>
-            <Setter Property="VerticalOptions" Value="Center"/>
         </Style>
     </ContentPage.Resources>
 
+    <!--<ContentPage.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="SkyBlue" Offset="0" />
+            <GradientStop Color="LightSkyBlue" Offset="0.5" />
+            <GradientStop Color="SteelBlue" Offset="1" />
+        </LinearGradientBrush>
+    </ContentPage.Background>-->
+
     <ContentPage.Content>
-        <StackLayout Padding="40,0">
-            <Label Text="欢迎使用" TextColor="White" FontSize="14" FontAttributes="Bold" Margin="0,50,0,0"/>
-            <Label Text="军军房产管理APP独立经纪人版" TextColor="White" FontSize="18" FontAttributes="Bold"/>
-            
-            <Grid HeightRequest="300" RowDefinitions="40,40,40,40,40" ColumnDefinitions="*,*" RowSpacing="20" Margin="0,50">
-                <BoxView Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Color="WhiteSmoke" CornerRadius="5" Opacity="0.5"/>
-                <BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Color="WhiteSmoke" CornerRadius="5" Opacity="0.5"/>
+        <Grid RowDefinitions="100,40,40,40,40,40,40,40" ColumnDefinitions="*,*" Padding="40,0" VerticalOptions="Center">
+            <ff:CachedImage Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Source="circle.png" HorizontalOptions="Fill" Aspect="AspectFit"/>
+            <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Text="军军房产" TextColor="{StaticResource PrimaryColor}" FontSize="18" FontAttributes="Bold" HorizontalOptions="Center"/>
 
-                <controls:MyEntry Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Placeholder="手机号" Text="{Binding TelOrEmpNo}" Style="{DynamicResource EntryStyle}"/>
+            <BoxView Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Color="LightGray" CornerRadius="5" Opacity="0.5"/>
+            <BoxView Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Color="LightGray" CornerRadius="5" Opacity="0.5"/>
 
-                <controls:MyEntry Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Placeholder="密码" Text="{Binding Password}" IsPassword="{Binding IsPassword}" Style="{DynamicResource EntryStyle}"/>
-                <ImageButton Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Source="{Binding EyeSource}" Command="{Binding OpenEyeCommand}" HeightRequest="30" WidthRequest="30"
+            <controls:MyEntry Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Placeholder="手机号" Text="{Binding TelOrEmpNo}" Style="{DynamicResource EntryStyle}"/>
+
+            <controls:MyEntry Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Placeholder="密码" Text="{Binding Password}" IsPassword="{Binding IsPassword}" Style="{DynamicResource EntryStyle}"/>
+            <ImageButton Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Source="{Binding EyeSource}" Command="{Binding OpenEyeCommand}" HeightRequest="30" WidthRequest="30"
                          BackgroundColor="Transparent" HorizontalOptions="End" Margin="20,0"/>
-                
-                <Button Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Text="登录" BackgroundColor="{DynamicResource DeepBlue}" TextColor="White"
+
+            <Button Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Text="登录" BackgroundColor="{DynamicResource PrimaryColor}" TextColor="White"
                     Padding="0" CornerRadius="5" Command="{Binding LoginCommand}"/>
 
-                <CheckBox Grid.Row="3" Grid.Column="0" x:Name="RememberPwd" IsChecked="{Binding IsRememberPwd}" HorizontalOptions="End" Color="{DynamicResource DeepBlue}">
-                    <CheckBox.Behaviors>
-                        <behaviors:EventToCommandBehavior EventName="CheckedChanged" Command="{Binding RememberPwdCommand}"/>
-                    </CheckBox.Behaviors>
-                </CheckBox>
-                <Label Grid.Row="3" Grid.Column="1" Text="30天免登录" HorizontalOptions="Start" VerticalOptions="CenterAndExpand" TextColor="White"/>
+            <CheckBox Grid.Row="6" Grid.Column="0" x:Name="RememberPwd" IsChecked="{Binding IsRememberPwd}" HorizontalOptions="End" Color="Black">
+                <CheckBox.Behaviors>
+                    <behaviors:EventToCommandBehavior EventName="CheckedChanged" Command="{Binding RememberPwdCommand}"/>
+                </CheckBox.Behaviors>
+            </CheckBox>
+            <Label Grid.Row="6" Grid.Column="1" Text="30天免登录" HorizontalOptions="Start" VerticalOptions="CenterAndExpand" TextColor="Black"/>
 
-                <Button Grid.Row="4" Grid.Column="0" Text="密码忘了" BackgroundColor="Transparent" TextColor="White"
+            <Button Grid.Row="7" Grid.Column="0" Text="密码忘了" BackgroundColor="Transparent"
                     Command="{Binding ToResetPasswordCommand}"/>
 
-                <Button Grid.Row="4" Grid.Column="1" Text="注册" BackgroundColor="Transparent" TextColor="White"
+            <Button Grid.Row="7" Grid.Column="1" Text="注册" BackgroundColor="Transparent"
                     Command="{Binding ToRegisterCommand}"/>
 
-                <!--<ActivityIndicator Grid.Row="0" Grid.Column="0" Grid.RowSpan="5" Grid.ColumnSpan="2" IsVisible="{Binding IsLoading}"/>-->
-            </Grid>
-        </StackLayout>
+            <!--<ActivityIndicator Grid.Row="0" Grid.Column="0" Grid.RowSpan="5" Grid.ColumnSpan="2" IsVisible="{Binding IsLoading}"/>-->
+        </Grid>
     </ContentPage.Content>
 </ContentPage>
