@@ -11,6 +11,7 @@ using HouseSource.Views;
 using System.IO;
 using Xamarin.Essentials;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace HouseSource.ViewModels
 {
@@ -73,7 +74,6 @@ namespace HouseSource.ViewModels
 			//TelOrEmpNo = "18428333654";
 			//Password = "Philip1995641418";
 
-			//IsLoading = true;
 
 			isRememberFileName = Path.Combine(FileSystem.CacheDirectory, "log_isRemember.dat");
 			autoLoginFileName = Path.Combine(FileSystem.CacheDirectory, "log_autoLogin.dat");
@@ -106,9 +106,20 @@ namespace HouseSource.ViewModels
 				{
 					TelOrEmpNo = tel;
 					Password = pwd;
-					Login();
+					IsLoading = true;
+					Device.StartTimer(new TimeSpan(0, 0, 2), () =>
+					{
+						// do something every 2 seconds
+						Login();
+						Device.BeginInvokeOnMainThread(() =>
+						{
+							// interact with UI elements]
+						});
+						return false; // runs again, or false to stop
+					});
+
+
 				}
-				//IsLoading = false;
 			}
 
 			IsPassword = true;
@@ -175,6 +186,8 @@ namespace HouseSource.ViewModels
 		/// </summary>
 		private async void Login()
 		{
+			//IsLoading = false;
+			//await Task.Delay(3000);
 			try
 			{
 				if (!Tools.IsNetConnective())

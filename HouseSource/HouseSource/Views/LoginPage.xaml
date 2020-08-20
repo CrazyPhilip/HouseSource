@@ -63,7 +63,7 @@
             <Button Grid.Row="7" Grid.Column="1" Text="注册" BackgroundColor="Transparent"
                     Command="{Binding ToRegisterCommand}"/>
 
-            <!--<ActivityIndicator Grid.Row="0" Grid.Column="0" Grid.RowSpan="5" Grid.ColumnSpan="2" IsVisible="{Binding IsLoading}"/>-->
+            <ActivityIndicator Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" Grid.ColumnSpan="2" IsRunning="{Binding IsLoading}"/>
         </Grid>
     </ContentPage.Content>
 </ContentPage>
