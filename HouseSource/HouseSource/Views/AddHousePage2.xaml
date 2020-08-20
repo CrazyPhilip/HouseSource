@@ -31,7 +31,7 @@
 
     <ContentPage.Content>
         <ScrollView>
-            <StackLayout Padding="10,0">
+            <StackLayout Padding="10,10,10,0">
 
                 <!--图片列表-->
                 <Frame CornerRadius="5" BackgroundColor="{DynamicResource ControlBackgroundColor}" HasShadow="False" Padding="0">
@@ -52,7 +52,7 @@
                                 </BindableLayout.ItemTemplate>
                             </StackLayout>
 
-                            <Button Text="添加图片" Command="{Binding AddImageCommand}" BackgroundColor="#6ecbb8" TextColor="White"/>
+                            <Button Text="添加图片" Command="{Binding AddImageCommand}" BackgroundColor="{StaticResource SecondaryColor}" TextColor="White"/>
                         </StackLayout>
                     </ScrollView>
                 </Frame>
@@ -114,7 +114,7 @@
 
                         <!--对外展示-->
                         <Grid Grid.Row="17" ColumnDefinitions="30,*,*,30">
-                            <CheckBox Grid.Column="0" IsChecked="{Binding FlagWeb}"/>
+                            <CheckBox Grid.Column="0" IsChecked="{Binding FlagWeb}" Color="{StaticResource SecondaryColor}"/>
                             <Label Grid.Column="1" Text="对外展示" FontAttributes="Bold" VerticalOptions="Center" FontSize="12"/>
                             <Label Grid.Column="2" Grid.ColumnSpan="2" Text="勾选可将房源概要信息同步至外网，保证信息安全。" LineBreakMode="WordWrap" VerticalOptions="Center" FontSize="12"/>
                         </Grid>
@@ -134,10 +134,10 @@
                         <Grid RowDefinitions="40,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,120,120,120,120" RowSpacing="0">
 
                             <StackLayout Grid.Row="0" Orientation="Horizontal" HorizontalOptions="Center">
-                                <controls:FluentCheckBox Text="满五唯一" IsChecked="{Binding FlagMWWY}" CheckedBackgroundColor="#6ecbb8"/>
-                                <controls:FluentCheckBox Text="无抵押" IsChecked="{Binding FlagWDY}" CheckedBackgroundColor="#6ecbb8"/>
-                                <controls:FluentCheckBox Text="可贷款" IsChecked="{Binding FlagKDK}" CheckedBackgroundColor="#6ecbb8"/>
-                                <controls:FluentCheckBox Text="新上房源" IsChecked="{Binding FlagXSFY}" CheckedBackgroundColor="#6ecbb8"/>
+                                <controls:FluentCheckBox Text="满五唯一" IsChecked="{Binding FlagMWWY}" CheckedBackgroundColor="{StaticResource SecondaryColor}" BorderColor="{StaticResource SecondaryColor}"/>
+                                <controls:FluentCheckBox Text="无抵押" IsChecked="{Binding FlagWDY}" CheckedBackgroundColor="{StaticResource SecondaryColor}" BorderColor="{StaticResource SecondaryColor}"/>
+                                <controls:FluentCheckBox Text="可贷款" IsChecked="{Binding FlagKDK}" CheckedBackgroundColor="{StaticResource SecondaryColor}" BorderColor="{StaticResource SecondaryColor}"/>
+                                <controls:FluentCheckBox Text="新上房源" IsChecked="{Binding FlagXSFY}" CheckedBackgroundColor="{StaticResource SecondaryColor}" BorderColor="{StaticResource SecondaryColor}"/>
                             </StackLayout>
 
                             <!--装修-->
@@ -203,7 +203,7 @@
                 </Expander>
 
                 <Button Text="清空" Command="{Binding ClearCommand}" Style="{StaticResource ButtonStyle}" BackgroundColor="LightGray"/>
-                <Button Text="确定新增" Command="{Binding AddCommand}" Style="{StaticResource ButtonStyle}" BackgroundColor="#6ecbb8"/>
+                <Button Text="确定新增" Command="{Binding AddCommand}" Style="{StaticResource ButtonStyle}" BackgroundColor="{StaticResource SecondaryColor}"/>
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>

@@ -31,7 +31,7 @@
 
     <ContentPage.Content>
         <ScrollView>
-            <StackLayout Padding="10,0">
+            <StackLayout Padding="10,10,10,0">
                 <Frame CornerRadius="5" BackgroundColor="{DynamicResource ControlBackgroundColor}" HasShadow="False" Padding="0">
                     <Grid RowDefinitions="*,*,*,*,*,*,*,*" RowSpacing="0">
 
@@ -107,7 +107,7 @@
                 </Expander>
 
                 <Button Text="清空" Command="{Binding ClearCommand}" Style="{StaticResource ButtonStyle}" BackgroundColor="LightGray"/>
-                <Button Text="确定新增" Command="{Binding AddCommand}" Style="{StaticResource ButtonStyle}" BackgroundColor="#6ecbb8"/>
+                <Button Text="确定新增" Command="{Binding AddCommand}" Style="{StaticResource ButtonStyle}" BackgroundColor="{StaticResource SecondaryColor}"/>
 
             </StackLayout>
 

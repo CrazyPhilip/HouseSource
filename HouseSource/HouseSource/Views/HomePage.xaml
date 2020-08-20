@@ -51,7 +51,7 @@
                     </CarouselView.ItemTemplate>
                 </CarouselView>
 
-                <IndicatorView Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" x:Name="indicatorView" IndicatorColor="LightGray" SelectedIndicatorColor="DarkGray" HorizontalOptions="Center" VerticalOptions="End" Margin="10"/>
+                <IndicatorView Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" x:Name="indicatorView" IndicatorColor="LightGray" SelectedIndicatorColor="{StaticResource SecondaryColor}" HorizontalOptions="Center" VerticalOptions="End" Margin="10"/>
 
                 <controls:FluentSearchBar Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Placeholder="输入楼盘名/片区搜索房源" Text="{Binding SearchContent}" Command="{Binding SearchCommand}" VerticalOptions="Start" Margin="20"/>
 
@@ -128,7 +128,7 @@
                     <StackLayout Orientation="Vertical" BindableLayout.ItemsSource="{Binding HouseItemList}" Spacing="10" Padding="5,0">
                         <BindableLayout.ItemTemplate>
                             <DataTemplate>
-                                <Frame HeightRequest="100" Padding="5" CornerRadius="5" Style="{DynamicResource BaseFrame}">
+                                <Frame HeightRequest="100" Style="{DynamicResource BaseFrame}">
                                     <Grid RowSpacing="0" RowDefinitions="*,*,*,*" ColumnDefinitions="1*,2*" ColumnSpacing="10">
                                         <ff:CachedImage Grid.Row="0" Grid.Column="0" Grid.RowSpan="4" Source="{Binding PhotoUrl}" 
                                                         DownsampleHeight="100" DownsampleWidth="100" Aspect="AspectFill"/>

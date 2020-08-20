@@ -9,6 +9,8 @@ namespace HouseSource.Controls
         public MyNavigationPage(Page page)
         {
             On<Android>().SetBarHeight(100);
+            BarBackgroundColor = Color.SteelBlue;
+            BarTextColor = Color.White;
             PushAsync(page);
         }
     }

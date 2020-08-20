@@ -18,7 +18,8 @@ namespace HouseSource.Views
             InitializeComponent();
 
             hybridWebView.Uri = url;
-            urlLabel.Text = hybridWebView.Uri;
+            //urlLabel.Text = hybridWebView.Uri;
+            urlLabel.Text = "Url已加密...";
             this.Title = title;
         }
 

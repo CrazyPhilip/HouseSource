@@ -689,8 +689,17 @@ namespace HouseSource.ViewModels
 
                 switch (responseData.Msg)
                 {
-                    case "CompleteSuccess": CrossToastPopUp.Current.ShowToastSuccess("房源新增成功", ToastLength.Long); break;
-                    case "SQLSuccess": CrossToastPopUp.Current.ShowToastSuccess("房源新增成功", ToastLength.Long); break;
+                    case "CompleteSuccess": 
+                        { 
+                            CrossToastPopUp.Current.ShowToastSuccess("房源新增成功", ToastLength.Long);
+                            await Application.Current.MainPage.Navigation.PopAsync();
+                        } break;
+                    case "SQLSuccess":
+                        {
+                            CrossToastPopUp.Current.ShowToastSuccess("房源新增成功", ToastLength.Long);
+                            await Application.Current.MainPage.Navigation.PopAsync();
+                        }
+                        break;
                     case "SQLSuccessButUploadFailed": CrossToastPopUp.Current.ShowToastError("房源数据已加入数据库，但图片上传失败，请在电脑端进行补录操作", ToastLength.Long); break;
                     case "SQLSuccessAndUploadSemiSuccess": CrossToastPopUp.Current.ShowToastError("房源数据已加入数据库，但部分图片上传失败，请在电脑端进行补录操作", ToastLength.Long); break;
                     case "SQLExistProperty": CrossToastPopUp.Current.ShowToastWarning("该房源已存在", ToastLength.Long); break;
@@ -700,7 +709,6 @@ namespace HouseSource.ViewModels
             }
             catch (Exception)
             {
-
                 throw;
             }
         }

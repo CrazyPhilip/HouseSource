@@ -8,9 +8,7 @@
             x:Class="HouseSource.Views.LoanPage"
             x:Name="loanPage"
             BackgroundColor="{DynamicResource PageBackgroundColor}"
-            BarBackgroundColor="{DynamicResource ControlBackgroundColor}"
-            SelectedTabColor="{DynamicResource PrimaryColor}"
-            UnselectedTabColor="LightGray"
+            BarBackgroundColor="{DynamicResource PrimaryColor}"
             Title="房贷计算器">
 
     <views:ProvidentFundPage/>

@@ -96,7 +96,7 @@ namespace HouseSource.ViewModels
 		/// <returns></returns>
 		public async Task BackPage(EstateItemInfo e)
 		{
-			var page = Application.Current.MainPage.Navigation.NavigationStack.FirstOrDefault(p => p is AddHousePage);
+			var page = Application.Current.MainPage.Navigation.NavigationStack.FirstOrDefault(p => p is AddHousePage2);
 			var vm = page.BindingContext as AddHouseViewModel;
 
 			if (vm != null)

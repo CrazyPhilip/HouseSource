@@ -65,7 +65,7 @@
                     <StackLayout BindableLayout.ItemsSource="{Binding SaleClientList}" Orientation="Vertical">
                         <BindableLayout.ItemTemplate>
                             <DataTemplate>
-                                <Frame HeightRequest="100" Padding="5" CornerRadius="5" Style="{DynamicResource BaseFrame}">
+                                <Frame HeightRequest="100" Style="{DynamicResource BaseFrame}">
                                     <Grid RowDefinitions="*,*,*,*" ColumnDefinitions="3*,2*">
                                         <Label Grid.Row="0" Grid.Column="0" Text="{Binding CustName}" TextColor="Black" FontSize="16" VerticalOptions="Start"/>
                                         <Label Grid.Row="1" Grid.Column="0" Text="{Binding CustMobile}" FontSize="14" VerticalOptions="Start"/>

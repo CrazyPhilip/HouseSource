@@ -7,9 +7,7 @@
             mc:Ignorable="d"
             x:Name="taxPage"
             BackgroundColor="{DynamicResource PageBackgroundColor}"
-            BarBackgroundColor="{DynamicResource ControlBackgroundColor}"
-            SelectedTabColor="{DynamicResource PrimaryColor}"
-            UnselectedTabColor="LightGray"
+            BarBackgroundColor="{DynamicResource PrimaryColor}"
             x:Class="HouseSource.Views.TaxPage"
             Title="税费计算器">
 

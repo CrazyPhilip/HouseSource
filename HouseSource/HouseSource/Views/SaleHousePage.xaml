@@ -149,7 +149,7 @@
                     <StackLayout BindableLayout.ItemsSource="{Binding HouseItemList}" Orientation="Vertical">
                         <BindableLayout.ItemTemplate>
                             <DataTemplate>
-                                <Frame HeightRequest="110" Padding="5" CornerRadius="5" Style="{DynamicResource BaseFrame}">
+                                <Frame HeightRequest="110" Style="{DynamicResource BaseFrame}">
                                     <Grid RowSpacing="0" RowDefinitions="*,*,*,*" ColumnDefinitions="100,*">
                                         <ff:CachedImage Grid.Row="0" Grid.Column="0" Grid.RowSpan="4" Source="{Binding PhotoUrl}" 
                                                                 HeightRequest="100" WidthRequest="100"

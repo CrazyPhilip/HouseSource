@@ -63,7 +63,12 @@
             <Button Grid.Row="7" Grid.Column="1" Text="注册" BackgroundColor="Transparent"
                     Command="{Binding ToRegisterCommand}"/>
 
-            <ActivityIndicator Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" Grid.ColumnSpan="2" IsRunning="{Binding IsLoading}"/>
+            <Frame Grid.Row="0" Grid.Column="0" Grid.RowSpan="8" Grid.ColumnSpan="2" IsVisible="{Binding IsLoading}" BackgroundColor="Gray" HorizontalOptions="Center" VerticalOptions="Center" Padding="20" Style="{StaticResource BaseFrame}">
+                <StackLayout Orientation="Vertical">
+                    <ActivityIndicator IsRunning="True" HorizontalOptions="Center" VerticalOptions="Center"/>
+                    <Label Text="登录中" TextColor="White" HorizontalOptions="Center"/>
+                </StackLayout>
+            </Frame>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

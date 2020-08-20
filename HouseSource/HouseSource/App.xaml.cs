@@ -15,11 +15,7 @@ namespace HouseSource
             InitializeComponent();
 
             LoginPage loginPage = new LoginPage();
-            MyNavigationPage myNavigationPage = new MyNavigationPage(loginPage)
-            {
-                BarBackgroundColor = Color.FromHex("fafafa"),
-                BarTextColor = Color.Black
-            };
+            MyNavigationPage myNavigationPage = new MyNavigationPage(loginPage);
 
             MainPage = myNavigationPage;
         }

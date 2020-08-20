@@ -10,20 +10,12 @@
         <ResourceDictionary>
             <ResourceDictionary Source="Themes/LightTheme.xaml" />
 
-            <Style x:Key="TitleLabel" TargetType="Label">
-                <Setter Property="TextColor" Value="{DynamicResource PrimaryTextColor}"/>
-                <Setter Property="FontSize" Value="14"/>
-                <Setter Property="FontAttributes" Value="Bold"/>
-                <Setter Property="HorizontalOptions" Value="StartAndExpand"/>
-                <Setter Property="VerticalOptions" Value="CenterAndExpand"/>
-            </Style>
-
             <Style x:Key="BaseFrame" TargetType="Frame">
                 <Setter Property="BorderColor" Value="Transparent"/>
                 <Setter Property="HasShadow" Value="False"/>
                 <Setter Property="BackgroundColor" Value="{DynamicResource ControlBackgroundColor}"/>
                 <Setter Property="CornerRadius" Value="5"/>
-                <Setter Property="Padding" Value="0"/>
+                <Setter Property="Padding" Value="5"/>
                 <Setter Property="HorizontalOptions" Value="Fill"/>
                 <Setter Property="VerticalOptions" Value="Center"/>
                 <Setter Property="IsClippedToBounds" Value="True"/>
