@@ -669,7 +669,7 @@ namespace HouseSource.ViewModels
         {
             try
             {
-                Para.DBName = "cd";
+                Para.DBName = GlobalVariables.LoggedUser.DBName;
                 Para.CityName = Estate.CityName;
                 Para.DistrictName = Estate.DistrictName;
                 Para.EstateID = Estate.EstateID;

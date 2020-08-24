@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Xamarin.Forms;
 using HouseSource.Models;
+using HouseSource.Utils;
 
 namespace HouseSource.ViewModels
 {
@@ -19,7 +20,7 @@ namespace HouseSource.ViewModels
                     //分享给好友
                     case "1":
                         {
-                            string para = "http://47.108.202.57:8081/WebService.asmx/PropertyDetail?DBName=cd&PropertyID=" + propertyID;
+                            string para = "http://47.108.202.57:8081/WebService.asmx/PropertyDetail?DBName=" + GlobalVariables.LoggedUser.DBName +"&PropertyID=" + propertyID;
                             //MessagingCenter.Send(new object(), "Register");//首先进行注册，然后订阅注册的结果。
                             //MessagingCenter.Send(new object(), "ShareToFriend", para);
                         }

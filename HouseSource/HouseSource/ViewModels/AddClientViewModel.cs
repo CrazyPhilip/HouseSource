@@ -380,7 +380,7 @@ namespace HouseSource.ViewModels
                 DistrictName = District == null || District == "" ? "*" : District,
                 AreaID = areaID == null || areaID == "" ? "*" : areaID,
 
-                DBName = "cd",
+                DBName = GlobalVariables.LoggedUser.DBName,
                 EmpNoOrTel = GlobalVariables.LoggedUser.EmpNo
             };//此处EmpNoOrTel只能是电话号码
 

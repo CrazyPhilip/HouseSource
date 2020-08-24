@@ -4,6 +4,9 @@ namespace HouseSource.Models
 {
     public class UserInfo
     {
+        [JsonProperty("DBName", NullValueHandling = NullValueHandling.Ignore)]
+        public string DBName { get; set; }   //Comment
+
         [JsonProperty("EmpID", NullValueHandling = NullValueHandling.Ignore)]
         public string EmpID { get; set; }   //Comment
 

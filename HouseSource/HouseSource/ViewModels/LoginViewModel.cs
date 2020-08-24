@@ -208,7 +208,7 @@ namespace HouseSource.ViewModels
 					return;
 				}
 
-				string result = await RestSharpService.Login("cd", TelOrEmpNo, Password);
+				string result = await RestSharpService.Login(TelOrEmpNo, Password);
 
 				if (string.IsNullOrWhiteSpace(result))
 				{
@@ -219,10 +219,19 @@ namespace HouseSource.ViewModels
 				{
 					JObject jObject = JObject.Parse(result);
 					
-
 					if (jObject["Msg"].ToString() == "success")
 					{
-						GlobalVariables.LoggedUser = JsonConvert.DeserializeObject<UserInfo>(result);
+						//GlobalVariables.LoggedUser = JsonConvert.DeserializeObject<UserInfo>(result);
+						GlobalVariables.LoggedUser = new UserInfo
+						{
+							DBName = jObject["DBName"].ToString(),
+							EmpID = jObject["EmpID"].ToString(),
+							EmpName = jObject["EmpName"].ToString(),
+							PhotoUrl = jObject["PhotoUrl"].ToString(),
+							AccountStyle = jObject["AccountStyle"].ToString(),
+							CompanyOrEstateName = jObject["CompanyOrEstateName"].ToString()
+						};
+
 						GlobalVariables.IsLogged = true;
 						GlobalVariables.LoggedUser.EmpNo = TelOrEmpNo;
 						//提供自动登录的信息  除非用户手动退出登录 LoginState变为False

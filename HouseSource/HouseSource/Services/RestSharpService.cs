@@ -29,15 +29,14 @@ namespace HouseSource.Services
         /// <summary>
         /// 登录
         /// </summary>
-        /// <param name="dbName"></param>
         /// <param name="telOrEmpNo"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        public static async Task<string> Login(string dbName, string telOrEmpNo, string password)
+        public static async Task<string> Login(string telOrEmpNo, string password)
         {
             try
             {
-                string url = string.Format("Login?DBName={0}&TelOrEmpNo={1}&Password={2}", dbName, telOrEmpNo, password);
+                string url = string.Format("Login?TelOrEmpNo={0}&Password={1}", telOrEmpNo, password);
 
                 string content = await RestSharpHelper<string>.GetAsyncWithoutDeserialization(url);
                 return GetSubString(content, "{", "}");
@@ -55,7 +54,7 @@ namespace HouseSource.Services
         /// <returns></returns>
         public static async Task<string> SendCode(string tel)
         {
-            string url = "GetTelCode?DBName=cd&Tel=" + tel;
+            string url = "GetTelCode?DBName=" + GlobalVariables.LoggedUser.DBName + "&Tel=" + tel;
 
             string content = await RestSharpHelper<string>.GetAsyncWithoutDeserialization(url);
             return GetSubString(content, "{", "}");
@@ -68,7 +67,7 @@ namespace HouseSource.Services
         /// <returns></returns>
         public static async Task<string> CheckIfRegister(string tel)
         {
-            string url = "IfRegisterTel?DBName=cd&EmpNo=&Tel=" + tel;
+            string url = "IfRegisterTel?DBName=" + GlobalVariables.LoggedUser.DBName + "&EmpNo=&Tel=" + tel;
 
             string content = await RestSharpHelper<string>.GetAsyncWithoutDeserialization(url);
             return GetSubString(content, "{", "}");
@@ -83,7 +82,7 @@ namespace HouseSource.Services
         /// <returns></returns>
         public static async Task<string> Register(string tel, string password, string name)
         {
-            string url = "ApplyForRegister?DBName=cd&EmpNo=&Tel=" + tel
+            string url = "ApplyForRegister?DBName=" + GlobalVariables.LoggedUser.DBName + "&EmpNo=&Tel=" + tel
                 + "&Password=" + password + "&EmpName=" + name + "&AccountStyle=独立经纪人&CompanyOrEstateName=";
 
             string content = await RestSharpHelper<string>.GetAsyncWithoutDeserialization(url);
@@ -98,7 +97,7 @@ namespace HouseSource.Services
         /// <returns></returns>
         public static async Task<string> ResetPassword(string tel, string password)
         {
-            string url = "ModTelPassword?DBName=cd&Tel=" + tel
+            string url = "ModTelPassword?DBName=" + GlobalVariables.LoggedUser.DBName + "&Tel=" + tel
                 + "&NewPassWord=" + password;
 
             string content = await RestSharpHelper<string>.GetAsyncWithoutDeserialization(url);
@@ -136,7 +135,7 @@ namespace HouseSource.Services
                 url += "/queryRentHouseSource";
             }
 
-            url = url + "?DBName=cd"
+            url = url + "?DBName=" + GlobalVariables.LoggedUser.DBName
                 + "&EmpNo=" + GlobalVariables.LoggedUser.EmpNo
                 + "&DistrictName=" + housePara.DistrictName
                 + "&CountF=" + housePara.CountF
@@ -165,7 +164,7 @@ namespace HouseSource.Services
         /// <returns></returns>
         public static async Task<HouseRD> GetCollection()
         {
-            string url = "/MyCollect?DBName=cd&EmpID=" + GlobalVariables.LoggedUser.EmpID;
+            string url = "/MyCollect?DBName=" + GlobalVariables.LoggedUser.DBName + "&EmpID=" + GlobalVariables.LoggedUser.EmpID;
 
             string content = await RestSharpHelper<string>.GetAsyncWithoutDeserialization(url);
             content = GetSubString(content, "{", "}");
@@ -181,7 +180,7 @@ namespace HouseSource.Services
         /// <returns></returns>
         public static async Task<string> GetOneHouseAsync(string propertyID)
         {
-            string url = "queryModProperty?DBName=cd&EmpNoOrTel=" + GlobalVariables.LoggedUser.EmpNo + "&PropertyID=" + propertyID;
+            string url = "queryModProperty?DBName=" + GlobalVariables.LoggedUser.DBName + "&EmpNoOrTel=" + GlobalVariables.LoggedUser.EmpNo + "&PropertyID=" + propertyID;
 
             string content = await RestSharpHelper<string>.GetAsyncWithoutDeserialization(url);
             content = GetSubString(content, "{", "}");
@@ -195,7 +194,7 @@ namespace HouseSource.Services
         /// <returns></returns>
         public static async Task<string> CheckCollection(string propertyID)
         {
-            string url = "IfCollectProperty?DBName=cd&EmpID=" + GlobalVariables.LoggedUser.EmpID + "&PropertyID=" + propertyID;
+            string url = "IfCollectProperty?DBName=" + GlobalVariables.LoggedUser.DBName + "&EmpID=" + GlobalVariables.LoggedUser.EmpID + "&PropertyID=" + propertyID;
 
             string content = await RestSharpHelper<string>.GetAsyncWithoutDeserialization(url);
             content = GetSubString(content, "{", "}");
@@ -209,7 +208,7 @@ namespace HouseSource.Services
         /// <returns></returns>
         public static async Task<string> CollectOrCancel(string propertyID)
         {
-            string url = "CollectProperty?DBName=cd&EmpID=" + GlobalVariables.LoggedUser.EmpID + "&PropertyID=" + propertyID;
+            string url = "CollectProperty?DBName=" + GlobalVariables.LoggedUser.DBName + "&EmpID=" + GlobalVariables.LoggedUser.EmpID + "&PropertyID=" + propertyID;
 
             string content = await RestSharpHelper<string>.GetAsyncWithoutDeserialization(url);
             content = GetSubString(content, "{", "}");
@@ -223,7 +222,7 @@ namespace HouseSource.Services
         /// <returns></returns>
         public static async Task<string> GetPhotosByPropertyID(string propertyID)
         {
-            string url = "GetPhotoUrlByPropertyID?DBName=cd&PropertyID=" + propertyID;
+            string url = "GetPhotoUrlByPropertyID?DBName=" + GlobalVariables.LoggedUser.DBName + "&PropertyID=" + propertyID;
 
             string content = await RestSharpHelper<string>.GetAsyncWithoutDeserialization(url);
             if (!content.Contains("EmptyList"))
@@ -244,7 +243,7 @@ namespace HouseSource.Services
         /// <returns></returns>
         public static async Task<string> GetEstateInfoByEstateName(string estateName)
         {
-            string url = "GetEstateInfoByEstateName?DBName=cd&SelectType=1&EstateName=" + estateName;
+            string url = "GetEstateInfoByEstateName?DBName=" + GlobalVariables.LoggedUser.DBName + "&SelectType=1&EstateName=" + estateName;
 
             string content = await RestSharpHelper<string>.GetAsyncWithoutDeserialization(url);
             //EstateRD estateRD = JsonConvert.DeserializeObject<EstateRD>(content);
@@ -258,7 +257,7 @@ namespace HouseSource.Services
         /// <returns></returns>
         public static async Task<BuildingRD> GetDongzuoByEstateID(string estateID)
         {
-            string url = "GetDongzuoByEstateID?DBName=cd&EstateID=" + estateID;
+            string url = "GetDongzuoByEstateID?DBName=" + GlobalVariables.LoggedUser.DBName + "&EstateID=" + estateID;
 
             string content = await RestSharpHelper<string>.GetAsyncWithoutDeserialization(url);
             BuildingRD buildingRD = JsonConvert.DeserializeObject<BuildingRD>(content);
@@ -272,7 +271,7 @@ namespace HouseSource.Services
         /// <returns></returns>
         public static async Task<string> GetCellByBuildingID(string buildingID)
         {
-            string url = "GetCellByBuildingID?DBName=cd&BuildingID=" + buildingID;
+            string url = "GetCellByBuildingID?DBName=" + GlobalVariables.LoggedUser.DBName + "&BuildingID=" + buildingID;
 
             string content = await RestSharpHelper<string>.GetAsyncWithoutDeserialization(url);
             return content;
@@ -324,7 +323,7 @@ namespace HouseSource.Services
         /// <returns></returns>
         public static async Task<InquiryFollowRD> GetHouseFollowInfo(string propertyID)
         {
-            string url = "GetHouseFollowInfo?DBName=cd&PropertyID=" + propertyID;
+            string url = "GetHouseFollowInfo?DBName=" + GlobalVariables.LoggedUser.DBName + "&PropertyID=" + propertyID;
 
             string content = await RestSharpHelper<string>.GetAsyncWithoutDeserialization(url);
             content = GetSubString(content, "{", "}");
@@ -342,7 +341,7 @@ namespace HouseSource.Services
         /// <returns></returns>
         public static async Task<string> NewHouseFollow(string propertyID, string _content,string alertType, string type)
         {
-            string url = "NewHouseFollow?DBName=cd&PropertyID=" + propertyID
+            string url = "NewHouseFollow?DBName=" + GlobalVariables.LoggedUser.DBName + "&PropertyID=" + propertyID
                 + "&EmpNo=" + GlobalVariables.LoggedUser.EmpNo
                 + "&Content=" + _content
                 + "&AlertType=" + alertType
@@ -361,7 +360,7 @@ namespace HouseSource.Services
         /// <returns></returns>
         public static async Task<NewsRD> GetNewsAsync()
         {
-            string url = $"queryNews?DBName=cd&EmpNoOrTel={GlobalVariables.LoggedUser.EmpID}";
+            string url = $"queryNews?DBName=" + GlobalVariables.LoggedUser.DBName + "&EmpNoOrTel={GlobalVariables.LoggedUser.EmpID}";
 
             string content = await RestSharpHelper<string>.GetAsyncWithoutDeserialization(url);
 
@@ -379,7 +378,7 @@ namespace HouseSource.Services
         /// <returns></returns>
         public static async Task<string> GetDistrictList()
         {
-            string url = "GetDistrictList?DBName=cd";
+            string url = "GetDistrictList?DBName=" + GlobalVariables.LoggedUser.DBName + "";
 
             string content = await RestSharpHelper<string>.GetAsyncWithoutDeserialization(url);
             content = GetSubString(content, "{", "}");
@@ -393,7 +392,7 @@ namespace HouseSource.Services
         /// <returns></returns>
         public static async Task<AreaRD> GetAreaMsgByDistrictName(string districtName)
         {
-            string url = "GetAreaMsgByDistrictName?DBName=cd&DistrictName=" + districtName;
+            string url = "GetAreaMsgByDistrictName?DBName=" + GlobalVariables.LoggedUser.DBName + "&DistrictName=" + districtName;
 
             string content = await RestSharpHelper<string>.GetAsyncWithoutDeserialization(url);
 
@@ -438,7 +437,7 @@ namespace HouseSource.Services
         public static async Task<ClientRD> GetClientAsync(ClientPara clientPara, string type)
         {
             string url = (type == "Sale" ? "querySaleCustomerSource" : "queryRentCustomerSource")
-                + "?DBName=cd"
+                + "?DBName=" + GlobalVariables.LoggedUser.DBName + ""
                 + "&Tel=" + GlobalVariables.LoggedUser.EmpNo
                 + "&RoomStyle=" + clientPara.RoomStyle
                 + "&IsPublic=" + clientPara.IsPublic
@@ -465,7 +464,7 @@ namespace HouseSource.Services
         /// <returns></returns>
         public static async Task<InquiryFollowRD> GetInquiryFollowInfo(string inquiryID)
         {
-            string url = "GetInquiryFollowInfo?DBName=cd&InquiryID=" + inquiryID;
+            string url = "GetInquiryFollowInfo?DBName=" + GlobalVariables.LoggedUser.DBName + "&InquiryID=" + inquiryID;
 
             string content = await RestSharpHelper<string>.GetAsyncWithoutDeserialization(url);
             content = GetSubString(content, "{", "}");
@@ -480,7 +479,7 @@ namespace HouseSource.Services
         /// <returns></returns>
         public static async Task<string> NewInquiryFollow(string inquiryID, string _content, string type)
         {
-            string url = "NewInquiryFollow?DBName=cd&InquiryID=" + inquiryID
+            string url = "NewInquiryFollow?DBName=" + GlobalVariables.LoggedUser.DBName + "&InquiryID=" + inquiryID
                 + "&EmpNo=" + GlobalVariables.LoggedUser.EmpNo
                 + "&Content=" + _content
                 + "&FollowType=" + type;
@@ -499,7 +498,7 @@ namespace HouseSource.Services
         /// <returns></returns>
         public static async Task<string> GetAchievement(string timeOption)
         {
-            string url = "queryAchievement?DBName=cd&EmpID=" + GlobalVariables.LoggedUser.EmpID + "&TimeOptions=" + timeOption;
+            string url = "queryAchievement?DBName=" + GlobalVariables.LoggedUser.DBName + "&EmpID=" + GlobalVariables.LoggedUser.EmpID + "&TimeOptions=" + timeOption;
 
             string content = await RestSharpHelper<string>.GetAsyncWithoutDeserialization(url);
             content = GetSubString(content, "{", "}");
@@ -513,7 +512,7 @@ namespace HouseSource.Services
         /// <returns></returns>
         public static async Task<string> GetWorkLoad(string timeOption)
         {
-            string url = "queryWorkload?DBName=cd&EmpID=" + GlobalVariables.LoggedUser.EmpID + "&TimeOptions=" + timeOption;
+            string url = "queryWorkload?DBName=" + GlobalVariables.LoggedUser.DBName + "&EmpID=" + GlobalVariables.LoggedUser.EmpID + "&TimeOptions=" + timeOption;
 
             string content = await RestSharpHelper<string>.GetAsyncWithoutDeserialization(url);
             content = GetSubString(content, "{", "}");
@@ -527,7 +526,7 @@ namespace HouseSource.Services
         /// <returns></returns>
         public static async Task<string> GetWorkLoadRank(string timeOption)
         {
-            string url = "queryWorkloadRank?DBName=cd&EmpID=" + GlobalVariables.LoggedUser.EmpID + "&TimeOptions=" + timeOption;
+            string url = "queryWorkloadRank?DBName=" + GlobalVariables.LoggedUser.DBName + "&EmpID=" + GlobalVariables.LoggedUser.EmpID + "&TimeOptions=" + timeOption;
 
             string content = await RestSharpHelper<string>.GetAsyncWithoutDeserialization(url);
             content = GetSubString(content, "{", "}");
@@ -541,7 +540,7 @@ namespace HouseSource.Services
         /// <returns></returns>
         public static async Task<string> GetBusinessHand()
         {
-            string url = "BusinessHand?DBName=cd&EmpID=" + GlobalVariables.LoggedUser.EmpID;
+            string url = "BusinessHand?DBName=" + GlobalVariables.LoggedUser.DBName + "&EmpID=" + GlobalVariables.LoggedUser.EmpID;
 
             string content = await RestSharpHelper<string>.GetAsyncWithoutDeserialization(url);
             return GetSubString(content, "{", "}");
