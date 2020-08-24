@@ -13,6 +13,8 @@ using Newtonsoft.Json.Linq;
 using System.Collections.ObjectModel;
 using Xamarin.Forms.Internals;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using Xamarin.Essentials;
 
 namespace HouseSource.ViewModels
 {
@@ -311,6 +313,8 @@ namespace HouseSource.ViewModels
 
             AddImageCommand = new Command(async () =>
             {
+                await GetReadPermissionAsync();
+
                 List<string> list = await DependencyService.Get<IImagePickerService>().PickImageAsync();
 
                 list?.ForEach(item => ImageList.Add(item));
@@ -710,6 +714,16 @@ namespace HouseSource.ViewModels
             catch (Exception)
             {
                 throw;
+            }
+        }
+
+        private async Task GetReadPermissionAsync()
+        {
+            var status = await Tools.CheckAndRequestPermissionAsync(new Permissions.StorageRead());
+            if (status != PermissionStatus.Granted)
+            {
+                CrossToastPopUp.Current.ShowToastMessage("获取存储权限：" + status, ToastLength.Long);
+                return;
             }
         }
     }

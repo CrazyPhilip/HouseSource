@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
+using static Xamarin.Essentials.Permissions;
 
 namespace HouseSource.Utils
 {
@@ -91,22 +92,6 @@ namespace HouseSource.Utils
 
         }
 
-        /*
-        public static async Task<PermissionStatus> CheckAndRequestPermissionAsync<TPermission>()
-        {
-            var status = await Permissions.CheckStatusAsync<Permissions.StorageWrite>();
-            if (status != PermissionStatus.Granted)
-            {
-                status = await Permissions.RequestAsync<Permissions.StorageWrite>();
-            }
-
-            // Additionally could prompt the user to turn on in settings
-
-            return status;
-        }
-
-        */
-
         /// <summary>
         /// 正则表达式检测Email格式
         /// </summary>
@@ -149,5 +134,21 @@ namespace HouseSource.Utils
             return result;
         }
 
+        /// <summary>
+        /// 检测和请求权限
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="permission"></param>
+        /// <returns></returns>
+        public static async Task<PermissionStatus> CheckAndRequestPermissionAsync<T>(T permission) where T : BasePermission
+        {
+            var status = await permission.CheckStatusAsync();
+            if (status != PermissionStatus.Granted)
+            {
+                status = await permission.RequestAsync();
+            }
+
+            return status;
+        }
     }
 }

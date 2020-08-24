@@ -74,6 +74,7 @@ namespace HouseSource.ViewModels
 			//TelOrEmpNo = "18428333654";
 			//Password = "Philip1995641418";
 
+			GetReadPermissionAsync();
 
 			isRememberFileName = Path.Combine(FileSystem.CacheDirectory, "log_isRemember.dat");
 			autoLoginFileName = Path.Combine(FileSystem.CacheDirectory, "log_autoLogin.dat");
@@ -253,6 +254,20 @@ namespace HouseSource.ViewModels
 			catch (Exception)
 			{
 				throw;
+			}
+		}
+
+		/// <summary>
+		/// 获取权限
+		/// </summary>
+		/// <returns></returns>
+		private async void GetReadPermissionAsync()
+		{
+			var status = await Tools.CheckAndRequestPermissionAsync(new Permissions.StorageRead());
+			if (status != PermissionStatus.Granted)
+			{
+				CrossToastPopUp.Current.ShowToastMessage("获取存储权限：" + status, ToastLength.Long);
+				return;
 			}
 		}
 	}
