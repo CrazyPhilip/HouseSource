@@ -16,11 +16,9 @@
     </ContentPage.BindingContext>
     
     <ContentPage.Content>
-        <Grid RowDefinitions="40,*" ColumnDefinitions="3*,1*" Padding="5,0">
-            <Frame Grid.Row="0" Grid.Column="0" BorderColor="LightGray" HasShadow="True" Padding="5">
-                <controls:MyEntry Placeholder="请输入楼盘名" Text="{Binding SearchContent}" FontSize="14"/>
-            </Frame>
-            <ImageButton Grid.Row="0" Grid.Column="1" Source="search.png" BackgroundColor="Transparent" Command="{Binding SearchCommand}"/>
+        <Grid RowDefinitions="40,*" ColumnDefinitions="3*,1*" Padding="10,10,10,0">
+
+            <controls:FluentSearchBar Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Placeholder="请输入楼盘名" Text="{Binding SearchContent}" Command="{Binding SearchCommand}"/>
 
             <RefreshView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" IsRefreshing="{Binding IsRefreshing}" Command="{Binding SearchCommand}">
                 <CollectionView ItemsSource="{Binding EstateList}" EmptyView="没有找到符合条件的结果" SelectionMode="None">

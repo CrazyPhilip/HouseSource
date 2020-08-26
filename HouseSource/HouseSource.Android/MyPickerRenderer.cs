@@ -10,6 +10,8 @@ using Orientation = Android.Widget.Orientation;
 using AColor = Android.Graphics.Color;
 using Android.Graphics.Drawables;
 using HouseSource.Controls;
+using Android.Text;
+using Android.Text.Style;
 
 [assembly: ExportRenderer(typeof(MyPicker), typeof(MyPickerRenderer))]
 namespace HouseSource.Droid
@@ -41,6 +43,7 @@ namespace HouseSource.Droid
 
         IElementController ElementController => Element as IElementController;
 
+        /*
         void IPickerRenderer.OnClick()
         {
             Picker model = Element;
@@ -123,6 +126,48 @@ namespace HouseSource.Droid
             };
             dialog.Show();
 
+        }
+        */
+
+        void IPickerRenderer.OnClick()
+        {
+            Picker model = Element;
+            if (dialog == null)
+            {
+                using (var builder = new AlertDialog.Builder(Context))
+                {
+                    if (!Element.IsSet(Picker.TitleColorProperty))
+                    {
+                        builder.SetTitle(model.Title ?? "");
+                    }
+                    else
+                    {
+                        var title = new SpannableString(model.Title ?? "");
+                        //title.SetSpan(new ForegroundColorSpan(model.TitleColor.ToAndroid()), 0, title.Length(), SpanTypes.ExclusiveExclusive);
+                        title.SetSpan(new ForegroundColorSpan(AColor.Black), 0, title.Length(), SpanTypes.ExclusiveExclusive);
+
+                        builder.SetTitle(title);
+                    }
+
+                    string[] items = model.Items.ToArray();
+                    builder.SetItems(items, (s, e) => ((IElementController)model).SetValueFromRenderer(Picker.SelectedIndexProperty, e.Which));
+
+                    builder.SetNegativeButton(global::Android.Resource.String.Cancel, (o, args) => { });
+
+                    ((IElementController)Element).SetValueFromRenderer(VisualElement.IsFocusedPropertyKey, true);
+
+                    dialog = builder.Create();
+                }
+                dialog.SetCanceledOnTouchOutside(true);
+                dialog.DismissEvent += (sender, args) =>
+                {
+                    (Element as IElementController)?.SetValueFromRenderer(VisualElement.IsFocusedPropertyKey, false);
+                    dialog?.Dispose();
+                    dialog = null;
+                };
+
+                dialog.Show();
+            }
         }
 
     }

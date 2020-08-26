@@ -12,6 +12,7 @@ using System.IO;
 using Xamarin.Essentials;
 using System.Threading;
 using System.Threading.Tasks;
+using HouseSource.Controls;
 
 namespace HouseSource.ViewModels
 {
@@ -135,13 +136,15 @@ namespace HouseSource.ViewModels
 			ToRegisterCommand = new Command(() =>
 			{
 				RegisterPage registerPage = new RegisterPage();
-				Application.Current.MainPage.Navigation.PushAsync(registerPage);
+				//Application.Current.MainPage.Navigation.PushAsync(registerPage);
+				Application.Current.MainPage.Navigation.PushModalAsync(registerPage);
 			}, () => { return true; });
 
 			ToResetPasswordCommand = new Command(() =>
 			{
 				ResetPasswordPage resetPasswordPage = new ResetPasswordPage();
-				Application.Current.MainPage.Navigation.PushAsync(resetPasswordPage);
+				//Application.Current.MainPage.Navigation.PushAsync(resetPasswordPage);
+				Application.Current.MainPage.Navigation.PushModalAsync(resetPasswordPage);
 			}, () => { return true; });
 
 			RememberPwdCommand = new Command(() =>
@@ -239,9 +242,11 @@ namespace HouseSource.ViewModels
 						string dateNow = DateTime.Now.ToString();
 						string text = "LoginState:True\n" + "Account:" + TelOrEmpNo + "\n" + "Password:" + Password + "\n" + "LoginDate:" + dateNow;
 						File.WriteAllText(autoLoginFileName, text);
-					
-						MainPage mainPage = new MainPage();
-						await Application.Current.MainPage.Navigation.PushAsync(mainPage);
+
+						//MainPage mainPage = new MainPage();
+						//await Application.Current.MainPage.Navigation.PushAsync(mainPage);
+						MyNavigationPage myNavigationPage = new MyNavigationPage(new MainPage());
+						Application.Current.MainPage = myNavigationPage;
 					}
 					else
 					{

@@ -37,10 +37,10 @@
 
                         <!--第一组-->
                         <!--姓名-->
-                        <controls:FluentEntry Grid.Row="0" OptionName="姓名" Placeholder="请输入客源姓名" Text="{Binding ClientName}"/>
+                        <controls:FluentEntry Grid.Row="0" OptionName="姓名" Placeholder="请输入客源姓名" Text="{Binding ClientName}" ReturnType="Next"/>
 
                         <!--电话-->
-                        <controls:FluentEntry Grid.Row="1" OptionName="电话" Placeholder="请输入客源电话" Text="{Binding ClientPhoneNum}"/>
+                        <controls:FluentEntry Grid.Row="1" OptionName="电话" Placeholder="请输入客源电话" Text="{Binding ClientPhoneNum}" ReturnType="Next" Keyboard="Telephone"/>
 
                         <!--户籍-->
                         <controls:FluentPicker Grid.Row="2" OptionName="户籍类型" Title="请选择户籍类型" ItemsSource="{Binding CensusRegisterList}" SelectedItem="{Binding CensusRegister}"/>
@@ -88,20 +88,20 @@
                             <controls:FluentPicker Grid.Row="2" OptionName="类型" Title="请选择房屋类型" ItemsSource="{Binding HouseTypeList}" SelectedItem="{Binding HouseType}"/>
 
                             <!--预算范围-->
-                            <controls:FluentEntry Grid.Row="3" OptionName="预算范围（万元）" Placeholder="请输入最低预算" Text="{Binding MinBudget}"/>
-                            <controls:FluentEntry Grid.Row="4" Placeholder="请输入最高预算" Text="{Binding MaxBudget}"/>
+                            <controls:FluentEntry Grid.Row="3" OptionName="预算范围（万元）" Placeholder="请输入最低预算" Text="{Binding MinBudget}" ReturnType="Next" Keyboard="Numeric"/>
+                            <controls:FluentEntry Grid.Row="4" Placeholder="请输入最高预算" Text="{Binding MaxBudget}" ReturnType="Next" Keyboard="Numeric"/>
 
                             <!--面积范围-->
-                            <controls:FluentEntry Grid.Row="5" OptionName="面积范围（平米）" Placeholder="请输入最小面积" Text="{Binding MinArea}"/>
-                            <controls:FluentEntry Grid.Row="6" Placeholder="请输入最大面积" Text="{Binding MaxArea}"/>
+                            <controls:FluentEntry Grid.Row="5" OptionName="面积范围（平米）" Placeholder="请输入最小面积" Text="{Binding MinArea}" ReturnType="Next" Keyboard="Numeric"/>
+                            <controls:FluentEntry Grid.Row="6" Placeholder="请输入最大面积" Text="{Binding MaxArea}" ReturnType="Next" Keyboard="Numeric"/>
 
                             <!--楼层范围-->
-                            <controls:FluentEntry Grid.Row="7" OptionName="楼层范围（楼）" Placeholder="请输入最低楼层" Text="{Binding MinFloor}"/>
-                            <controls:FluentEntry Grid.Row="8" Placeholder="请输入最高楼层" Text="{Binding MaxFloor}"/>
+                            <controls:FluentEntry Grid.Row="7" OptionName="楼层范围（楼）" Placeholder="请输入最低楼层" Text="{Binding MinFloor}" ReturnType="Next" Keyboard="Numeric"/>
+                            <controls:FluentEntry Grid.Row="8" Placeholder="请输入最高楼层" Text="{Binding MaxFloor}" ReturnType="Next" Keyboard="Numeric"/>
 
                             <!--户型范围-->
-                            <controls:FluentEntry Grid.Row="9" OptionName="户型范围（室）" Placeholder="请输入最小房数" Text="{Binding MinRooms}"/>
-                            <controls:FluentEntry Grid.Row="10" Placeholder="请输入最大房数" Text="{Binding MaxRooms}"/>
+                            <controls:FluentEntry Grid.Row="9" OptionName="户型范围（室）" Placeholder="请输入最小房数" Text="{Binding MinRooms}" ReturnType="Next" Keyboard="Numeric"/>
+                            <controls:FluentEntry Grid.Row="10" Placeholder="请输入最大房数" Text="{Binding MaxRooms}" ReturnType="Next" Keyboard="Numeric"/>
                         </Grid>
                     </Frame>
                 </Expander>

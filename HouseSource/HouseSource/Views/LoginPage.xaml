@@ -36,7 +36,7 @@
     <ContentPage.Content>
         <Grid RowDefinitions="100,40,40,40,40,40,40,40" ColumnDefinitions="*,*" Padding="40,0" VerticalOptions="Center">
             <ff:CachedImage Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Source="circle.png" HorizontalOptions="Fill" Aspect="AspectFit"/>
-            <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Text="军军房产" TextColor="{StaticResource PrimaryColor}" FontSize="18" FontAttributes="Bold" HorizontalOptions="Center"/>
+            <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Text="好房记" TextColor="{StaticResource PrimaryColor}" FontSize="18" FontAttributes="Bold" HorizontalOptions="Center"/>
 
             <BoxView Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Color="LightGray" CornerRadius="5" Opacity="0.5"/>
             <BoxView Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Color="LightGray" CornerRadius="5" Opacity="0.5"/>
@@ -63,9 +63,9 @@
             <Button Grid.Row="7" Grid.Column="1" Text="注册" BackgroundColor="Transparent"
                     Command="{Binding ToRegisterCommand}"/>
 
-            <Frame Grid.Row="0" Grid.Column="0" Grid.RowSpan="8" Grid.ColumnSpan="2" IsVisible="{Binding IsLoading}" BackgroundColor="Gray" HorizontalOptions="Center" VerticalOptions="Center" Padding="20" Style="{StaticResource BaseFrame}">
-                <StackLayout Orientation="Vertical">
-                    <ActivityIndicator IsRunning="True" HorizontalOptions="Center" VerticalOptions="Center"/>
+            <Frame Grid.Row="3" Grid.Column="0" Grid.RowSpan="5" Grid.ColumnSpan="2" IsVisible="{Binding IsLoading}" BackgroundColor="#AE808080" Padding="20" CornerRadius="5">
+                <StackLayout Orientation="Vertical" VerticalOptions="Center">
+                    <ActivityIndicator IsRunning="True"/>
                     <Label Text="登录中" TextColor="White" HorizontalOptions="Center"/>
                 </StackLayout>
             </Frame>

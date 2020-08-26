@@ -534,6 +534,23 @@ namespace HouseSource.Services
         }
         #endregion
 
+        #region 检查更新
+        public static async Task<string> GetNewestVersion()
+        {
+            try
+            {
+                string url = "/App/getNowApp";
+
+                string str = await RestSharpHelper<string>.GetAsyncWithoutDeserialization(url);
+                return str;
+            }
+            catch (ApplicationException ex)
+            {
+                throw ex;
+            }
+        }
+        #endregion
+
         /// <summary>
         /// 获取办理业务的链接
         /// </summary>

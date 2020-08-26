@@ -41,7 +41,8 @@
                    HorizontalOptions="Start" VerticalOptions="Center"/>
 
         <local:MyEditor Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="3" Placeholder="{Binding Placeholder}" Text="{Binding Text}" PlaceholderColor="LightGray" 
-                        TextColor="{Binding TextColor}" FontSize="{Binding FontSize}" IsReadOnly="{Binding IsReadOnly}"/>
+                        TextColor="{Binding TextColor}" FontSize="{Binding FontSize}" IsReadOnly="{Binding IsReadOnly}"
+                        Keyboard="{Binding Keyboard}"/>
 
         <BoxView Grid.Row="1" Grid.ColumnSpan="4" Color="WhiteSmoke" HeightRequest="1" HorizontalOptions="Fill" VerticalOptions="End"/>
     </Grid>

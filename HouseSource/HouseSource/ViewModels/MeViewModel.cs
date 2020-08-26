@@ -102,7 +102,6 @@ namespace HouseSource.ViewModels
                 }
             }, (pageName) => { return true; });
 
-
         }
 
         /// <summary>
@@ -149,8 +148,9 @@ namespace HouseSource.ViewModels
             File.Delete(fileName);
 
             LoginPage loginPage = new LoginPage();
-            Application.Current.MainPage.Navigation.PushAsync(loginPage);
-            Application.Current.MainPage.Navigation.RemovePage(Application.Current.MainPage.Navigation.NavigationStack[0]);
+            Application.Current.MainPage = loginPage;
+            //Application.Current.MainPage.Navigation.PushAsync(loginPage);
+            //Application.Current.MainPage.Navigation.RemovePage(Application.Current.MainPage.Navigation.NavigationStack[0]);
         }
 
         /// <summary>
@@ -165,12 +165,11 @@ namespace HouseSource.ViewModels
                     new Option { icon = "edit.png", option = "修改个人信息", page = "HouseSource.Views.EditUserInfoPage"},
                     new Option { icon = "star.png", option = "我的收藏", page = "HouseSource.Views.CollectionPage"},
                     new Option { icon = "service.png", option = "业务办理", page = "Business" },
-                    new Option { icon = "moon.png", option = "夜间模式", page = "DarkMode" },
+                    new Option { icon = "moon.png", option = "设置", page = "HouseSource.Views.SettingPage" },
                     new Option { icon = "poweroff.png", option = "退出登录", page = "LogOut" }
                 };
 
                 User = GlobalVariables.LoggedUser;
-
                 User.PhotoUrl = string.IsNullOrWhiteSpace(User.PhotoUrl) ? "avatar.png" : User.PhotoUrl;
             }
             catch (Exception)
