@@ -15,9 +15,9 @@ namespace HouseSource
             InitializeComponent();
 
             LoginPage loginPage = new LoginPage();
-            MyNavigationPage myNavigationPage = new MyNavigationPage(loginPage);
+            //MyNavigationPage myNavigationPage = new MyNavigationPage(loginPage);
 
-            MainPage = myNavigationPage;
+            MainPage = loginPage;
         }
 
         protected override void OnStart()

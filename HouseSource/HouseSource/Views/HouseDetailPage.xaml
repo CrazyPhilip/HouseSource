@@ -5,6 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              xmlns:viewModels="clr-namespace:HouseSource.ViewModels"
+             xmlns:controls="clr-namespace:HouseSource.Controls"
              mc:Ignorable="d"
              x:Class="HouseSource.Views.HouseDetailPage"
              BackgroundColor="{DynamicResource PageBackgroundColor}"
@@ -17,12 +18,11 @@
     </ContentPage.ToolbarItems>
 
     <ContentPage.Content>
-        <Grid RowDefinitions="*,50">
-
-            <ScrollView Grid.Row="0">
+        <Grid RowDefinitions="*,50" RowSpacing="0">
+            <ScrollView Grid.Row="0" Margin="10,0">
                 <StackLayout Orientation="Vertical">
                     <!--图片集-->
-                    <CarouselView ItemsSource="{Binding PhotoList}" HeightRequest="250">
+                    <CarouselView ItemsSource="{Binding PhotoList}" HeightRequest="250" IndicatorView="indicatorView">
                         <CarouselView.ItemTemplate>
                             <DataTemplate>
                                 <ff:CachedImage Source="{Binding .}" BackgroundColor="Transparent" Aspect="AspectFit">
@@ -36,8 +36,44 @@
                         </CarouselView.ItemTemplate>
                     </CarouselView>
 
-                    <!--简要信息，原app的Card-->
-                    <Frame BorderColor="LightGray" HasShadow="True" CornerRadius="10" Margin="10,5" Padding="10">
+                    <IndicatorView x:Name="indicatorView" IndicatorColor="LightGray" SelectedIndicatorColor="{DynamicResource SecondaryColor}" HorizontalOptions="Center" VerticalOptions="Center" Margin="5"/>
+
+                    <!--简要信息-->
+                    <Frame BackgroundColor="{DynamicResource ControlBackgroundColor}" HasShadow="True" CornerRadius="5" Padding="10" Margin="5,0">
+                        <Grid RowDefinitions="40,30,20,15" ColumnDefinitions="30,*">
+                            <StackLayout Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
+                                <Label Text="{Binding HouseTitle}" TextColor="Black" FontSize="16" FontAttributes="Bold" VerticalOptions="Center"/>
+                                <controls:LabelWithBorder FontSize="12" Text="{Binding House.PanType}" DrawableColor="{DynamicResource LightPink}" TextColor="White" CornerRadius="2" VerticalOptions="Center"/>
+                                <controls:LabelWithBorder FontSize="12" Text="{Binding House.PropertyDecoration}" TextColor="{DynamicResource ThickPink}" BorderThickness="2" BorderColor="{DynamicResource ThickPink}" CornerRadius="2" VerticalOptions="Center"/>
+                                <controls:LabelWithBorder FontSize="12" Text="{Binding House.PropertyLook}" TextColor="{DynamicResource ThickPink}" BorderThickness="2" BorderColor="{DynamicResource ThickPink}" CornerRadius="2" VerticalOptions="Center"/>
+                            </StackLayout>
+
+                            <BoxView Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Color="LightGray" HeightRequest="1" VerticalOptions="End"/>
+
+                            <StackLayout Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
+                                <Label Text="{Binding House.Price,StringFormat='{0:F2}万元'}" TextColor="Red" FontSize="18" HorizontalOptions="StartAndExpand"/>
+                                <Label Text="{Binding House.RoomStyle}" TextColor="Red" FontSize="16" HorizontalOptions="CenterAndExpand"/>
+                                <Label Text="{Binding House.Square,StringFormat='{0:F2}㎡'}" TextColor="Red" FontSize="16" HorizontalOptions="EndAndExpand"/>
+                            </StackLayout>
+
+                            <Frame Grid.Row="2" Grid.Column="0" Grid.RowSpan="2" HasShadow="False" Padding="0" VerticalOptions="Center">
+                                <Image HeightRequest="40" WidthRequest="40" Source="avatar.png"/>
+                            </Frame>
+                            <Label Grid.Row="2" Grid.Column="1" LineBreakMode="NoWrap">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="{Binding House.EmpName}" TextColor="Black"/>
+                                        <Span Text=" | "/>
+                                        <Span Text="{Binding House.DeptName}"/>
+                                        <Span Text="{Binding House.RegPerson}"/>
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                            <Label Grid.Row="3" Grid.Column="1" Text="房屋信息发布人" FontSize="12"/>
+                        </Grid>
+                    </Frame>
+
+                    <!--<Frame BorderColor="LightGray" HasShadow="True" CornerRadius="10" Padding="10">
                         <StackLayout Orientation="Vertical">
                             <Label Text="{Binding HouseTitle}" TextColor="Black" FontSize="16" FontAttributes="Bold" Margin="5"/>
                             <BoxView Color="LightGray" HeightRequest="1" HorizontalOptions="Fill" Margin="5"/>
@@ -71,21 +107,11 @@
                                 </StackLayout>
                             </StackLayout>
                         </StackLayout>
-                    </Frame>
+                    </Frame>-->
 
                     <!--详细信息-->
-                    <StackLayout Orientation="Vertical" Margin="10,5">
-                        <Label FontSize="16">
-                            <Label.FormattedText>
-                                <FormattedString>
-                                    <Span Text=">>" TextColor="#6ecbb8"/>
-                                    <Span Text="基本信息" TextColor="Black"/>
-                                </FormattedString>
-                            </Label.FormattedText>
-                        </Label>
-                        <BoxView Color="LightGray" HeightRequest="1" HorizontalOptions="Fill"/>
-                        <Grid Margin="5" RowDefinitions="*,*,*,*,*" ColumnDefinitions="1*,3*,1*,3*">
-
+                    <Frame BackgroundColor="{DynamicResource ControlBackgroundColor}" HasShadow="True" CornerRadius="5" Padding="10" Margin="5,0">
+                        <Grid RowDefinitions="*,*,*,*,*" ColumnDefinitions="1*,3*,1*,3*">
                             <Label Grid.Row="0" Grid.Column="0" Text="单价：" FontSize="14"/>
                             <Label Grid.Row="0" Grid.Column="1" Text="{Binding House.SinglePrice}" FontSize="14" TextColor="Black"/>
 
@@ -112,79 +138,55 @@
 
                             <Label Grid.Row="4" Grid.Column="0" Text="小区：" FontSize="14"/>
                             <Label Grid.Row="4" Grid.Column="1" Text="{Binding House.EstateName}" FontSize="14" TextColor="Black"/>
-
                         </Grid>
+                    </Frame>
 
-                        <Label FontSize="16">
-                            <Label.FormattedText>
-                                <FormattedString>
-                                    <Span Text=">>" TextColor="#6ecbb8"/>
-                                    <Span Text="房源介绍" TextColor="Black"/>
-                                </FormattedString>
-                            </Label.FormattedText>
-                        </Label>
-                        <BoxView Color="LightGray" HeightRequest="1" HorizontalOptions="Fill"/>
-                        <Label Text="{Binding House.PropertyIntroduce}" FontSize="12"/>
-
-                        <Label FontSize="16">
-                            <Label.FormattedText>
-                                <FormattedString>
-                                    <Span Text=">>" TextColor="#6ecbb8"/>
-                                    <Span Text="业主介绍" TextColor="Black"/>
-                                </FormattedString>
-                            </Label.FormattedText>
-                        </Label>
-                        <BoxView Color="LightGray" HeightRequest="1" HorizontalOptions="Fill"/>
-                        <Grid Margin="5" ColumnDefinitions="1*,3*,1*,3*">
-                            <Label Grid.Column="0" Text="业主：" FontSize="14"/>
-                            <Label Grid.Column="1" Text="{Binding House.ownername}" FontSize="14" TextColor="Black"/>
-
-                            <Label Grid.Column="2" Text="电话：" FontSize="14"/>
-                            <Label Grid.Column="3" Text="{Binding House.ownermobile}" FontSize="14" TextColor="Black"/>
+                    <Frame BackgroundColor="{DynamicResource ControlBackgroundColor}" HasShadow="True" CornerRadius="5" Padding="10" Margin="5,0">
+                        <Grid RowDefinitions="*,*">
+                            <Label Grid.Row="0" Text="房源介绍" TextColor="Black" FontSize="16"/>
+                            <Label Grid.Row="1" Text="{Binding House.PropertyIntroduce}" FontSize="14"/>
                         </Grid>
+                    </Frame>
 
-                        <Label FontSize="16">
-                            <Label.FormattedText>
-                                <FormattedString>
-                                    <Span Text=">>" TextColor="#6ecbb8"/>
-                                    <Span Text="服务介绍" TextColor="Black"/>
-                                </FormattedString>
-                            </Label.FormattedText>
-                        </Label>
-                        <BoxView Color="LightGray" HeightRequest="1" HorizontalOptions="Fill"/>
-                        <Label Text="{Binding House.ServiceIntroduce}" FontSize="12"/>
+                    <Frame BackgroundColor="{DynamicResource ControlBackgroundColor}" HasShadow="True" CornerRadius="5" Padding="10" Margin="5,0">
+                        <Grid RowDefinitions="*,*" ColumnDefinitions="1*,3*,1*,3*">
+                            <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" Text="房源介绍" TextColor="Black" FontSize="16"/>
+                            <Label Grid.Row="1" Grid.Column="0" Text="业主：" FontSize="14"/>
+                            <Label Grid.Row="1" Grid.Column="1" Text="{Binding House.ownername}" FontSize="14" TextColor="Black"/>
 
-                        <Label FontSize="16" IsVisible="{Binding Visible}">
-                            <Label.FormattedText>
-                                <FormattedString>
-                                    <Span Text=">>" TextColor="#6ecbb8"/>
-                                    <Span Text="您是录入人，以下内容仅对您可见" TextColor="Black"/>
-                                </FormattedString>
-                            </Label.FormattedText>
-                        </Label>
-                        <BoxView Color="LightGray" HeightRequest="1" HorizontalOptions="Fill" IsVisible="{Binding Visible}"/>
-                        <Grid Margin="5" RowDefinitions="*,*" ColumnDefinitions="*,*" IsVisible="{Binding Visible}">
-                            <Button Grid.Row="0" Grid.Column="0" Text="联系业主" Command="{Binding CallOwnerCommand}"/>
-                            <Button Grid.Row="0" Grid.Column="1" Text="看跟进" Command="{Binding SeeFollowUpCommand}"/>
-                            <Button Grid.Row="1" Grid.Column="0" Text="写跟进" Command="{Binding WriteFollowUpCommand}"/>
-                            <Button Grid.Row="1" Grid.Column="1" Text="修改房源" Command="{Binding EditCommand}"/>
+                            <Label Grid.Row="1" Grid.Column="2" Text="电话：" FontSize="14"/>
+                            <Label Grid.Row="1" Grid.Column="3" Text="{Binding House.ownermobile}" FontSize="14" TextColor="Black"/>
                         </Grid>
-                    </StackLayout>
+                    </Frame>
+
+                    <Frame BackgroundColor="{DynamicResource ControlBackgroundColor}" HasShadow="True" CornerRadius="5" Padding="10" Margin="5,0">
+                        <Grid RowDefinitions="*,*">
+                            <Label Grid.Row="0" Text="服务介绍" TextColor="Black" FontSize="16"/>
+                            <Label Grid.Row="1" Text="{Binding House.ServiceIntroduce}" FontSize="14"/>
+                        </Grid>
+                    </Frame>
+
+                    <Frame BackgroundColor="{DynamicResource ControlBackgroundColor}" HasShadow="True" CornerRadius="5" Padding="10" Margin="5,0">
+                        <Grid RowDefinitions="20,*,*" ColumnDefinitions="*,*" RowSpacing="0" ColumnSpacing="0">
+                            <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="您是录入人，以下内容仅对您可见" TextColor="Black" FontSize="16"/>
+                            <Button Grid.Row="1" Grid.Column="0" Text="联系业主" Command="{Binding CallOwnerCommand}"/>
+                            <Button Grid.Row="1" Grid.Column="1" Text="看跟进" Command="{Binding SeeFollowUpCommand}"/>
+                            <Button Grid.Row="2" Grid.Column="0" Text="写跟进" Command="{Binding WriteFollowUpCommand}"/>
+                            <Button Grid.Row="2" Grid.Column="1" Text="修改房源" Command="{Binding EditCommand}"/>
+                        </Grid>
+                    </Frame>
                 </StackLayout>
             </ScrollView>
 
             <!--底部栏-->
-            <Grid Grid.Row="1" RowDefinitions="*,*" ColumnDefinitions="50,*,100" Margin="5,0">
-                <Frame Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" HeightRequest="30" WidthRequest="30" CornerRadius="15" HasShadow="False" 
-                       IsClippedToBounds="True" Padding="0" VerticalOptions="Center">
-                    <Image HeightRequest="30" WidthRequest="30" Source="avatar.png"/>
+            <Grid Grid.Row="1" RowDefinitions="*,*" ColumnDefinitions="50,*,100" Padding="5">
+                <Frame Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" CornerRadius="5" HasShadow="False" Padding="0">
+                    <ff:CachedImage Source="avatar.png"/>
                 </Frame>
                 <Label Grid.Row="0" Grid.Column="1" Text="{Binding House.EmpName}" FontSize="16" TextColor="Black"/>
                 <Label Grid.Row="1" Grid.Column="1" Text="房屋信息发布人" FontSize="12"/>
-                <Button Grid.Row="0" Grid.Column="2" Grid.RowSpan="2" Padding="0"
-                        Text="致电" TextColor="White" BackgroundColor="#6ecbb8" FontSize="14"
-                        HeightRequest="40" CornerRadius="20"
-                        VerticalOptions="Center" HorizontalOptions="Center"
+                <Button Grid.Row="0" Grid.Column="2" Grid.RowSpan="2" CornerRadius="5"
+                        Text="致电" TextColor="White" BackgroundColor="#6ecbb8"
                         Command="{Binding CallCommand}"/>
             </Grid>
 

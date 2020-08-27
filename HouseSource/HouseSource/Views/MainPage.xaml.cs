@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Linq;
 using Xamarin.Forms;
 
 namespace HouseSource.Views
@@ -11,6 +12,9 @@ namespace HouseSource.Views
         public MainPage()
         {
             InitializeComponent();
+
+            //var page = Application.Current.MainPage.Navigation.NavigationStack.FirstOrDefault(p => p is LoginPage);
+            //Application.Current.MainPage.Navigation.RemovePage(page);
         }
 
         /// <summary>

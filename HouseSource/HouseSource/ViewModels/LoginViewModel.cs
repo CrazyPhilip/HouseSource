@@ -12,11 +12,12 @@ using System.IO;
 using Xamarin.Essentials;
 using System.Threading;
 using System.Threading.Tasks;
+using HouseSource.Controls;
 
 namespace HouseSource.ViewModels
 {
 	public class LoginViewModel : BaseViewModel
-    {
+	{
 		private string telOrEmpNo;   //手机号或编号
 		public string TelOrEmpNo
 		{
@@ -52,12 +53,14 @@ namespace HouseSource.ViewModels
 			set { SetProperty(ref isPassword, value); }
 		}
 
-        private bool isLoading;   //准备中
-        public bool IsLoading
+		private bool isLoading;   //准备中
+		public bool IsLoading
 		{
-            get { return isLoading; }
-            set { SetProperty(ref isLoading, value); }
-        }
+			get { return isLoading; }
+			set { SetProperty(ref isLoading, value); }
+		}
+
+		private string isRememberFileName { get; set; }
 
 		private string autoLoginFileName { get; set; }
 
@@ -74,32 +77,50 @@ namespace HouseSource.ViewModels
 
 			GetReadPermissionAsync();
 
+			isRememberFileName = Path.Combine(FileSystem.CacheDirectory, "log_isRemember.dat");
 			autoLoginFileName = Path.Combine(FileSystem.CacheDirectory, "log_autoLogin.dat");
+			if (File.Exists(isRememberFileName))
+			{
+				string[] text = File.ReadAllLines(isRememberFileName);
+				string check = text[0].Substring(6);
+				string tel = text[1].Substring(8);
+				string pwd = text[2].Substring(9);
+
+				if (check == "Checked")
+				{
+					TelOrEmpNo = tel;
+					Password = pwd;
+					IsRememberPwd = true;
+				}
+			}
+			//记住密码和自动登录没关系？ 
 			if (File.Exists(autoLoginFileName))
 			{
 				string[] text = File.ReadAllLines(autoLoginFileName);
-				string check = text[0].Substring(6);
+				string loginState = text[0].Substring(11);
 				string tel = text[1].Substring(8);
 				string pwd = text[2].Substring(9);
 				string loginDate = text[3].Substring(10);
 				DateTime nowDate = DateTime.Now;
 				DateTime lastLoginDate = DateTime.Parse(loginDate);
 				TimeSpan ts = nowDate - lastLoginDate;
-				if (check == "Checked" && ts.TotalDays <= 30)
+				if (loginState == "True" && ts.TotalDays <= 30)
 				{
 					TelOrEmpNo = tel;
 					Password = pwd;
 					IsLoading = true;
-					IsRememberPwd = true;
 					Device.StartTimer(new TimeSpan(0, 0, 2), () =>
-					{					
-						Login();		// do something every 2 seconds
+					{
+						// do something every 2 seconds
+						Login();
 						Device.BeginInvokeOnMainThread(() =>
 						{
-										// interact with UI elements]
+							// interact with UI elements]
 						});
-						return false;	// runs again, or false to stop
+						return false; // runs again, or false to stop
 					});
+
+
 				}
 			}
 
@@ -115,18 +136,19 @@ namespace HouseSource.ViewModels
 			ToRegisterCommand = new Command(() =>
 			{
 				RegisterPage registerPage = new RegisterPage();
-				Application.Current.MainPage.Navigation.PushAsync(registerPage);
+				//Application.Current.MainPage.Navigation.PushAsync(registerPage);
+				Application.Current.MainPage.Navigation.PushModalAsync(registerPage);
 			}, () => { return true; });
 
 			ToResetPasswordCommand = new Command(() =>
 			{
 				ResetPasswordPage resetPasswordPage = new ResetPasswordPage();
-				Application.Current.MainPage.Navigation.PushAsync(resetPasswordPage);
+				//Application.Current.MainPage.Navigation.PushAsync(resetPasswordPage);
+				Application.Current.MainPage.Navigation.PushModalAsync(resetPasswordPage);
 			}, () => { return true; });
 
 			RememberPwdCommand = new Command(() =>
 			{
-				/*
 				string text = "";
 
 				if (!string.IsNullOrWhiteSpace(TelOrEmpNo) && !string.IsNullOrWhiteSpace(Password))
@@ -146,7 +168,6 @@ namespace HouseSource.ViewModels
 				{
 					//await DisplayAlert("错误", "请输入账号及密码！", "OK");
 				}
-				*/
 			}, () => { return true; });
 
 			OpenEyeCommand = new Command(() =>
@@ -201,7 +222,7 @@ namespace HouseSource.ViewModels
 				else
 				{
 					JObject jObject = JObject.Parse(result);
-					
+
 					if (jObject["Msg"].ToString() == "success")
 					{
 						//GlobalVariables.LoggedUser = JsonConvert.DeserializeObject<UserInfo>(result);
@@ -219,14 +240,13 @@ namespace HouseSource.ViewModels
 						GlobalVariables.LoggedUser.EmpNo = TelOrEmpNo;
 						//提供自动登录的信息  除非用户手动退出登录 LoginState变为False
 						string dateNow = DateTime.Now.ToString();
-						string text = "";
-						if (IsRememberPwd)
-						{
-							text = "State:Checked\n" + "Account:" + TelOrEmpNo + "\n" + "Password:" + Password + "\n" + "LoginDate:" + dateNow;
-							File.WriteAllText(autoLoginFileName, text);
-						}
-						MainPage mainPage = new MainPage();
-						await Application.Current.MainPage.Navigation.PushAsync(mainPage);
+						string text = "LoginState:True\n" + "Account:" + TelOrEmpNo + "\n" + "Password:" + Password + "\n" + "LoginDate:" + dateNow;
+						File.WriteAllText(autoLoginFileName, text);
+
+						//MainPage mainPage = new MainPage();
+						//await Application.Current.MainPage.Navigation.PushAsync(mainPage);
+						MyNavigationPage myNavigationPage = new MyNavigationPage(new MainPage());
+						Application.Current.MainPage = myNavigationPage;
 					}
 					else
 					{

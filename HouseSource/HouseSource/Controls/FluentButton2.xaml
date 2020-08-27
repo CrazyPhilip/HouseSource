@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:local="clr-namespace:HouseSource.Controls"
+             mc:Ignorable="d"
+             x:Name="fluentButton2"
+             x:Class="HouseSource.Controls.FluentButton2">
+
+    <!--<Frame BindingContext="{x:Reference fluentButton2}"
+           HasShadow="{Binding HasShadow}" 
+           BackgroundColor="{Binding InnerBackgroundColor}"
+           BorderColor="{Binding BorderColor}"
+           CornerRadius="{Binding CornerRadius}"
+           Padding="5"
+           VerticalOptions="Center"
+           HorizontalOptions="Fill">
+
+        <Grid ColumnDefinitions="30,*,*,30" HeightRequest="30">
+            <Image Grid.Column="0" Source="{Binding ImageSource}" Aspect="AspectFill"/>
+
+            <Label Grid.Column="1" Text="{Binding OptionName}" 
+                   TextColor="{Binding OptionColor}" 
+                   FontAttributes="Bold" FontSize="{Binding FontSize}"
+                   HorizontalOptions="Start" VerticalOptions="Center"/>
+
+            <Label Grid.Column="2" Grid.ColumnSpan="2" Text="{Binding Description}" TextColor="{Binding DescriptionColor}" FontSize="{Binding FontSize}"
+                   HorizontalOptions="Start" VerticalOptions="Center"/>
+
+        </Grid>
+
+        <Frame.GestureRecognizers>
+            <TapGestureRecognizer NumberOfTapsRequired="1" Command="{Binding Command}" CommandParameter="{Binding CommandParameter}"/>
+        </Frame.GestureRecognizers>
+    </Frame>-->
+
+    <Grid ColumnDefinitions="30,*,*,30" HeightRequest="40" BindingContext="{x:Reference fluentButton2}">
+        <Image Grid.Column="0" Source="{Binding ImageSource}" Aspect="AspectFill" />
+
+        <Label Grid.Column="1" Text="{Binding OptionName}" 
+                   TextColor="{Binding OptionColor,FallbackValue='Black'}" 
+                   FontAttributes="Bold" FontSize="{Binding FontSize}"
+                   HorizontalOptions="Start" VerticalOptions="Center"/>
+
+        <Label Grid.Column="2" Grid.ColumnSpan="2" Text="{Binding Description}" TextColor="{Binding DescriptionColor}" FontSize="{Binding FontSize}"
+               HorizontalOptions="Start" VerticalOptions="Center"/>
+
+        <Path Grid.Column="3" Stroke="LightGray" StrokeThickness="1" Aspect="Uniform" Fill="LightGray" HeightRequest="10" WidthRequest="10" HorizontalOptions="Center" VerticalOptions="Center"
+                  Data="M256.002176 1023.991296a25.599782 25.599782 0 0 1-18.124646-43.673229l442.671437-442.671437-442.671437-442.671437a25.599782 25.599782 0 0 1 36.198092-36.198093l460.796084 460.796084a25.599782 25.599782 0 0 1 0 36.198092l-460.796084 460.796083a25.497383 25.497383 0 0 1-18.124646 7.475137z"/>
+
+        <BoxView Grid.ColumnSpan="4" Color="WhiteSmoke" HeightRequest="1" HorizontalOptions="Fill" VerticalOptions="End"/>
+        <Grid.GestureRecognizers>
+            <TapGestureRecognizer NumberOfTapsRequired="1" Command="{Binding Command}" CommandParameter="{Binding CommandParameter}"/>
+        </Grid.GestureRecognizers>
+    </Grid>
+
+</ContentView>

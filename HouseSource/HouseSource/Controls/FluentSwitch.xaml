@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:local="clr-namespace:HouseSource.Controls"
+             xmlns:behaviors="clr-namespace:HouseSource.Behaviors"
+             mc:Ignorable="d"
+             x:Name="fluentSwitch"
+             x:Class="HouseSource.Controls.FluentSwitch">
+
+    <Frame BindingContext="{x:Reference fluentSwitch}"
+           HasShadow="{Binding HasShadow}" 
+           BackgroundColor="{Binding InnerBackgroundColor}"
+           BorderColor="{Binding BorderColor}"
+           CornerRadius="{Binding CornerRadius}"
+           Padding="5"
+           VerticalOptions="Center"
+           HorizontalOptions="Fill">
+
+        <Grid ColumnDefinitions="30,*,*,30" HeightRequest="30">
+            <Image Grid.Column="0" Source="{Binding ImageSource}" Aspect="AspectFill"/>
+
+            <Label Grid.Column="1" Text="{Binding OptionName}" 
+                   TextColor="{Binding OptionColor}" 
+                   FontAttributes="Bold" FontSize="{Binding FontSize}"
+                   HorizontalOptions="Start" VerticalOptions="Center"/>
+
+            <Switch Grid.Column="2" IsToggled="{Binding IsToggled}" OnColor="{Binding OnColor}" ThumbColor="{Binding ThumbColor}" HorizontalOptions="End" VerticalOptions="Center">
+                <Switch.Behaviors>
+                    <behaviors:EventToCommandBehavior EventName="Toggled" Command="{Binding ToggledCommand}" CommandParameter="{Binding CommandParameter}"/>
+                </Switch.Behaviors>
+            </Switch>
+
+        </Grid>
+    </Frame>
+
+</ContentView>

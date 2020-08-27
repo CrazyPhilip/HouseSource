@@ -27,7 +27,7 @@
     </ContentPage.Resources>
 
     <ContentPage.Content>
-        <Grid Padding="10,0" RowDefinitions="30, 30, Auto" ColumnDefinitions="1*, 1*, 1*, 1*, 1*">
+        <Grid Padding="10,10,10,0" RowDefinitions="30, 30, Auto" ColumnDefinitions="1*, 1*, 1*, 1*, 1*">
             
             <!--搜索-->
             <controls:FluentSearchBar Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5" Placeholder="输入楼盘名/片区搜索房源" Text="{Binding SearchContent}" Command="{Binding SearchCommand}"/>

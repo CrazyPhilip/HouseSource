@@ -61,11 +61,12 @@
                     <Grid RowDefinitions="*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*" RowSpacing="0">
 
                         <!--小区-->
-                        <controls:FluentEntry Grid.Row="0" OptionName="小区" Placeholder="请选择小区" Text="{Binding Estate.EstateName}" IsReadOnly="True">
+                        <controls:FluentButton2 OptionName="小区" Description="{Binding Estate.EstateName,FallbackValue='请选择小区'}" Command="{Binding ToEstateSelectCommand}"/>
+                        <!--<controls:FluentEntry Grid.Row="0" OptionName="小区" Placeholder="请选择小区" Text="{Binding Estate.EstateName}" IsReadOnly="True">
                             <controls:FluentEntry.GestureRecognizers>
                                 <TapGestureRecognizer NumberOfTapsRequired="1" Command="{Binding ToEstateSelectCommand}"/>
                             </controls:FluentEntry.GestureRecognizers>
-                        </controls:FluentEntry>
+                        </controls:FluentEntry>-->
 
                         <!--栋座-->
                         <controls:FluentPicker Grid.Row="1" x:Name="BuildingPicker" OptionName="栋座" Title="请选择栋座" SelectedItem="{Binding BuildNo}" ItemsSource="{Binding BuildingList}">
@@ -79,14 +80,14 @@
                         <controls:FluentPicker Grid.Row="2" OptionName="单元" Title="请选择单元" ItemsSource="{Binding UnitList}" SelectedItem="{Binding Unit}"/>
 
                         <!--楼层-->
-                        <controls:FluentEntry Grid.Row="3" OptionName="楼层（楼）" Placeholder="请输入楼层" Text="{Binding Para.Floor}"/>
-                        <controls:FluentEntry Grid.Row="4" OptionName="总楼层（楼）" Placeholder="请输入总楼层" Text="{Binding Para.FloorAll}"/>
+                        <controls:FluentEntry Grid.Row="3" OptionName="楼层（楼）" Placeholder="请输入楼层" Text="{Binding Para.Floor}" ReturnType="Next" Keyboard="Numeric"/>
+                        <controls:FluentEntry Grid.Row="4" OptionName="总楼层（楼）" Placeholder="请输入总楼层" Text="{Binding Para.FloorAll}" ReturnType="Next" Keyboard="Numeric"/>
 
                         <!--房号-->
-                        <controls:FluentEntry Grid.Row="5" OptionName="房号" Placeholder="请输入房号（最多两位数）" Text="{Binding Para.RoomNo}"/>
+                        <controls:FluentEntry Grid.Row="5" OptionName="房号" Placeholder="请输入房号（最多两位数）" Text="{Binding Para.RoomNo}" ReturnType="Next" Keyboard="Numeric"/>
 
                         <!--房源标题-->
-                        <controls:FluentEntry Grid.Row="6" OptionName="房源标题" Placeholder="请输入房源标题（最多25个字）" Text="{Binding Para.Title}"/>
+                        <controls:FluentEntry Grid.Row="6" OptionName="房源标题" Placeholder="请输入房源标题（最多25个字）" Text="{Binding Para.Title}" ReturnType="Next"/>
 
                         <!--交易类型-->
                         <controls:FluentPicker Grid.Row="7" OptionName="交易类型" Title="请选择交易类型" ItemsSource="{Binding TradeList}" SelectedItem="{Binding Para.Trade}"/>
@@ -95,22 +96,22 @@
                         <controls:FluentPicker Grid.Row="8" OptionName="朝向" Title="请选择朝向" ItemsSource="{Binding DirectionList}" SelectedItem="{Binding Para.PropertyDirection}"/>
 
                         <!--售价-->
-                        <controls:FluentEntry Grid.Row="9" OptionName="售价（万元）" Placeholder="请输入售价" Text="{Binding Para.Price}"/>
+                        <controls:FluentEntry Grid.Row="9" OptionName="售价（万元）" Placeholder="请输入售价" Text="{Binding Para.Price}" ReturnType="Next" Keyboard="Numeric"/>
 
                         <!--面积-->
-                        <controls:FluentEntry Grid.Row="10" OptionName="面积（平米）" Placeholder="请输入建筑面积" Text="{Binding Para.Square}"/>
+                        <controls:FluentEntry Grid.Row="10" OptionName="面积（平米）" Placeholder="请输入建筑面积" Text="{Binding Para.Square}" ReturnType="Next" Keyboard="Numeric"/>
 
                         <!--户型-->
-                        <controls:FluentEntry Grid.Row="11" OptionName="户型" Placeholder="室" Text="{Binding Para.CountF}"/>
-                        <controls:FluentEntry Grid.Row="12" Placeholder="厅" Text="{Binding Para.CountT}"/>
-                        <controls:FluentEntry Grid.Row="13" Placeholder="卫" Text="{Binding Para.CountW}"/>
-                        <controls:FluentEntry Grid.Row="14" Placeholder="阳台" Text="{Binding Para.CountY}"/>
+                        <controls:FluentEntry Grid.Row="11" OptionName="户型" Placeholder="室" Text="{Binding Para.CountF}" ReturnType="Next" Keyboard="Numeric"/>
+                        <controls:FluentEntry Grid.Row="12" Placeholder="厅" Text="{Binding Para.CountT}" ReturnType="Next" Keyboard="Numeric"/>
+                        <controls:FluentEntry Grid.Row="13" Placeholder="卫" Text="{Binding Para.CountW}" ReturnType="Next" Keyboard="Numeric"/>
+                        <controls:FluentEntry Grid.Row="14" Placeholder="阳台" Text="{Binding Para.CountY}" ReturnType="Next" Keyboard="Numeric"/>
 
                         <!--业主姓名-->
-                        <controls:FluentEntry Grid.Row="15" OptionName="业主" Placeholder="请输入业主姓名" Text="{Binding Para.OwnerName}"/>
+                        <controls:FluentEntry Grid.Row="15" OptionName="业主" Placeholder="请输入业主姓名" Text="{Binding Para.OwnerName}" ReturnType="Next"/>
 
                         <!--业主电话-->
-                        <controls:FluentEntry Grid.Row="16" OptionName="业主电话" Placeholder="请输入业主电话" Text="{Binding Para.OwnerMobile}"/>
+                        <controls:FluentEntry Grid.Row="16" OptionName="业主电话" Placeholder="请输入业主电话" Text="{Binding Para.OwnerMobile}" ReturnType="Next" Keyboard="Telephone"/>
 
                         <!--对外展示-->
                         <Grid Grid.Row="17" ColumnDefinitions="30,*,*,30">
@@ -166,7 +167,7 @@
 
                             <!--看房方式-->
                             <controls:FluentPicker Grid.Row="9" OptionName="看房方式" Title="请选择看房方式" SelectedItem="{Binding Para.PropertyLook}" ItemsSource="{Binding LookWaysList}"/>
-                            <controls:FluentEntry Grid.Row="10" Placeholder="输入备注（8个字）" Text="{Binding Para.KeyNo}"/>
+                            <controls:FluentEntry Grid.Row="10" Placeholder="输入备注（8个字）" Text="{Binding Para.KeyNo}" ReturnType="Next"/>
 
                             <!--付佣-->
                             <controls:FluentPicker Grid.Row="11" OptionName="付佣" Title="请选择付佣" SelectedItem="{Binding Para.PropertyCommission}" ItemsSource="{Binding CommissionPayList}"/>

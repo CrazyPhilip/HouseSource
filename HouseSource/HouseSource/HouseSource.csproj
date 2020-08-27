@@ -35,11 +35,20 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Controls\FluentButton2.xaml.cs">
+      <DependentUpon>FluentButton2.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Controls\FluentDatePicker.xaml.cs">
       <DependentUpon>FluentDatePicker.xaml</DependentUpon>
     </Compile>
     <Compile Update="Controls\FluentEditor.xaml.cs">
       <DependentUpon>FluentEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Controls\FluentButton.xaml.cs">
+      <DependentUpon>FluentButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Controls\FluentSwitch.xaml.cs">
+      <DependentUpon>FluentSwitch.xaml</DependentUpon>
     </Compile>
     <Compile Update="Views\AddClientPage2.xaml.cs">
       <DependentUpon>AddClientPage2.xaml</DependentUpon>
@@ -66,6 +75,9 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Controls\FluentSearchBar.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Controls\MyPicker2.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Themes\DarkTheme.xaml">
@@ -162,6 +174,9 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\SeeFollowUpPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\SettingPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\ShareView.xaml">

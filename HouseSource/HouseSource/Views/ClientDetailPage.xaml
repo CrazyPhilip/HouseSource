@@ -12,7 +12,7 @@
              Title="客源详情">
     
     <ContentPage.Content>
-        <StackLayout Orientation="Vertical" Margin="10" BindingContext="{Binding Client}">
+        <StackLayout Orientation="Vertical" Padding="10" BindingContext="{Binding Client}">
             <Grid RowDefinitions="20,20,20,30" ColumnDefinitions="*,*,*,*">
                 <ff:CachedImage Grid.Row="0" Grid.Column="0" Grid.RowSpan="4" Source="avatar.png"/>
                 <Label Grid.Row="0" Grid.Column="1"  Text="{Binding CustName}" FontSize='16' TextColor="Black"/>

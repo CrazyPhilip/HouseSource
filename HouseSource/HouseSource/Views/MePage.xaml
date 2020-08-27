@@ -6,6 +6,7 @@
              xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              xmlns:ffTransformations="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
              xmlns:viewModels="clr-namespace:HouseSource.ViewModels"
+             xmlns:controls="clr-namespace:HouseSource.Controls"
              mc:Ignorable="d"
              x:Class="HouseSource.Views.MePage"
              x:Name="mePage"
@@ -34,17 +35,11 @@
                 </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <Frame Padding="10,5" HeightRequest="40" CornerRadius="5" HasShadow="False" BackgroundColor="{DynamicResource ControlBackgroundColor}">
-                            <StackLayout Orientation="Horizontal" >
-                                <ff:CachedImage Source="{Binding icon}" HeightRequest="30" WidthRequest="30"/>
-                                <Label Text="{Binding option}" VerticalOptions="Center" FontSize="14" TextColor="{DynamicResource PrimaryTextColor}" FontAttributes="Bold"/>
-                            </StackLayout>
-                            <Frame.GestureRecognizers>
-                                <TapGestureRecognizer NumberOfTapsRequired="1"
-                                                      Command="{Binding BindingContext.NavigateCommand, Source={x:Reference mePage}}"
-                                                      CommandParameter="{Binding page}"/>
-                            </Frame.GestureRecognizers>
-                        </Frame>
+                        <controls:FluentButton ImageSource="{Binding icon}" OptionName="{Binding option}" FontSize="14" 
+                                               OptionColor="{DynamicResource PrimaryTextColor}" InnerBackgroundColor="{DynamicResource ControlBackgroundColor}" 
+                                               BorderColor="{DynamicResource ControlBackgroundColor}"
+                                               Command="{Binding BindingContext.NavigateCommand, Source={x:Reference mePage}}" 
+                                               CommandParameter="{Binding page}"/>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>

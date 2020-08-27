@@ -19,6 +19,37 @@ namespace HouseSource.Controls
         public static readonly BindableProperty TextProperty = BindableProperty.Create(nameof(Text), typeof(string), typeof(FluentEntry), string.Empty, BindingMode.TwoWay);
         public static readonly BindableProperty TextColorProperty = BindableProperty.Create(nameof(TextColor), typeof(Color), typeof(FluentEntry), Color.Black);
 
+        public static readonly BindableProperty KeyboardProperty = BindableProperty.Create(nameof(Keyboard), typeof(Keyboard), typeof(FluentEntry), Keyboard.Default);
+
+        public static readonly BindableProperty ReturnTypeProperty = BindableProperty.Create(nameof(ReturnType), typeof(ReturnType), typeof(FluentEntry), ReturnType.Default);
+        public static readonly BindableProperty CommandProperty = BindableProperty.Create(nameof(Command), typeof(Command), typeof(FluentEntry), null);
+        public static readonly BindableProperty CommandParameterProperty = BindableProperty.Create(nameof(CommandParameter), typeof(object), typeof(FluentEntry), null);
+
+        public Keyboard Keyboard
+        {
+            get => (Keyboard)GetValue(KeyboardProperty);
+            set => SetValue(KeyboardProperty, value);
+        }
+
+        public ReturnType ReturnType
+        {
+            get => (ReturnType)GetValue(ReturnTypeProperty);
+            set => SetValue(ReturnTypeProperty, value);
+        }
+
+        public Command Command
+        {
+            get => (Command)GetValue(CommandProperty);
+            set => SetValue(CommandProperty, value);
+        }
+
+        public object CommandParameter
+        {
+            get => GetValue(CommandParameterProperty);
+            set => SetValue(CommandParameterProperty, value);
+        }
+
+
         public string ImageSource
         {
             get => (string)GetValue(ImageSourceProperty);
