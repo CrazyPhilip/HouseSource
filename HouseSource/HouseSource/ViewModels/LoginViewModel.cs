@@ -77,50 +77,32 @@ namespace HouseSource.ViewModels
 
 			GetReadPermissionAsync();
 
-			isRememberFileName = Path.Combine(FileSystem.CacheDirectory, "log_isRemember.dat");
 			autoLoginFileName = Path.Combine(FileSystem.CacheDirectory, "log_autoLogin.dat");
-			if (File.Exists(isRememberFileName))
-			{
-				string[] text = File.ReadAllLines(isRememberFileName);
-				string check = text[0].Substring(6);
-				string tel = text[1].Substring(8);
-				string pwd = text[2].Substring(9);
-
-				if (check == "Checked")
-				{
-					TelOrEmpNo = tel;
-					Password = pwd;
-					IsRememberPwd = true;
-				}
-			}
-			//记住密码和自动登录没关系？ 
 			if (File.Exists(autoLoginFileName))
 			{
 				string[] text = File.ReadAllLines(autoLoginFileName);
-				string loginState = text[0].Substring(11);
+				string check = text[0].Substring(6);
 				string tel = text[1].Substring(8);
 				string pwd = text[2].Substring(9);
 				string loginDate = text[3].Substring(10);
 				DateTime nowDate = DateTime.Now;
 				DateTime lastLoginDate = DateTime.Parse(loginDate);
 				TimeSpan ts = nowDate - lastLoginDate;
-				if (loginState == "True" && ts.TotalDays <= 30)
+				if (check == "Checked" && ts.TotalDays <= 30)
 				{
 					TelOrEmpNo = tel;
 					Password = pwd;
 					IsLoading = true;
+					IsRememberPwd = true;
 					Device.StartTimer(new TimeSpan(0, 0, 2), () =>
 					{
-						// do something every 2 seconds
-						Login();
+						Login();        // do something every 2 seconds
 						Device.BeginInvokeOnMainThread(() =>
 						{
 							// interact with UI elements]
 						});
-						return false; // runs again, or false to stop
+						return false;   // runs again, or false to stop
 					});
-
-
 				}
 			}
 
@@ -149,6 +131,7 @@ namespace HouseSource.ViewModels
 
 			RememberPwdCommand = new Command(() =>
 			{
+				/*
 				string text = "";
 
 				if (!string.IsNullOrWhiteSpace(TelOrEmpNo) && !string.IsNullOrWhiteSpace(Password))
@@ -168,6 +151,7 @@ namespace HouseSource.ViewModels
 				{
 					//await DisplayAlert("错误", "请输入账号及密码！", "OK");
 				}
+				*/
 			}, () => { return true; });
 
 			OpenEyeCommand = new Command(() =>
@@ -190,8 +174,6 @@ namespace HouseSource.ViewModels
 		/// </summary>
 		private async void Login()
 		{
-			//IsLoading = false;
-			//await Task.Delay(3000);
 			try
 			{
 				if (!Tools.IsNetConnective())
@@ -240,8 +222,12 @@ namespace HouseSource.ViewModels
 						GlobalVariables.LoggedUser.EmpNo = TelOrEmpNo;
 						//提供自动登录的信息  除非用户手动退出登录 LoginState变为False
 						string dateNow = DateTime.Now.ToString();
-						string text = "LoginState:True\n" + "Account:" + TelOrEmpNo + "\n" + "Password:" + Password + "\n" + "LoginDate:" + dateNow;
-						File.WriteAllText(autoLoginFileName, text);
+						string text = "";
+						if (IsRememberPwd)
+						{
+							text = "State:Checked\n" + "Account:" + TelOrEmpNo + "\n" + "Password:" + Password + "\n" + "LoginDate:" + dateNow;
+							File.WriteAllText(autoLoginFileName, text);
+						}
 
 						//MainPage mainPage = new MainPage();
 						//await Application.Current.MainPage.Navigation.PushAsync(mainPage);
