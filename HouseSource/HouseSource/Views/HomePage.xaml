@@ -90,7 +90,7 @@
                         <DataTemplate>
                             <StackLayout Orientation="Vertical">
                                 <ff:CachedImage Source="{Binding icon}" HeightRequest="50"/>
-                                <Label Text="{Binding option}" HorizontalOptions="Center"  FontSize="14" TextColor="Black" FontAttributes="Bold"/>
+                                <Label Text="{Binding option}" HorizontalOptions="Center"  FontSize="14" TextColor="{DynamicResource PrimaryTextColor}" FontAttributes="Bold"/>
 
                                 <StackLayout.GestureRecognizers>
                                     <TapGestureRecognizer NumberOfTapsRequired="1"
@@ -125,28 +125,17 @@
                 <Label Grid.Row="3" Grid.Column="0" Text="热门优选" Style="{DynamicResource SectionTitle}" Margin="5,0"/>
 
                 <ScrollView Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Vertical" VerticalScrollBarVisibility="Never">
-                    <StackLayout Orientation="Vertical" BindableLayout.ItemsSource="{Binding HouseItemList}" Spacing="10" Padding="5,0">
+                    <StackLayout Orientation="Vertical" BindableLayout.ItemsSource="{Binding HouseItemList}" Padding="5,0">
                         <BindableLayout.ItemTemplate>
                             <DataTemplate>
-                                <Frame HeightRequest="100" Style="{DynamicResource BaseFrame}">
-                                    <Grid RowSpacing="0" RowDefinitions="*,*,*,*" ColumnDefinitions="1*,2*" ColumnSpacing="10">
+                                <Frame HeightRequest="80" Style="{DynamicResource BaseFrame}">
+                                    <Grid RowSpacing="0" RowDefinitions="*,*,*,*" ColumnDefinitions="100,*">
                                         <ff:CachedImage Grid.Row="0" Grid.Column="0" Grid.RowSpan="4" Source="{Binding PhotoUrl}" 
-                                                        DownsampleHeight="100" DownsampleWidth="100" Aspect="AspectFill"/>
+                                                                HeightRequest="80" WidthRequest="100"
+                                                                DownsampleHeight="80" DownsampleWidth="100"/>
 
                                         <Label Grid.Row="0" Grid.Column="1" Text="{Binding HouseTitle}" TextColor="{DynamicResource PrimaryTextColor}" 
                                                        LineBreakMode="CharacterWrap" FontAttributes="Bold"/>
-
-                                        <!--<Label Grid.Row="1" Grid.Column="1" FontSize="12" TextColor="{DynamicResource SkyBlue}">
-                                            <Label.FormattedText>
-                                                <FormattedString>
-                                                    <Span Text="{Binding PanType}"/>
-                                                    <Span Text="|"/>
-                                                    <Span Text="{Binding PropertyDecoration}"/>
-                                                    <Span Text="|"/>
-                                                    <Span Text="{Binding PropertyLook}"/>
-                                                </FormattedString>
-                                            </Label.FormattedText>
-                                        </Label>-->
 
                                         <StackLayout Grid.Row="1" Grid.Column="1" Padding="0" Margin="0" Spacing="5" Orientation="Horizontal">
                                             <controls:LabelWithBorder FontSize="10" Text="{Binding PanType}" DrawableColor="{DynamicResource LightPink}" TextColor="White" CornerRadius="2" VerticalOptions="Center"/>
@@ -183,32 +172,6 @@
                                     </Frame.GestureRecognizers>
                                 </Frame>
                                 
-                                <!--<Frame Style="{StaticResource BaseFrame}" HeightRequest="140" WidthRequest="140" Margin="5,0">
-                                    <Grid RowSpacing="0" RowDefinitions="100, 20, 20">
-
-                                        <ff:CachedImage Grid.Row="0" Grid.RowSpan="3" Source="{Binding PhotoUrl}" Aspect="AspectFill" DownsampleHeight="100" DownsampleWidth="100"/>
-
-                                        <BoxView Grid.Row="1" Grid.RowSpan="2" Color="LightGray" Opacity="0.5"/>
-                                        <Label Grid.Row="1" Text="{Binding HouseTitle}" TextColor="Black"
-                                                       LineBreakMode="TailTruncation" FontAttributes="Bold"/>
-
-                                        <Label Grid.Row="2">
-                                            <Label.FormattedText>
-                                                <FormattedString>
-                                                    <Span Text="{Binding Price}" TextColor="Red"/>
-                                                    <Span Text="{Binding SinglePrice}" TextColor="White"/>
-                                                </FormattedString>
-                                            </Label.FormattedText>
-                                        </Label>
-
-                                    </Grid>
-
-                                    <Frame.GestureRecognizers>
-                                        <TapGestureRecognizer NumberOfTapsRequired="1"
-                                                              Command="{Binding BindingContext.TappedCommand, Source={x:Reference homePage}}"
-                                                              CommandParameter="{Binding PropertyID}"/>
-                                    </Frame.GestureRecognizers>
-                                </Frame>-->
                             </DataTemplate>
                         </BindableLayout.ItemTemplate>
                     </StackLayout>

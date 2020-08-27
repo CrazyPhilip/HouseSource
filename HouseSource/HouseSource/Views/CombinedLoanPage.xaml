@@ -5,7 +5,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              xmlns:viewModels="clr-namespace:HouseSource.ViewModels"
-             xmlns:behaviors="clr-namespace:HouseSource.Behaviors"
+             xmlns:behaviors="clr-namespace:HouseSource.Behaviors" 
+             xmlns:controls="clr-namespace:HouseSource.Controls"
              mc:Ignorable="d"
              x:Class="HouseSource.Views.CombinedLoanPage"
              x:Name="combinedLoanPage"
@@ -18,104 +19,66 @@
 
     <ContentPage.Resources>
         <ResourceDictionary>
-            <Style x:Name="ButtonStyle" TargetType="Button">
-                <Setter Property="HeightRequest" Value="40"/>
-                <Setter Property="FontSize" Value="14"/>
-                <Setter Property="CornerRadius" Value="20"/>
-                <Setter Property="VerticalOptions" Value="Center"/>
+            <Style x:Key="ButtonStyle" TargetType="Button">
                 <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
                 <Setter Property="TextColor" Value="White"/>
-            </Style>
-            <Style x:Name="LabelStyle" TargetType="Label">
-                <Setter Property="FontSize" Value="14"/>
-                <Setter Property="HorizontalOptions" Value="Start"/>
-                <Setter Property="VerticalOptions" Value="Center"/>
-            </Style>
-            <Style x:Name="EntryStyle" TargetType="Entry">
-                <Setter Property="WidthRequest" Value="200"/>
-                <Setter Property="FontSize" Value="14"/>
-                <Setter Property="HorizontalOptions" Value="EndAndExpand"/>
-                <Setter Property="VerticalOptions" Value="Center"/>
-            </Style>
-            <Style x:Name="PickerStyle" TargetType="Picker">
-                <Setter Property="WidthRequest" Value="200"/>
-                <Setter Property="FontSize" Value="14"/>
-                <Setter Property="HorizontalOptions" Value="EndAndExpand"/>
-                <Setter Property="VerticalOptions" Value="Center"/>
+                <Setter Property="Padding" Value="0"/>
+                <Setter Property="CornerRadius" Value="5"/>
+                <Setter Property="BackgroundColor" Value="{DynamicResource PrimaryColor}"/>
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
 
     <ContentPage.Content>
         <ScrollView>
-            <StackLayout Orientation="Vertical">
+            <StackLayout Orientation="Vertical" Padding="10">
                 <!--计算结果-->
-                <Frame BorderColor="LightGray" HasShadow="True" CornerRadius="10" Margin="10,5" Padding="10">
-                    <Grid>
-                        <ff:CachedImage Source="money.png"/>
-                        <StackLayout Spacing="0" Orientation="Vertical">
-                            <Label TextColor="Red">
-                                <Label.FormattedText>
-                                    <FormattedString>
-                                        <Span Text="贷款总额："/>
-                                        <Span Text="{Binding TotalLoan}" FontSize="Title" FontAttributes="Bold"/>
-                                        <Span Text="元" FontSize="Title" FontAttributes="Bold"/>
-                                    </FormattedString>
-                                </Label.FormattedText>
-                            </Label>
-                            <Label TextColor="Blue">
-                                <Label.FormattedText>
-                                    <FormattedString>
-                                        <Span Text="总利息："/>
-                                        <Span Text="{Binding TotalInterest}" FontSize="Title" FontAttributes="Bold"/>
-                                        <Span Text="元" FontSize="Title" FontAttributes="Bold"/>
-                                        <Span Text="（其中公积金："/>
-                                        <Span Text="{Binding PFTotalInterest}"/>
-                                        <Span Text="元，商贷："/>
-                                        <Span Text="{Binding CLTotalInterest}"/>
-                                        <Span Text="元）"/>
-                                    </FormattedString>
-                                </Label.FormattedText>
-                            </Label>
-                            <Label TextColor="Green">
-                                <Label.FormattedText>
-                                    <FormattedString>
-                                        <Span Text="月均还款："/>
-                                        <Span Text="{Binding MonthlyRepayment}" FontSize="Title" FontAttributes="Bold"/>
-                                        <Span Text="元/月" FontSize="Title" FontAttributes="Bold"/>
-                                        <Span Text="（其中公积金："/>
-                                        <Span Text="{Binding PFMonthlyRepayment}"/>
-                                        <Span Text="元/月，商贷："/>
-                                        <Span Text="{Binding CLMonthlyRepayment}"/>
-                                        <Span Text="元/月）"/>
-                                    </FormattedString>
-                                </Label.FormattedText>
-                            </Label>
-                            <Label TextColor="Black">
-                                <Label.FormattedText>
-                                    <FormattedString>
-                                        <Span Text="公积金利率："/>
-                                        <Span Text="{Binding PFRate}" FontSize="Title" FontAttributes="Bold"/>
-                                        <Span Text="%" FontSize="Title" FontAttributes="Bold"/>
-                                    </FormattedString>
-                                </Label.FormattedText>
-                            </Label>
-                            <Label TextColor="Black">
-                                <Label.FormattedText>
-                                    <FormattedString>
-                                        <Span Text="商贷利率："/>
-                                        <Span Text="{Binding CLRate}" FontSize="Title" FontAttributes="Bold"/>
-                                        <Span Text="%" FontSize="Title" FontAttributes="Bold"/>
-                                    </FormattedString>
-                                </Label.FormattedText>
-                            </Label>
-                            <Label Text="*以上计算结果仅供参考"/>
-                        </StackLayout>
+                <Frame BorderColor="LightGray" HasShadow="True" CornerRadius="10" Padding="10">
+                    <Grid RowDefinitions="*,*,*,*,*,*">
+                        <ff:CachedImage Grid.Row="0" Grid.RowSpan="5" Source="money.png"/>
+                        <Label Grid.Row="0" Text="{Binding TotalLoan,StringFormat='贷款总额：{0}元'}" TextColor="Red"/>
+
+                        <Label Grid.Row="1" TextColor="Blue">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="总利息："/>
+                                    <Span Text="{Binding TotalInterest}"/>
+                                    <Span Text="元"/>
+                                    <Span Text="（其中公积金："/>
+                                    <Span Text="{Binding PFTotalInterest}"/>
+                                    <Span Text="元，商贷："/>
+                                    <Span Text="{Binding CLTotalInterest}"/>
+                                    <Span Text="元）"/>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                        <Label Grid.Row="2" TextColor="Green">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="月均还款："/>
+                                    <Span Text="{Binding MonthlyRepayment}"/>
+                                    <Span Text="元/月"/>
+                                    <Span Text="（其中公积金："/>
+                                    <Span Text="{Binding PFMonthlyRepayment}"/>
+                                    <Span Text="元/月，商贷："/>
+                                    <Span Text="{Binding CLMonthlyRepayment}"/>
+                                    <Span Text="元/月）"/>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                        <Label Grid.Row="3" Text="{Binding PFRate,StringFormat='公积金利率：{0}%'}" TextColor="Black"/>
+                        <Label Grid.Row="4" Text="{Binding CLRate,StringFormat='商贷利率：{0}%'}" TextColor="Black"/>
+                        <Label Grid.Row="5" Text="*以上计算结果仅供参考"/>
                     </Grid>
                 </Frame>
 
                 <!--计算方式-->
-                <StackLayout Orientation="Horizontal" Margin="10">
+                <Grid ColumnDefinitions="30,*,*,*,30">
+                    <Label Grid.Column="1" Text="计算方式" FontSize="12" FontAttributes="Bold" TextColor="Black" VerticalOptions="Center"/>
+                    <RadioButton Grid.Column="2" x:Name="CTotalPriceRadioButton" Text="按房价总额" FontSize="12" GroupName="CalculateMethod" IsChecked="{Binding TotalPriceRadio}"/>
+                    <RadioButton Grid.Column="3" x:Name="CTotalLoanRadioButton" Text="按贷款总额" FontSize="12" GroupName="CalculateMethod" IsChecked="{Binding TotalLoanRadio}"/>
+                </Grid>
+                <!--<StackLayout Orientation="Horizontal" Margin="10">
                     <Label>
                         <Label.FormattedText>
                             <FormattedString>
@@ -128,7 +91,7 @@
                     <RadioButton x:Name="CTotalPriceRadioButton" Text="按房价总额" GroupName="CalculateMethod" IsChecked="{Binding TotalPriceRadio}"/>
                     <RadioButton x:Name="CTotalLoanRadioButton" Text="按贷款总额" GroupName="CalculateMethod" IsChecked="{Binding TotalLoanRadio}"/>
 
-                    <!--
+                    
                     <Label Text="按房价总额" Style="{DynamicResource LabelStyle}" WidthRequest="150">
                         <Label.Behaviors>
                             <behaviors:RadioBehavior x:Name="CTotalPriceRadio" GroupName="CalculateMethod" IsChecked="{Binding TotalPriceRadio}"/>
@@ -153,11 +116,16 @@
                                 <Setter Property="FontAttributes" Value="Bold" />
                             </DataTrigger>
                         </Label.Triggers>
-                    </Label>-->
-                </StackLayout>
+                    </Label>
+                </StackLayout>-->
 
                 <!--还款方式-->
-                <StackLayout Orientation="Horizontal" Margin="10">
+                <Grid ColumnDefinitions="30,*,*,*,30">
+                    <Label Grid.Column="1" Text="还款方式" FontSize="12" FontAttributes="Bold" TextColor="Black" VerticalOptions="Center"/>
+                    <RadioButton Grid.Column="2" x:Name="CAveCapAndIntRadio" Text="等额本息" FontSize="12" GroupName="PaymentMethod" IsChecked="{Binding AveCapAndIntRadio}"/>
+                    <RadioButton Grid.Column="3" x:Name="CAveCapRadio" Text="等额本金" FontSize="12" GroupName="PaymentMethod" IsChecked="{Binding AveCapRadio}"/>
+                </Grid>
+                <!--<StackLayout Orientation="Horizontal" Margin="10">
                     <Label>
                         <Label.FormattedText>
                             <FormattedString>
@@ -169,7 +137,7 @@
 
                     <RadioButton x:Name="CAveCapAndIntRadio" Text="等额本息" GroupName="PaymentMethod" IsChecked="{Binding AveCapAndIntRadio}"/>
                     <RadioButton x:Name="CAveCapRadio" Text="等额本金" GroupName="PaymentMethod" IsChecked="{Binding AveCapRadio}"/>
-                    <!--
+                    
                     <Label Text="等额本息" Style="{DynamicResource LabelStyle}" WidthRequest="150" >
                         <Label.Behaviors>
                             <behaviors:RadioBehavior x:Name="CAveCapAndIntRadio" GroupName="PaymentMethod" IsChecked="{Binding AveCapAndIntRadio}"/>
@@ -193,11 +161,13 @@
                                 <Setter Property="FontAttributes" Value="Bold" />
                             </DataTrigger>
                         </Label.Triggers>
-                    </Label>-->
-                </StackLayout>
+                    </Label>
+                </StackLayout>-->
 
                 <!--房价总额-->
-                <StackLayout Orientation="Horizontal" Margin="10" IsVisible="{Binding Source={x:Reference CTotalPriceRadioButton}, Path=IsChecked}">
+                <controls:FluentEntry OptionName="房价总额（元）" Placeholder="请输入房价总额" Text="{Binding TotalPrice}" ReturnType="Next" Keyboard="Numeric"
+                                      IsVisible="{Binding Source={x:Reference CTotalPriceRadioButton}, Path=IsChecked}"/>
+                <!--<StackLayout Orientation="Horizontal" Margin="10" IsVisible="{Binding Source={x:Reference CTotalPriceRadioButton}, Path=IsChecked}">
                     <Label>
                         <Label.FormattedText>
                             <FormattedString>
@@ -207,10 +177,12 @@
                         </Label.FormattedText>
                     </Label>
                     <Entry Placeholder="请输入房价总额" Text="{Binding TotalPrice}" Style="{DynamicResource EntryStyle}"/>
-                </StackLayout>
+                </StackLayout>-->
 
                 <!--贷款比例-->
-                <StackLayout Orientation="Horizontal" Margin="10" IsVisible="{Binding Source={x:Reference CTotalPriceRadioButton}, Path=IsChecked}">
+                <controls:FluentPicker OptionName="贷款比例" Title="请选择贷款比例" ItemsSource="{Binding CLoanProportionList}" SelectedIndex="{Binding LoanProportionIndex}"
+                                       IsVisible="{Binding Source={x:Reference CTotalPriceRadioButton}, Path=IsChecked}"/>
+                <!--<StackLayout Orientation="Horizontal" Margin="10" IsVisible="{Binding Source={x:Reference CTotalPriceRadioButton}, Path=IsChecked}">
                     <Label>
                         <Label.FormattedText>
                             <FormattedString>
@@ -220,10 +192,11 @@
                         </Label.FormattedText>
                     </Label>
                     <Picker Title="贷款比例" ItemsSource="{Binding CLoanProportionList}" SelectedIndex="{Binding LoanProportionIndex}" Style="{DynamicResource PickerStyle}"/>
-                </StackLayout>
+                </StackLayout>-->
 
                 <!--公积金贷款金额-->
-                <StackLayout Orientation="Horizontal" Margin="10">
+                <controls:FluentEntry OptionName="公积金贷款金额（元）" Placeholder="请输入公积金贷款金额" Text="{Binding PFLoanAmount}" ReturnType="Next" Keyboard="Numeric"/>
+                <!--<StackLayout Orientation="Horizontal" Margin="10">
                     <Label>
                         <Label.FormattedText>
                             <FormattedString>
@@ -233,10 +206,11 @@
                         </Label.FormattedText>
                     </Label>
                     <Entry Placeholder="请输入公积金贷款金额" Text="{Binding PFLoanAmount}" Style="{DynamicResource EntryStyle}"/>
-                </StackLayout>
+                </StackLayout>-->
 
                 <!--公积金按揭年数-->
-                <StackLayout Orientation="Horizontal" Margin="10">
+                <controls:FluentPicker OptionName="公积金按揭年数" Title="请选择公积金按揭年数" ItemsSource="{Binding CPFYearList}" SelectedIndex="{Binding PFYearIndex}"/>
+                <!--<StackLayout Orientation="Horizontal" Margin="10">
                     <Label>
                         <Label.FormattedText>
                             <FormattedString>
@@ -246,10 +220,11 @@
                         </Label.FormattedText>
                     </Label>
                     <Picker Title="公积金按揭年数" ItemsSource="{Binding CPFYearList}" SelectedIndex="{Binding PFYearIndex}" Style="{DynamicResource PickerStyle}"/>
-                </StackLayout>
+                </StackLayout>-->
 
                 <!--公积金利率-->
-                <StackLayout Orientation="Horizontal" Margin="10">
+                <controls:FluentEntry OptionName="公积金利率（%）" Placeholder="请输入公积金利率" Text="{Binding PFRate}" ReturnType="Next" Keyboard="Numeric"/>
+                <!--<StackLayout Orientation="Horizontal" Margin="10">
                     <Label>
                         <Label.FormattedText>
                             <FormattedString>
@@ -259,10 +234,11 @@
                         </Label.FormattedText>
                     </Label>
                     <Entry Placeholder="请输入公积金利率" Text="{Binding PFRate}" Style="{DynamicResource EntryStyle}"/>
-                </StackLayout>
+                </StackLayout>-->
 
                 <!--商业贷款金额-->
-                <StackLayout Orientation="Horizontal" Margin="10">
+                <controls:FluentEntry OptionName="商业贷款金额（元）" Placeholder="请输入商贷金额" Text="{Binding CLLoanAmount}" ReturnType="Next" Keyboard="Numeric"/>
+                <!--<StackLayout Orientation="Horizontal" Margin="10">
                     <Label>
                         <Label.FormattedText>
                             <FormattedString>
@@ -272,10 +248,11 @@
                         </Label.FormattedText>
                     </Label>
                     <Entry Placeholder="请输入商贷金额" Text="{Binding CLLoanAmount}" Style="{DynamicResource EntryStyle}"/>
-                </StackLayout>
+                </StackLayout>-->
 
                 <!--商贷按揭年数-->
-                <StackLayout Orientation="Horizontal" Margin="10">
+                <controls:FluentPicker OptionName="商贷按揭年数" Title="请选择商贷按揭年数" ItemsSource="{Binding CCLYearList}" SelectedIndex="{Binding CLYearIndex}"/>
+                <!--<StackLayout Orientation="Horizontal" Margin="10">
                     <Label>
                         <Label.FormattedText>
                             <FormattedString>
@@ -285,10 +262,11 @@
                         </Label.FormattedText>
                     </Label>
                     <Picker Title="商贷按揭年数" ItemsSource="{Binding CCLYearList}" SelectedIndex="{Binding CLYearIndex}" Style="{DynamicResource PickerStyle}"/>
-                </StackLayout>
+                </StackLayout>-->
 
                 <!--商业利率-->
-                <StackLayout Orientation="Horizontal" Margin="10">
+                <controls:FluentEntry OptionName="商贷利率（%）" Placeholder="请输入商贷利率" Text="{Binding CLRate}" ReturnType="Next" Keyboard="Numeric"/>
+                <!--<StackLayout Orientation="Horizontal" Margin="10">
                     <Label>
                         <Label.FormattedText>
                             <FormattedString>
@@ -298,11 +276,11 @@
                         </Label.FormattedText>
                     </Label>
                     <Entry Placeholder="请输入商贷利率" Text="{Binding CLRate}" Style="{DynamicResource EntryStyle}"/>
-                </StackLayout>
+                </StackLayout>-->
 
                 <StackLayout Orientation="Horizontal" Margin="0,0,0,20">
                     <Button Text="清空" Command="{Binding ClearCommand}" Style="{DynamicResource ButtonStyle}" BackgroundColor="LightGray"/>
-                    <Button Text="开始计算" Command="{Binding CalculateCommand}" Style="{DynamicResource ButtonStyle}" BackgroundColor="{DynamicResource PrimaryColor}"/>
+                    <Button Text="开始计算" Command="{Binding CalculateCommand}" Style="{DynamicResource ButtonStyle}"/>
                 </StackLayout>
             </StackLayout>
         </ScrollView>

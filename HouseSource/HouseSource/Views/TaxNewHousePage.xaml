@@ -4,7 +4,7 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
-             xmlns:viewModels="clr-namespace:HouseSource.ViewModels"
+             xmlns:viewModels="clr-namespace:HouseSource.ViewModels" xmlns:controls="clr-namespace:HouseSource.Controls"
              mc:Ignorable="d"
              x:Class="HouseSource.Views.TaxNewHousePage"
              x:Name="taxNewHousePage"
@@ -17,30 +17,12 @@
     
     <ContentPage.Resources>
         <ResourceDictionary>
-            <Style x:Name="ButtonStyle" TargetType="Button">
-                <Setter Property="HeightRequest" Value="40"/>
-                <Setter Property="FontSize" Value="14"/>
-                <Setter Property="CornerRadius" Value="20"/>
-                <Setter Property="VerticalOptions" Value="Center"/>
+            <Style x:Key="ButtonStyle" TargetType="Button">
                 <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
                 <Setter Property="TextColor" Value="White"/>
-            </Style>
-            <Style x:Name="LabelStyle" TargetType="Label">
-                <Setter Property="FontSize" Value="14"/>
-                <Setter Property="HorizontalOptions" Value="Start"/>
-                <Setter Property="VerticalOptions" Value="Center"/>
-            </Style>
-            <Style x:Name="EntryStyle" TargetType="Entry">
-                <Setter Property="WidthRequest" Value="200"/>
-                <Setter Property="FontSize" Value="14"/>
-                <Setter Property="HorizontalOptions" Value="EndAndExpand"/>
-                <Setter Property="VerticalOptions" Value="Center"/>
-            </Style>
-            <Style x:Name="PickerStyle" TargetType="Picker">
-                <Setter Property="WidthRequest" Value="200"/>
-                <Setter Property="FontSize" Value="14"/>
-                <Setter Property="HorizontalOptions" Value="EndAndExpand"/>
-                <Setter Property="VerticalOptions" Value="Center"/>
+                <Setter Property="Padding" Value="0"/>
+                <Setter Property="CornerRadius" Value="5"/>
+                <Setter Property="BackgroundColor" Value="{DynamicResource PrimaryColor}"/>
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
@@ -52,67 +34,20 @@
                 <Frame  BorderColor="LightGray" HasShadow="True" CornerRadius="5" Padding="10">
                     <Grid RowDefinitions="1*,1*,1*,1*,1*,1*,1*">
                         <ff:CachedImage Grid.Row="0" Grid.RowSpan="7" Source="money_pink.png"/>
-                        <Label Grid.Row="0" TextColor="Red">
-                                <Label.FormattedText>
-                                    <FormattedString>
-                                        <Span Text="房款总价："/>
-                                        <Span Text="{Binding NewTotalPrice}" FontSize="Title" FontAttributes="Bold"/>
-                                        <Span Text="元" FontSize="Title" FontAttributes="Bold"/>
-                                    </FormattedString>
-                                </Label.FormattedText>
-                            </Label>
-                            <Label Grid.Row="1" TextColor="Blue">
-                                <Label.FormattedText>
-                                    <FormattedString>
-                                        <Span Text="契税："/>
-                                        <Span Text="{Binding NewDeedTax}" FontSize="Title" FontAttributes="Bold"/>
-                                        <Span Text="元" FontSize="Title" FontAttributes="Bold"/>
-                                    </FormattedString>
-                                </Label.FormattedText>
-                            </Label>
-                            <Label Grid.Row="2" TextColor="Red">
-                                <Label.FormattedText>
-                                    <FormattedString>
-                                        <Span Text="合同工本费："/>
-                                        <Span Text="5元" FontSize="Title" FontAttributes="Bold"/>
-                                    </FormattedString>
-                                </Label.FormattedText>
-                            </Label>
-                            <Label Grid.Row="3" TextColor="Green">
-                                <Label.FormattedText>
-                                    <FormattedString>
-                                        <Span Text="维修基金："/>
-                                        <Span Text="{Binding NewMaintenanceFund}" FontSize="Title" FontAttributes="Bold"/>
-                                        <Span Text="元" FontSize="Title" FontAttributes="Bold"/>
-                                    </FormattedString>
-                                </Label.FormattedText>
-                            </Label>
-                            <Label Grid.Row="4" TextColor="Red">
-                                <Label.FormattedText>
-                                    <FormattedString>
-                                        <Span Text="权属登记费："/>
-                                        <Span Text="80元" FontSize="Title" FontAttributes="Bold"/>
-                                    </FormattedString>
-                                </Label.FormattedText>
-                            </Label>
-                            <Label Grid.Row="5" TextColor="Black">
-                                <Label.FormattedText>
-                                    <FormattedString>
-                                        <Span Text="税金总额："/>
-                                        <Span Text="{Binding NewTotalTax}" FontSize="Title" FontAttributes="Bold"/>
-                                        <Span Text="元" FontSize="Title" FontAttributes="Bold"/>
-                                    </FormattedString>
-                                </Label.FormattedText>
-                            </Label>
+
+                        <Label Grid.Row="0" Text="{Binding NewTotalPrice,StringFormat='房款总价：{0}元'}" TextColor="Red"/>
+                        <Label Grid.Row="1" Text="{Binding NewDeedTax,StringFormat='契税：{0}元'}" TextColor="Blue"/>
+                        <Label Grid.Row="2" Text="合同工本费：5元" TextColor="Black"/>
+                        <Label Grid.Row="3" Text="{Binding NewMaintenanceFund,StringFormat='维修基金：{0}元'}" TextColor="Green"/>
+                        <Label Grid.Row="4" Text="权属登记费：80元" TextColor="Blue"/>
+                        <Label Grid.Row="5" Text="{Binding NewTotalTax,StringFormat='税金总额：{0}元'}" TextColor="Black"/>
                         <Label Grid.Row="6" Text="*以上计算结果仅供参考"/>
                     </Grid>
                 </Frame>
 
-
-                <Grid ColumnDefinitions="1*,1*" RowDefinitions="1*,1*,1*,1*">
-
                     <!--建筑面积-->
-                    <Label Grid.Row="0" Grid.Column="0">
+                    <controls:FluentEntry OptionName="建筑面积（㎡）" Placeholder="请输入建筑面积" Text="{Binding NewHouseArea}" ReturnType="Next" Keyboard="Numeric"/>
+                    <!--<Label Grid.Row="0" Grid.Column="0">
                         <Label.FormattedText>
                             <FormattedString>
                                 <Span Text="*" TextColor="Red"/>
@@ -120,10 +55,11 @@
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
-                    <Entry Grid.Row="0" Grid.Column="1" Placeholder="请输入建筑面积" Text="{Binding NewHouseArea}"/>
+                    <Entry Grid.Row="0" Grid.Column="1" Placeholder="请输入建筑面积" Text="{Binding NewHouseArea}"/>-->
 
                     <!--单价-->
-                    <Label Grid.Row="1" Grid.Column="0">
+                    <controls:FluentEntry OptionName="单价（元/㎡）" Placeholder="请输入单价" Text="{Binding NewUnitPrice}" ReturnType="Next" Keyboard="Numeric"/>
+                    <!--<Label Grid.Row="1" Grid.Column="0">
                         <Label.FormattedText>
                             <FormattedString>
                                 <Span Text="*" TextColor="Red"/>
@@ -131,10 +67,16 @@
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
-                    <Entry Grid.Row="1" Grid.Column="1" Placeholder="请输入单价" Text="{Binding NewUnitPrice}"/>
+                    <Entry Grid.Row="1" Grid.Column="1" Placeholder="请输入单价" Text="{Binding NewUnitPrice}"/>-->
 
                     <!--是否首次购房-->
-                        <Label Grid.Row="2" Grid.Column="0">
+                    <Grid ColumnDefinitions="30,*,*,30" RowDefinitions="*,*">
+                    <BoxView Grid.Row="1" Grid.ColumnSpan="4" Color="WhiteSmoke" HeightRequest="1" HorizontalOptions="Fill" VerticalOptions="End"/>
+                    <Label Grid.Row="0" Grid.Column="1" Text="是否首次购房" FontSize="12" FontAttributes="Bold" TextColor="Black" VerticalOptions="Center"/>
+                    <RadioButton Grid.Row="0" Grid.Column="2" x:Name="NewYesFirstRadio" Text="是" FontSize="12" GroupName="NewFirstTradeMethod" IsChecked="{Binding YesRadio}"/>
+                    <RadioButton Grid.Row="1" Grid.Column="2" x:Name="NewNoFirstRadio" Text="否" FontSize="12" GroupName="NewFirstTradeMethod" IsChecked="{Binding NoRadio}"/>
+                    </Grid>
+                    <!--<Label Grid.Row="2" Grid.Column="0">
                         <Label.FormattedText>
                             <FormattedString>
                                 <Span Text="*" TextColor="Red"/>
@@ -146,7 +88,6 @@
                     <RadioButton x:Name="NewYesFirstRadio" Text="是" GroupName="NewFirstTradeMethod" IsChecked="{Binding YesRadio}"/>
                     <RadioButton x:Name="NewNoFirstRadio" Text="否" GroupName="NewFirstTradeMethod" IsChecked="{Binding NoRadio}"/>
 
-                    <!--
                     <Label Text="是" Style="{DynamicResource LabelStyle}" WidthRequest="100">
                         <Label.Behaviors>
                             <behaviors:RadioBehavior x:Name="NewYesFirstRadio" GroupName="NewFirstTradeMethod"/>
@@ -171,13 +112,13 @@
                                 <Setter Property="FontAttributes" Value="Bold" />
                             </DataTrigger>
                         </Label.Triggers>
-                    </Label>-->
+                    </Label>
+                </StackLayout>-->
+
+                <StackLayout Orientation="Horizontal" Margin="0,0,0,20">
+                    <Button Text="清空" Command="{Binding ClearCommand}" Style="{DynamicResource ButtonStyle}" BackgroundColor="LightGray"/>
+                    <Button Text="开始计算" Command="{Binding CalculateCommand}" Style="{DynamicResource ButtonStyle}"/>
                 </StackLayout>
-
-                    <Button Grid.Row="3" Grid.Column="0" Text="清空" Command="{Binding ClearCommand}" Style="{DynamicResource ButtonStyle}" BackgroundColor="LightGray"/>
-                    <Button Grid.Row="3" Grid.Column="1" Text="开始计算" Command="{Binding CalculateCommand}" Style="{DynamicResource ButtonStyle}" BackgroundColor="{DynamicResource PrimaryColor}"/>
-
-                </Grid>
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>

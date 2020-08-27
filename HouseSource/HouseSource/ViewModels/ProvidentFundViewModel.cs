@@ -85,6 +85,20 @@ namespace HouseSource.ViewModels
             get { return pFLoanProportionList; }
             set { SetProperty(ref pFLoanProportionList, value); }
         }
+
+        private List<string> calculationList;   //计算方式
+        public List<string> CalculationList
+        {
+            get { return calculationList; }
+            set { SetProperty(ref calculationList, value); }
+        }
+
+        private List<string> paymentList;   //还款方式
+        public List<string> PaymentList
+        {
+            get { return paymentList; }
+            set { SetProperty(ref paymentList, value); }
+        }
         #endregion
 
         #region 单选
@@ -117,6 +131,20 @@ namespace HouseSource.ViewModels
         }
         #endregion
 
+        private string calculateMethod;   //Comment
+        public string CalculateMethod
+        {
+            get { return calculateMethod; }
+            set { SetProperty(ref calculateMethod, value); }
+        }
+
+        private string payment;   //Comment
+        public string Payment
+        {
+            get { return payment; }
+            set { SetProperty(ref payment, value); }
+        }
+
         private double TotalLoan;           //贷款总额
         private double TotalInterest;       //总利息
         private double MonthlyRepayment;     //月均还款
@@ -126,7 +154,25 @@ namespace HouseSource.ViewModels
 
         public ProvidentFundViewModel()
         {
-            InitPickers();
+            //InitPickers();
+
+            PFYearList = new List<string>();
+            PFLoanProportionList = new List<string>();
+
+            for (int i = 1; i <= 30; i++)
+            {
+                PFYearList.Add(i + "年（" + i * 12 + "期）");
+            }
+
+            for (int j = 4; j <= 16; j++)
+            {
+                PFLoanProportionList.Add(j * 5 + "%");
+            }
+
+            CalculationList = new List<string>() { "按房价总额", "按贷款总额" };
+            PaymentList = new List<string>() { "等额本息", "等额本金" };
+            CalculateMethod = CalculationList[0];
+            Payment = PaymentList[0];
 
             TotalPriceRadio = true;
             AveCapAndIntRadio = true;
@@ -143,7 +189,6 @@ namespace HouseSource.ViewModels
                     Calculate();
                 }
             }, () => { return true; });
-
 
         }
 
@@ -164,6 +209,11 @@ namespace HouseSource.ViewModels
             {
                 PFLoanProportionList.Add(j * 5 + "%");
             }
+
+            CalculationList = new List<string>() { "按房价总额", "按贷款总额" };
+            PaymentList = new List<string>() { "等额本息", "等额本金" };
+            //CalculateMethod = CalculationList[0];
+            //Payment = PaymentList[0];
         }
 
         /// <summary>

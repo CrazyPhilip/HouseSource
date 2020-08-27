@@ -148,11 +148,11 @@
                     <StackLayout BindableLayout.ItemsSource="{Binding HouseItemList}" Orientation="Vertical">
                         <BindableLayout.ItemTemplate>
                             <DataTemplate>
-                                <Frame HeightRequest="110" Style="{DynamicResource BaseFrame}">
+                                <Frame HeightRequest="80" Style="{DynamicResource BaseFrame}">
                                     <Grid RowSpacing="0" RowDefinitions="*,*,*,*" ColumnDefinitions="100,*">
                                         <ff:CachedImage Grid.Row="0" Grid.Column="0" Grid.RowSpan="4" Source="{Binding PhotoUrl}" 
-                                                                HeightRequest="100" WidthRequest="100"
-                                                                DownsampleHeight="100" DownsampleWidth="100"/>
+                                                                HeightRequest="80" WidthRequest="100"
+                                                                DownsampleHeight="80" DownsampleWidth="100"/>
 
                                         <Label Grid.Row="0" Grid.Column="1" Text="{Binding HouseTitle}" TextColor="{DynamicResource PrimaryTextColor}" 
                                                        LineBreakMode="CharacterWrap" FontAttributes="Bold"/>
@@ -174,30 +174,6 @@
                                                 </FormattedString>
                                             </Label.FormattedText>
                                         </Label>
-
-                                        <!--<Label Grid.Row="1" Grid.Column="1" FontSize="12" LineBreakMode="CharacterWrap">
-                                            <Label.FormattedText>
-                                                <FormattedString>
-                                                    <Span Text="{Binding RoomStyle}"/>
-                                                    <Span Text="|"/>
-                                                    <Span Text="{Binding Square}"/>
-                                                    <Span Text="|"/>
-                                                    <Span Text="{Binding EstateName}"/>
-                                                </FormattedString>
-                                            </Label.FormattedText>
-                                        </Label>
-
-                                        <Label Grid.Row="2" Grid.Column="1" FontSize="12" TextColor="{DynamicResource SkyBlue}">
-                                            <Label.FormattedText>
-                                                <FormattedString>
-                                                    <Span Text="{Binding PanType}"/>
-                                                    <Span Text="|"/>
-                                                    <Span Text="{Binding PropertyDecoration}"/>
-                                                    <Span Text="|"/>
-                                                    <Span Text="{Binding PropertyLook}"/>
-                                                </FormattedString>
-                                            </Label.FormattedText>
-                                        </Label>-->
 
                                         <Label Grid.Row="3" Grid.Column="1">
                                             <Label.FormattedText>

@@ -8,21 +8,14 @@ namespace HouseSource.Behaviors
     {
         TapGestureRecognizer tapRecognizer;
         static List<RadioBehavior> defaultGroup = new List<RadioBehavior>();
-        static Dictionary<string, List<RadioBehavior>> radioGroups =
-                                    new Dictionary<string, List<RadioBehavior>>();
+        static Dictionary<string, List<RadioBehavior>> radioGroups = new Dictionary<string, List<RadioBehavior>>();
 
         public RadioBehavior()
         {
             defaultGroup.Add(this);
         }
 
-        public static readonly BindableProperty IsCheckedProperty =
-            BindableProperty.Create("IsChecked",
-                                    typeof(bool),
-                                    typeof(RadioBehavior),
-                                    false,
-                                    defaultBindingMode:BindingMode.TwoWay,
-                                    propertyChanged: OnIsCheckedChanged);
+        public static readonly BindableProperty IsCheckedProperty = BindableProperty.Create("IsChecked", typeof(bool), typeof(RadioBehavior), false, defaultBindingMode:BindingMode.TwoWay, propertyChanged: OnIsCheckedChanged);
 
         public bool IsChecked
         {
@@ -58,12 +51,7 @@ namespace HouseSource.Behaviors
             }
         }
 
-        public static readonly BindableProperty GroupNameProperty =
-            BindableProperty.Create("GroupName",
-                                    typeof(string),
-                                    typeof(RadioBehavior),
-                                    null,
-                                    propertyChanged: OnGroupNameChanged);
+        public static readonly BindableProperty GroupNameProperty = BindableProperty.Create("GroupName", typeof(string), typeof(RadioBehavior), null, propertyChanged: OnGroupNameChanged);
 
         public string GroupName
         {

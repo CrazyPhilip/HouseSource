@@ -4,107 +4,136 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
-             xmlns:views="clr-namespace:HouseSource.Views"
+             xmlns:views="clr-namespace:HouseSource.Views" xmlns:controls="clr-namespace:HouseSource.Controls"
              mc:Ignorable="d"
              x:Class="HouseSource.Views.ClientDetailPage"
              BackgroundColor="{DynamicResource PageBackgroundColor}"
              x:Name="clientDetailPage"
              Title="客源详情">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="PrimaryLabel" TargetType="Label">
+                <Setter Property="FontSize" Value="16"/>
+                <Setter Property="TextColor" Value="{DynamicResource PrimaryTextColor}"/>
+            </Style>
+            <Style x:Key="SecondaryLabel" TargetType="Label">
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="TextColor" Value="{DynamicResource SecondaryTextColor}"/>
+            </Style>
+            <Style x:Key="OptionButton" TargetType="Button">
+                <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+                <Setter Property="TextColor" Value="White"/>
+                <Setter Property="Padding" Value="0"/>
+                <Setter Property="CornerRadius" Value="5"/>
+                <Setter Property="BackgroundColor" Value="{DynamicResource PrimaryColor}"/>
+            </Style>
+            <Style x:Key="CommonFrame" TargetType="Frame">
+                <Setter Property="HasShadow" Value="True"/>
+                <Setter Property="Padding" Value="10"/>
+                <Setter Property="CornerRadius" Value="5"/>
+                <Setter Property="BackgroundColor" Value="{DynamicResource ControlBackgroundColor}"/>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
     
     <ContentPage.Content>
-        <StackLayout Orientation="Vertical" Padding="10" BindingContext="{Binding Client}">
-            <Grid RowDefinitions="20,20,20,30" ColumnDefinitions="*,*,*,*">
-                <ff:CachedImage Grid.Row="0" Grid.Column="0" Grid.RowSpan="4" Source="avatar.png"/>
-                <Label Grid.Row="0" Grid.Column="1"  Text="{Binding CustName}" FontSize='16' TextColor="Black"/>
-                <Frame Grid.Row="0" Grid.Column="2"  WidthRequest="30" HeightRequest="20" CornerRadius="5" VerticalOptions="Center" HorizontalOptions="Start"
-                               BorderColor="Red" HasShadow="False" Padding="0">
-                    <Label Text="{Binding Trade}" FontSize='12' TextColor="Red" 
-                               HorizontalOptions="Center" VerticalOptions="Center" 
-                               HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+        <ScrollView>
+            <StackLayout Orientation="Vertical" Padding="10,0">
+                <Frame Style="{DynamicResource CommonFrame}" Margin="0,5,0,0">
+                    <Grid RowDefinitions="20,20,20" ColumnDefinitions="*,*,*,*">
+                        <ff:CachedImage Grid.Row="0" Grid.Column="0" Grid.RowSpan="4" Source="avatar.png"/>
+                        <Label Grid.Row="0" Grid.Column="1"  Text="{Binding Client.CustName}" Style="{DynamicResource PrimaryLabel}"/>
+
+                        <controls:LabelWithBorder Grid.Row="0" Grid.Column="2" FontSize="12" Text="{Binding Client.Trade}" DrawableColor="{DynamicResource LightPink}" TextColor="White" CornerRadius="2" VerticalOptions="Center" HorizontalOptions="Center"/>
+
+                        <Label Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Text="{Binding Client.CustMobile,StringFormat='电话：{0}'}" Style="{DynamicResource SecondaryLabel}"/>
+                        <Label Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" Text="{Binding Client.InquiryNo,StringFormat='编号：{0}'}" Style="{DynamicResource SecondaryLabel}"/>
+                    </Grid>
                 </Frame>
 
-                <Label Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" FontSize="14" Text="{Binding CustMobile,StringFormat='电话：{0}'}"/>
+                <StackLayout Orientation="Horizontal">
+                    <Button Text="联系客户" Style="{DynamicResource OptionButton}" Command="{Binding CallCommand}"/>
+                    <Button Text="看跟进" Style="{DynamicResource OptionButton}"
+                            Command="{Binding NavigateCommand}" 
+                            CommandParameter="{x:Type views:SeeFollowUpPage}"/>
+                    <Button Text="写跟进" Style="{DynamicResource OptionButton}"
+                            Command="{Binding NavigateCommand}" 
+                            CommandParameter="{x:Type views:WriteFollowUpPage}"/>
+                </StackLayout>
 
-                <Label Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" FontSize="14" Text="{Binding InquiryNo,StringFormat='编号：{0}'}"/>
+                <Frame Style="{DynamicResource CommonFrame}">
+                    <Grid RowDefinitions="*,*,*,*,*" ColumnDefinitions="*,*">
+                        <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="客户需求" Style="{DynamicResource PrimaryLabel}"/>
+                        <Label Grid.Row="1" Grid.Column="0" Text="{Binding Client.PropertyCommission,StringFormat='付佣：{0}'}" Style="{DynamicResource SecondaryLabel}"/>
 
-                <Button Grid.Row="3" Grid.Column="1" Text="联系客户" Padding="0" CornerRadius="15" TextColor="White" 
-                        Command="{Binding BindingContext.CallCommand, Source={x:Reference clientDetailPage}}" 
-                        BackgroundColor="{DynamicResource PrimaryColor}"/>
-                <Button Grid.Row="3" Grid.Column="2" Text="看跟进" Padding="0" CornerRadius="15" TextColor="White" 
-                        Command="{Binding BindingContext.NavigateCommand, Source={x:Reference clientDetailPage}}" CommandParameter="{x:Type views:SeeFollowUpPage}"
-                        BackgroundColor="{DynamicResource PrimaryColor}"/>
-                <Button Grid.Row="3" Grid.Column="3" Text="写跟进" Padding="0" CornerRadius="15" TextColor="White" 
-                        Command="{Binding BindingContext.NavigateCommand, Source={x:Reference clientDetailPage}}" CommandParameter="{x:Type views:WriteFollowUpPage}"
-                        BackgroundColor="{DynamicResource PrimaryColor}"/>
-            </Grid>
+                        <Label Grid.Row="1" Grid.Column="1" Style="{DynamicResource SecondaryLabel}">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="价格："/>
+                                    <Span Text="{Binding Client.PriceMin}"/>
+                                    <Span Text="~"/>
+                                    <Span Text="{Binding Client.PriceMax}"/>
+                                    <Span Text="万元"/>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
 
-            <Label Text="客户需求" FontSize="16" TextColor="Black"/>
-            <BoxView Color="LightGray" HeightRequest="1" HorizontalOptions="Fill"/>
-            <Grid RowDefinitions="*,*,*,*" ColumnDefinitions="*,*">
+                        <Label Grid.Row="2" Grid.Column="0" Style="{DynamicResource SecondaryLabel}">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="房型："/>
+                                    <Span Text="{Binding Client.CountF}"/>
+                                    <Span Text="室"/>
+                                    <Span Text="{Binding Client.CountT}"/>
+                                    <Span Text="厅"/>
+                                    <Span Text="{Binding Client.CountW}"/>
+                                    <Span Text="卫"/>
+                                    <Span Text="{Binding Client.CountY}"/>
+                                    <Span Text="阳"/>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
 
-                <Label Grid.Row="0" Grid.Column="0" Text="{Binding PropertyCommission,StringFormat='付佣：{0}'}" FontSize="14" TextColor="Black"/>
+                        <Label Grid.Row="2" Grid.Column="1" Text="{Binding Status,StringFormat='状态：{0}'}" Style="{DynamicResource SecondaryLabel}"/>
 
-                <Label Grid.Row="0" Grid.Column="1" FontSize="14" TextColor="Black">
-                    <Label.FormattedText>
-                        <FormattedString>
-                            <Span Text="价格："/>
-                            <Span Text="{Binding PriceMin}"/>
-                            <Span Text="~"/>
-                            <Span Text="{Binding PriceMax}"/>
-                            <Span Text="万元"/>
-                        </FormattedString>
-                    </Label.FormattedText>
-                </Label>
+                        <Label Grid.Row="3" Grid.Column="0" Style="{DynamicResource SecondaryLabel}">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="面积："/>
+                                    <Span Text="{Binding Client.SquareMin}"/>
+                                    <Span Text="~"/>
+                                    <Span Text="{Binding Client.SquareMax}"/>
+                                    <Span Text="㎡"/>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
 
-                <Label Grid.Row="1" Grid.Column="0" FontSize="14" TextColor="Black">
-                    <Label.FormattedText>
-                        <FormattedString>
-                            <Span Text="房型："/>
-                            <Span Text="{Binding CountF}"/>
-                            <Span Text="室"/>
-                            <Span Text="{Binding CountT}"/>
-                            <Span Text="厅"/>
-                            <Span Text="{Binding CountW}"/>
-                            <Span Text="卫"/>
-                            <Span Text="{Binding CountY}"/>
-                            <Span Text="阳"/>
-                        </FormattedString>
-                    </Label.FormattedText>
-                </Label>
+                        <Label Grid.Row="3" Grid.Column="1" Text="{Binding Client.PropertyType,StringFormat='类型：{0}'}" Style="{DynamicResource SecondaryLabel}"/>
 
-                <Label Grid.Row="1" Grid.Column="1" Text="{Binding Status,StringFormat='状态：{0}'}" FontSize="14" TextColor="Black"/>
+                        <Label Grid.Row="4" Grid.Column="0" Text="{Binding Client.PropertyUsage,StringFormat='用途：{0}'}" Style="{DynamicResource SecondaryLabel}"/>
 
-                <Label Grid.Row="2" Grid.Column="0" FontSize="14" TextColor="Black">
-                    <Label.FormattedText>
-                        <FormattedString>
-                            <Span Text="面积："/>
-                            <Span Text="{Binding SquareMin}"/>
-                            <Span Text="~"/>
-                            <Span Text="{Binding SquareMax}"/>
-                            <Span Text="㎡"/>
-                        </FormattedString>
-                    </Label.FormattedText>
-                </Label>
+                        <Label Grid.Row="4" Grid.Column="1" Text="{Binding Client.Position,StringFormat='位置：{0}'}" Style="{DynamicResource SecondaryLabel}"/>
 
-                <Label Grid.Row="2" Grid.Column="1" Text="{Binding PropertyType,StringFormat='类型：{0}'}" FontSize="14" TextColor="Black"/>
+                    </Grid>
+                </Frame>
 
-                <Label Grid.Row="3" Grid.Column="0" Text="{Binding PropertyUsage,StringFormat='用途：{0}'}" FontSize="14" TextColor="Black"/>
+                <Frame Style="{DynamicResource CommonFrame}">
+                    <Grid RowDefinitions="*,*" ColumnDefinitions="*,*">
+                        <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="其他" Style="{DynamicResource PrimaryLabel}"/>
+                        <Label Grid.Row="1" Grid.Column="0" Text="{Binding Client.InquirySource,StringFormat='来源：{0}'}" Style="{DynamicResource SecondaryLabel}"/>
+                        <Label Grid.Row="1" Grid.Column="1" Text="{Binding Client.RegPerson,StringFormat='员工：{0}'}" Style="{DynamicResource SecondaryLabel}"/>
+                    </Grid>
+                </Frame>
 
-                <Label Grid.Row="3" Grid.Column="1" Text="{Binding Position,StringFormat='位置：{0}'}" FontSize="14" TextColor="Black"/>
+                <Frame Style="{DynamicResource CommonFrame}">
+                    <Grid RowDefinitions="*,*" ColumnDefinitions="*,*">
+                        <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="备注" Style="{DynamicResource PrimaryLabel}"/>
+                        <Label Grid.Row="1" Grid.Column="0" Text="{Binding Client.Remark}" Style="{DynamicResource SecondaryLabel}"/>
+                    </Grid>
+                </Frame>
 
-            </Grid>
-
-            <Label Text="其他" FontSize="16" TextColor="Black"/>
-            <BoxView Color="LightGray" HeightRequest="1" HorizontalOptions="Fill"/>
-            <Grid ColumnDefinitions="*,*">
-                <Label Grid.Row="0" Grid.Column="0" Text="{Binding InquirySource,StringFormat='来源：{0}'}" FontSize="14" TextColor="Black"/>
-                <Label Grid.Row="0" Grid.Column="1" Text="{Binding RegPerson,StringFormat='员工：{0}'}" FontSize="14" TextColor="Black"/>
-            </Grid>
-
-            <Label Text="备注" FontSize="16" TextColor="Black"/>
-            <BoxView Color="LightGray" HeightRequest="1" HorizontalOptions="Fill"/>
-            <Label Text="{Binding Remark}" FontSize="14"/>
-
-        </StackLayout>
+            </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

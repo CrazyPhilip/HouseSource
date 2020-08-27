@@ -24,7 +24,7 @@
             </CollectionView.ItemsLayout>
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <Frame CornerRadius="5" HasShadow="False" IsClippedToBounds="True" BackgroundColor="{DynamicResource ControlBackgroundColor}">
+                    <Frame CornerRadius="5" HasShadow="False" IsClippedToBounds="True" BackgroundColor="{DynamicResource ControlBackgroundColor}" Padding="10">
                         <StackLayout Orientation="Vertical" VerticalOptions="CenterAndExpand" Margin="5,0">
 
                             <Label Text="{Binding Title}" TextColor="{Binding TitleColor2}" FontSize="16" FontAttributes="Bold"/>

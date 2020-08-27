@@ -65,11 +65,11 @@
                     <StackLayout BindableLayout.ItemsSource="{Binding SaleClientList}" Orientation="Vertical">
                         <BindableLayout.ItemTemplate>
                             <DataTemplate>
-                                <Frame HeightRequest="100" Style="{DynamicResource BaseFrame}">
-                                    <Grid RowDefinitions="*,*,*,*" ColumnDefinitions="3*,2*">
-                                        <Label Grid.Row="0" Grid.Column="0" Text="{Binding CustName}" TextColor="Black" FontSize="16" VerticalOptions="Start"/>
-                                        <Label Grid.Row="1" Grid.Column="0" Text="{Binding CustMobile}" FontSize="14" VerticalOptions="Start"/>
-                                        <Label Grid.Row="2" Grid.Column="0" FontSize="14">
+                                <Frame HeightRequest="80" Style="{DynamicResource BaseFrame}">
+                                    <Grid RowSpacing="0" RowDefinitions="*,*,*,*" ColumnDefinitions="3*,2*">
+                                        <Label Grid.Row="0" Grid.Column="0" Text="{Binding CustName}" TextColor="Black" FontAttributes="Bold" VerticalOptions="Center"/>
+                                        <Label Grid.Row="1" Grid.Column="0" Text="{Binding CustMobile}" FontSize="12" VerticalOptions="Center"/>
+                                        <Label Grid.Row="2" Grid.Column="0" FontSize="12">
                                             <Label.FormattedText>
                                                 <FormattedString>
                                                     <Span Text="["/>
@@ -82,7 +82,7 @@
                                                 </FormattedString>
                                             </Label.FormattedText>
                                         </Label>
-                                        <Label Grid.Row="3" Grid.Column="0" Text="{Binding Remark}" FontSize="14" VerticalOptions="Start"/>
+                                        <Label Grid.Row="3" Grid.Column="0" Text="{Binding Remark}" FontSize="12" VerticalOptions="Center"/>
                                         <Label Grid.Row="0" Grid.Column="1" Grid.RowSpan="4" FontSize="16" TextColor="Red" HorizontalOptions="Center" VerticalOptions="Center">
                                             <Label.FormattedText>
                                                 <FormattedString>

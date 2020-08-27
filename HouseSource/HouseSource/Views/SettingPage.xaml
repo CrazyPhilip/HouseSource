@@ -34,7 +34,9 @@
 
                 <StackLayout Orientation="Vertical" VerticalOptions="EndAndExpand" HorizontalOptions="Center">
                     <Label Text="隐私政策、权限说明、帮助、服务条款、官网" HorizontalOptions="Center" FontSize="10" TextColor="{DynamicResource SecondaryTextColor}"/>
-                    <Label Text="四川军军房产信息咨询有限公司、成都万云互联科技有限公司、西南交大人工智能研究院" HorizontalOptions="Center" FontSize="10" TextColor="{DynamicResource SecondaryTextColor}"/>
+                    <Label Text="四川军军房产信息咨询有限公司" HorizontalOptions="Center" FontSize="10" TextColor="{DynamicResource SecondaryTextColor}"/>
+                    <Label Text="成都万云互联科技有限公司" HorizontalOptions="Center" FontSize="10" TextColor="{DynamicResource SecondaryTextColor}"/>
+                    <Label Text="西南交大人工智能研究院" HorizontalOptions="Center" FontSize="10" TextColor="{DynamicResource SecondaryTextColor}"/>
                     <Label Text="Copyright©2019 版权所有" HorizontalOptions="Center" FontSize="10" TextColor="{DynamicResource SecondaryTextColor}"/>
                 </StackLayout>
             </StackLayout>

@@ -4,6 +4,7 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:controls="clr-namespace:HouseSource.Controls"
+             xmlns:behaviors="clr-namespace:HouseSource.Behaviors"
              mc:Ignorable="d"
              x:Name="fluentPicker"
              x:Class="HouseSource.Controls.FluentPicker">

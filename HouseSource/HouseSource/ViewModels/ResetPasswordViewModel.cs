@@ -93,7 +93,6 @@ namespace HouseSource.ViewModels
                         return;
                     }
 
-
                     string ifExist = await RestSharpService.CheckIfRegister(TelOrEmpNo);
 
                     if (!string.IsNullOrWhiteSpace(ifExist))
