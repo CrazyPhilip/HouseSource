@@ -1,4 +1,6 @@
-﻿using System;
+﻿using HouseSource.Models;
+using HouseSource.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,6 +18,13 @@ namespace HouseSource.Views
         {
             InitializeComponent();
         }
+        public AddHousePage2(HouseInfo houseInfo)
+        {
+            InitializeComponent();
+
+            BindingContext = new AddHouseViewModel(houseInfo);
+        }
+
 
     }
 }

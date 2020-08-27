@@ -161,7 +161,8 @@ namespace HouseSource.ViewModels
 
             EditCommand = new Command(() =>
             {
-
+                AddHousePage2 EditHousePage = new AddHousePage2(houseInfo);
+                Application.Current.MainPage.Navigation.PushAsync(EditHousePage);
             }, () => { return true; });
 
             CallCommand = new Command(async () =>

@@ -13,7 +13,7 @@ namespace HouseSource.Models
         public string PropertyID { get; set; }    //
 
         [JsonProperty("BuildNo", NullValueHandling = NullValueHandling.Ignore)]
-        public string BuildNo { get; set; }    //栋座
+        public string BuildNo { get; set; }    //栋座 + 单元
 
         [JsonProperty("RoomNo", NullValueHandling = NullValueHandling.Ignore)]
         public string RoomNo { get; set; }    //房号

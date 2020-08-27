@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -149,6 +150,24 @@ namespace HouseSource.Utils
             }
 
             return status;
+        }
+
+
+        /// <summary>
+        /// 分离字符串，获取栋座和单元的数字信息
+        /// </summary>
+        /// <param name="str">要解析的字符串</param>
+        /// <returns></returns>
+        public static List<string> GetDigit(string str)
+        {
+            List<string> strList = new List<string>();
+            MatchCollection ms;
+            ms = Regex.Matches(str, @"\d+");
+            foreach (Match m in ms)
+            {
+                strList.Add(m.Value);
+            }
+            return strList;
         }
     }
 }

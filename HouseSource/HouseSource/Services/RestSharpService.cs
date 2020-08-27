@@ -317,6 +317,41 @@ namespace HouseSource.Services
         }
 
         /// <summary>
+        /// 修改房源
+        /// </summary>
+        /// <param name="addHousePara"></param>
+        /// <returns></returns>
+        public static async Task<CommonRD> ModifyHouse(AddHousePara addHousePara)
+        {
+            string url = "ModHouseData";
+            //string httpContent = JsonConvert.SerializeObject(addClientPara);
+
+            //string httpContent = "";
+            //Type type = addHousePara.GetType();
+            //foreach (var item in type.GetProperties())
+            //{
+            //    httpContent += (item.Name + "=" + item.GetValue(addHousePara, null) + "&");
+            //}
+            //httpContent = httpContent.TrimEnd('&');
+
+            var requestPost = new RestRequest(url, Method.POST);
+            requestPost.AddHeader("content-type", "multipart/form-data");
+            //requestPost.AddParameter("multipart/form-data", form, ParameterType.RequestBody);
+            Type type = addHousePara.GetType();
+            foreach (var item in type.GetProperties())
+            {
+                //httpContent += (item.Name + "=" + item.GetValue(addHousePara, null) + "&");
+                requestPost.AddParameter(item.Name, item.GetValue(addHousePara, null));
+            }
+
+
+            string content = await RestSharpHelper<string>.PostFormAsyncWithoutDeserialization(requestPost);
+            CommonRD commonRD = JsonConvert.DeserializeObject<CommonRD>(content);
+            return commonRD;
+        }
+
+
+        /// <summary>
         /// 获取房源跟进信息
         /// </summary>
         /// <param name="propertyID"></param>

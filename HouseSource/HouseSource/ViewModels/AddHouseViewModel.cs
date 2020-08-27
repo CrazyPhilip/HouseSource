@@ -15,6 +15,8 @@ using Xamarin.Forms.Internals;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
+using Newtonsoft.Json;
+using System.Linq;
 
 namespace HouseSource.ViewModels
 {
@@ -60,6 +62,13 @@ namespace HouseSource.ViewModels
         {
             get { return propertyUseTypeList; }
             set { SetProperty(ref propertyUseTypeList, value); }
+        }
+
+        private List<EstateItemInfo> estateList;   //Comment
+        public List<EstateItemInfo> EstateList
+        {
+            get { return estateList; }
+            set { SetProperty(ref estateList, value); }
         }
 
         private List<string> propertySourceList;   //来源类型列表
@@ -198,6 +207,13 @@ namespace HouseSource.ViewModels
             set { SetProperty(ref para, value); }
         }
 
+        private string pageTitle;   //Comment
+        public string PageTitle
+        {
+            get { return pageTitle; }
+            set { SetProperty(ref pageTitle, value); }
+        }
+
         private DateTime releaseDate;   //交房日
         public DateTime ReleaseDate
         {
@@ -268,6 +284,20 @@ namespace HouseSource.ViewModels
             set { SetProperty(ref unit, value); }
         }
 
+        private string btnText;   
+        public string BtnText
+        {
+            get { return btnText; }
+            set { SetProperty(ref btnText, value); }
+        }
+
+        private HouseInfo house;   //Comment 
+        public HouseInfo House
+        {
+            get { return house; }
+            set { SetProperty(ref house, value); }
+        }
+
         public Command AddImageCommand { get; set; }
         public Command<string> DoubleTappedCommand { get; set; }
         public Command AddCommand { get; set; }
@@ -275,8 +305,121 @@ namespace HouseSource.ViewModels
         public Command ToEstateSelectCommand { get; set; }
         public Command<int> GetUnitsCommand { get; set; }
 
+        public AddHouseViewModel(HouseInfo houseInfo)
+        {
+#if DEBUG
+
+#endif
+            House = houseInfo; //用全局变量接收参数
+            PageTitle = "修改房源";
+            btnText = "确认修改";
+            ImageList = new ObservableCollection<string>();
+            TradeList = new List<string> { "出售", "出租" };
+            DirectionList = new List<string> { "南北", "东西", "南", "北", "东", "西", "东南", "西南", "东北", "西北" };
+            DecorationList = new List<string> { "毛坯", "简装", "中装", "精装", "豪装", "其它" };
+            PropertyTypeList = new List<string> { "多层", "高层", "小高层", "多层复式", "高层复式", "多层跃式", "高层跃式", "独立别墅", "联体别墅", "双拼别墅", "叠加别墅", "围院别墅", "裙楼", "四合院" };
+            PropertySourceList = new List<string> { "上店", "驻守", "贴单", "网络", "朋友", "同行", "安居客", "58", "房天下", "68好房", "平台推荐" };
+            PropertyUseTypeList = new List<string> { "住宅", "商住", "商铺", "网点", "写字楼", "厂房", "写厂", "铺厂", "仓库", "地皮", "工厂", "车位", "公寓", "其他" };
+            PropertyRightList = new List<string> { "单独所有", "共有", "单位产权" };
+            CredentialsList = new List<string> { "不动产证", "房权证", "购房合同", "委托公证", "法院拍卖", "判决书", "离婚协议", "继承" };
+            StatusList = new List<string> { "自住", "空房", "出租", "经商", "查封" };
+            LookWaysList = new List<string> { "预约", "有钥匙", "借钥匙", "直接看" };
+            CommissionPayList = new List<string> { "满佣", "折扣", "拒付", "商议" };
+            PaymentList = new List<string> { "一次性", "按揭", "垫资解押", "月付", "季度付", "半年付", "年付商议" };
+            FurnitureList = new List<string> { "少量", "全配", "无", "可协商" };
+            OwnershipList = new List<string> { "商品房", "房改房", "经济适用房", "集体房", "军产房", "其它房" };
+
+            BuiltYearList = new List<string>();
+            for (int i = 1970; i <= 2030; i++)
+            {
+                BuiltYearList.Add(i.ToString());
+            }
+
+            Para = new AddHousePara();
+            Estate = new EstateItemInfo();
+            Tools.AutoMapping(houseInfo, Para);
+            //控件显示赋值
+            Estate.EstateName = houseInfo.EstateName;
+            //Para.PropertyDecoration = houseInfo.PropertyDecoration;
+            //CrossToastPopUp.Current.ShowToastError(Para.PropertyDecoration, ToastLength.Long);
+            Search(houseInfo.EstateName);   //查找小区名称，通过EstateID动态加载栋座和单元
+            Para.OwnerName = houseInfo.ownername;
+            Para.OwnerMobile = houseInfo.ownermobile;
+            //Unit = houseInfo.UnitName;
+
+            //BedroomList = new List<string>();
+            //DiningroomList = new List<string>(); 
+            //BathroomList = new List<string>();
+            //BalconyList = new List<string>();
+            //for (int i = 0; i < 10; i++)
+            //{
+            //    BedroomList.Add()
+            //}
+
+            AddImageCommand = new Command(async () =>
+            {
+                await GetReadPermissionAsync();
+
+                List<string> list = await DependencyService.Get<IImagePickerService>().PickImageAsync();
+
+                list?.ForEach(item => ImageList.Add(item));
+                //if (list != null)
+                //{
+                //foreach (var item in streams)
+                //{
+                //stack.Children.Add(new Image() { Source = ImageSource.FromStream(() => item) });
+                //stack.Children.Add(new Image() { Source = item });
+
+                //}
+                //image.Source = ImageSource.FromStream(() => stream);
+                //byte[] bytes = new byte[stream.Length];
+                //stream.Read(bytes, 0, bytes.Length);
+                //stream.Seek(0, SeekOrigin.Begin);
+                //
+                //string base64 = Convert.ToBase64String(bytes);
+                //Console.WriteLine(base64);
+                //}
+            }, () => { return true; });
+
+            DoubleTappedCommand = new Command<string>(async (index) =>
+            {
+                bool result = await Application.Current.MainPage.DisplayAlert("删除", "要删除这张照片吗？", "确定", "取消");
+                if (result)
+                {
+                    ImageList.Remove(index);
+                }
+            }, (index) => { return true; });
+
+            AddCommand = new Command(() =>
+            {
+                if (CheckInput())
+                {
+                    ModifyHouse();
+                }
+            }, () => { return true; });
+
+            ClearCommand = new Command(() =>
+            {
+
+            }, () => { return true; });
+
+            ToEstateSelectCommand = new Command(async () =>
+            {
+                EstateSelectPage estateSelectPage = new EstateSelectPage();
+                await Application.Current.MainPage.Navigation.PushAsync(estateSelectPage);
+            }, () => { return true; });
+
+            GetUnitsCommand = new Command<int>((index) =>
+            {
+                GetUnits(RawBuildingList[index].BuildingID);
+            }, (index) => { return true; });
+
+        }
+
         public AddHouseViewModel()
         {
+            PageTitle = "新增房源";
+            btnText = "确认新增";
             ImageList = new ObservableCollection<string>();
             TradeList = new List<string> { "出售", "出租" };
             DirectionList = new List<string> { "南北", "东西", "南", "北", "东", "西", "东南", "西南", "东北", "西北" };
@@ -399,6 +542,52 @@ namespace HouseSource.ViewModels
                         BuildingList.Add(item.BuildingName);
                     }
                     RawBuildingList = buildingRD.Dongzuo;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// 查找 小区名
+        /// </summary>
+        private async void Search(string searchContent)
+        {
+            try
+            {
+                if (!Tools.IsNetConnective())
+                {
+                    CrossToastPopUp.Current.ShowToastError("无网络连接，请检查网络。", ToastLength.Short);
+                    return;
+                }
+                /*
+                if (string.IsNullOrWhiteSpace(searchContent))
+                {
+                    CrossToastPopUp.Current.ShowToastError("请输入楼盘名", ToastLength.Short);
+                    return;
+                }
+                */
+                string content = await RestSharpService.GetEstateInfoByEstateName(searchContent);
+
+                if (content.Contains("Success"))
+                {
+                    EstateRD estateRD = JsonConvert.DeserializeObject<EstateRD>(content);
+                    EstateList = new List<EstateItemInfo>(estateRD.Info);
+                    if (EstateList != null)
+                    {
+                        Estate = EstateList.First();   //查找列表的第一个对象
+                    }
+                    GetBuildings();
+
+                    //获取小区名后需传参 动态获取栋座和单元列表
+
+                    //后台返回数据中，栋座和单元合并了，如01栋02单元，须分离
+                    List<string> digitList = Tools.GetDigit(House.BuildNo);
+                    BuildNo = digitList[0]+"栋";  //无法设置SelectedItem ?
+                    Unit = digitList[1] + "单元";
+                    
                 }
             }
             catch (Exception)
@@ -708,6 +897,58 @@ namespace HouseSource.ViewModels
                     case "SQLSuccessAndUploadSemiSuccess": CrossToastPopUp.Current.ShowToastError("房源数据已加入数据库，但部分图片上传失败，请在电脑端进行补录操作", ToastLength.Long); break;
                     case "SQLExistProperty": CrossToastPopUp.Current.ShowToastWarning("该房源已存在", ToastLength.Long); break;
                     default: CrossToastPopUp.Current.ShowToastError("房源新增失败", ToastLength.Long); break;
+                }
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// 提交修改
+        /// </summary>
+        private async void ModifyHouse()
+        {
+            try
+            {
+                Para.DBName = GlobalVariables.LoggedUser.DBName;
+                Para.CityName = Estate.CityName;
+                Para.DistrictName = Estate.DistrictName;
+                Para.EstateID = Estate.EstateID;
+                Para.BuildNo = BuildNo + Unit;
+                Para.PriceUnit = Para.Trade == "出售" ? (Double.Parse(Para.Price) * 10000 / Double.Parse(Para.Square)).ToString() : (Double.Parse(Para.Price) / Double.Parse(Para.Square)).ToString();
+                Para.EmpNoOrTel = GlobalVariables.LoggedUser.EmpNo;
+
+                Para.FlagMWWY = FlagMWWY ? "1" : "0";
+                Para.FlagWDY = FlagWDY ? "1" : "0";
+                Para.FlagKDK = FlagKDK ? "1" : "0";
+                Para.FlagXSFY = FlagXSFY ? "1" : "0";
+
+                Para.HandOverDate = ReleaseDate.Year + "-" + ReleaseDate.Month + "-" + ReleaseDate.Day;
+                Para.HangDate = EntrustDate.Year + "-" + EntrustDate.Month + "-" + EntrustDate.Day;
+
+                CommonRD responseData = await RestSharpService.ModifyHouse(Para);
+
+                switch (responseData.Msg)
+                {
+                    case "CompleteSuccess":
+                        {
+                            CrossToastPopUp.Current.ShowToastSuccess("房源修改成功", ToastLength.Long);
+                            await Application.Current.MainPage.Navigation.PopAsync();
+                        }
+                        break;
+                    case "SQLSuccess":
+                        {
+                            CrossToastPopUp.Current.ShowToastSuccess("房源修改成功", ToastLength.Long);
+                            await Application.Current.MainPage.Navigation.PopAsync();
+                        }
+                        break;
+                    case "SQLSuccessButUploadFailed": CrossToastPopUp.Current.ShowToastError("房源数据已加入数据库，但图片上传失败，请在电脑端进行补录操作", ToastLength.Long); break;
+                    case "SQLSuccessAndUploadSemiSuccess": CrossToastPopUp.Current.ShowToastError("房源数据已加入数据库，但部分图片上传失败，请在电脑端进行补录操作", ToastLength.Long); break;
+                    case "SQLExistProperty": CrossToastPopUp.Current.ShowToastWarning("该房源已存在", ToastLength.Long); break;
+                    default: CrossToastPopUp.Current.ShowToastError("房源修改失败", ToastLength.Long); break;
                 }
 
             }

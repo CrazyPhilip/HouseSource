@@ -10,7 +10,7 @@
              x:Class="HouseSource.Views.AddHousePage2"
              BackgroundColor="{DynamicResource PageBackgroundColor}"
              x:Name="addHousePage2"
-             Title="新增房源">
+             Title="{Binding PageTitle}">
 
     <ContentPage.BindingContext>
         <viewModels:AddHouseViewModel/>
@@ -203,7 +203,7 @@
                 </Expander>
 
                 <Button Text="清空" Command="{Binding ClearCommand}" Style="{StaticResource ButtonStyle}" BackgroundColor="LightGray"/>
-                <Button Text="确定新增" Command="{Binding AddCommand}" Style="{StaticResource ButtonStyle}" BackgroundColor="{StaticResource SecondaryColor}"/>
+                <Button Text="{Binding BtnText}" Command="{Binding AddCommand}" Style="{StaticResource ButtonStyle}" BackgroundColor="{StaticResource SecondaryColor}"/>
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>
