@@ -35,8 +35,6 @@ namespace HouseSource.ViewModels
             set { SetProperty(ref password, value); }
         }
 
-
-
         private bool isEnable;   //可否点击
         public bool IsEnable
         {
@@ -172,8 +170,6 @@ namespace HouseSource.ViewModels
                 CrossToastPopUp.Current.ShowToastError("密码太短", ToastLength.Short);
                 return false;
             }
-
-
 
             return true;
         }

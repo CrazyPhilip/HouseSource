@@ -119,14 +119,16 @@ namespace HouseSource.ViewModels
 			{
 				RegisterPage registerPage = new RegisterPage();
 				//Application.Current.MainPage.Navigation.PushAsync(registerPage);
-				Application.Current.MainPage.Navigation.PushModalAsync(registerPage);
+				MyNavigationPage myNavigationPage = new MyNavigationPage(registerPage);
+				Application.Current.MainPage.Navigation.PushModalAsync(myNavigationPage);
 			}, () => { return true; });
 
 			ToResetPasswordCommand = new Command(() =>
 			{
 				ResetPasswordPage resetPasswordPage = new ResetPasswordPage();
 				//Application.Current.MainPage.Navigation.PushAsync(resetPasswordPage);
-				Application.Current.MainPage.Navigation.PushModalAsync(resetPasswordPage);
+				MyNavigationPage myNavigationPage = new MyNavigationPage(resetPasswordPage);
+				Application.Current.MainPage.Navigation.PushModalAsync(myNavigationPage);
 			}, () => { return true; });
 
 			RememberPwdCommand = new Command(() =>
@@ -179,18 +181,21 @@ namespace HouseSource.ViewModels
 				if (!Tools.IsNetConnective())
 				{
 					CrossToastPopUp.Current.ShowToastError("无网络连接，请检查网络。", ToastLength.Short);
+					IsLoading = false;
 					return;
 				}
 
 				if (string.IsNullOrWhiteSpace(TelOrEmpNo))
 				{
 					CrossToastPopUp.Current.ShowToastError("手机号或员工号不能为空", ToastLength.Short);
+					IsLoading = false;
 					return;
 				}
 
 				if (string.IsNullOrWhiteSpace(Password))
 				{
 					CrossToastPopUp.Current.ShowToastError("密码不能为空", ToastLength.Short);
+					IsLoading = false;
 					return;
 				}
 
@@ -199,6 +204,7 @@ namespace HouseSource.ViewModels
 				if (string.IsNullOrWhiteSpace(result))
 				{
 					CrossToastPopUp.Current.ShowToastError("服务器返回值为空", ToastLength.Short);
+					IsLoading = false;
 					return;
 				}
 				else
@@ -237,9 +243,9 @@ namespace HouseSource.ViewModels
 					else
 					{
 						CrossToastPopUp.Current.ShowToastError("登录错误", ToastLength.Short);
+						IsLoading = false;
 						return;
 					}
-
 				}
 			}
 			catch (Exception)
