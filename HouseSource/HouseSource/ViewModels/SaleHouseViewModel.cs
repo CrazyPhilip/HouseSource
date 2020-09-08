@@ -3,6 +3,7 @@ using HouseSource.ResponseData;
 using HouseSource.Services;
 using HouseSource.Utils;
 using HouseSource.Views;
+using Newtonsoft.Json;
 using Plugin.Toast;
 using Plugin.Toast.Abstractions;
 using System;
@@ -212,52 +213,70 @@ namespace HouseSource.ViewModels
                 }
 
                 SaleHousePara.SearchContent = SearchContent;
-                HouseRD houseRD = await RestSharpService.GetHouseAsync(SaleHousePara, "出售");
-
-                List<HouseItemInfo> list = new List<HouseItemInfo>();
-                if (houseRD.Buildings != null)
+                string content = await RestSharpService.GetHouseAsync(SaleHousePara, "出售");
+                if (string.IsNullOrWhiteSpace(content))
                 {
+                    CrossToastPopUp.Current.ShowToastError("服务器错误", ToastLength.Short);
+                    return;
+                }
 
-                    foreach (var h in houseRD.Buildings)
+                BaseResponse baseResponse = JsonConvert.DeserializeObject<BaseResponse>(content);
+
+                if (baseResponse.Flag == "success")
+                {
+                    if (int.Parse(baseResponse.Msg) > 0)
                     {
-                        HouseItemInfo houseItemInfo = new HouseItemInfo
-                        {
-                            //houseItemInfo.HouseTitle = h.Title == "" ? h.DistrictName + " " + h.AreaName + " " + h.EstateName : h.Title;
-                            HouseTitle = h.DistrictName + " " + h.AreaName + " " + h.EstateName,
-                            RoomStyle = ((h.CountF.Length == 0 || h.CountF == " ") ? "-" : h.CountF) + "室"
-                            + ((h.CountT.Length == 0 || h.CountT == " ") ? "-" : h.CountT) + "厅"
-                            + ((h.CountW.Length == 0 || h.CountW == " ") ? "-" : h.CountW) + "卫",
-                            Square = (h.Square.Length > 5 ? h.Square.Substring(0, 5) : h.Square) + "㎡",
-                            EstateName = h.EstateName,
-                            Price = h.Price.Substring(0, h.Price.Length - 2) + "万元",
-                            SinglePrice = h.Trade == "出售" ? h.RentPrice.Substring(0, h.RentPrice.Length - 2) + "元/平" : "",
-                            PhotoUrl = (h.PhotoUrl == "" ? "NullPic.jpg" : h.PhotoUrl),
-                            PropertyID = h.PropertyID
-                        };
 
-                        switch (h.Privy)
+                        List<HouseInfo> houseList = JsonConvert.DeserializeObject<List<HouseInfo>>(baseResponse.Result.ToString());
+
+                        List<HouseItemInfo> list = new List<HouseItemInfo>();
+                        foreach (var h in houseList)
                         {
-                            case "0": houseItemInfo.PanType = "公盘"; break;
-                            case "1": houseItemInfo.PanType = "私盘"; break;
-                            case "2": houseItemInfo.PanType = "特盘"; break;
-                            default: houseItemInfo.PanType = "封盘"; break;
+                            HouseItemInfo houseItemInfo = new HouseItemInfo
+                            {
+                                //houseItemInfo.HouseTitle = h.Title == "" ? h.DistrictName + " " + h.AreaName + " " + h.EstateName : h.Title;
+                                HouseTitle = h.DistrictName + " " + h.AreaName + " " + h.EstateName,
+                                RoomStyle = ((h.CountF.Length == 0 || h.CountF == " ") ? "-" : h.CountF) + "室"
+                                + ((h.CountT.Length == 0 || h.CountT == " ") ? "-" : h.CountT) + "厅"
+                                + ((h.CountW.Length == 0 || h.CountW == " ") ? "-" : h.CountW) + "卫",
+                                Square = (h.Square.Length > 5 ? h.Square.Substring(0, 5) : h.Square) + "㎡",
+                                EstateName = h.EstateName,
+                                Price = h.Price.Substring(0, h.Price.Length - 2) + "万元",
+                                SinglePrice = h.Trade == "出售" ? h.RentPrice.Substring(0, h.RentPrice.Length - 2) + "元/平" : "",
+                                PhotoUrl = (h.PhotoUrl == "" ? "NullPic.jpg" : h.PhotoUrl),
+                                PropertyID = h.PropertyID
+                            };
+
+                            switch (h.Privy)
+                            {
+                                case "0": houseItemInfo.PanType = "公盘"; break;
+                                case "1": houseItemInfo.PanType = "私盘"; break;
+                                case "2": houseItemInfo.PanType = "特盘"; break;
+                                default: houseItemInfo.PanType = "封盘"; break;
+                            }
+
+                            houseItemInfo.PropertyDecoration = h.PropertyDecoration;
+                            houseItemInfo.PropertyLook = h.PropertyLook;
+
+                            list.Add(houseItemInfo);
                         }
 
-                        houseItemInfo.PropertyDecoration = h.PropertyDecoration;
-                        houseItemInfo.PropertyLook = h.PropertyLook;
+                        saleHouseList.Clear();
+                        saleHouseItemList.Clear();
+                        HouseItemList.Clear();
 
-                        list.Add(houseItemInfo);
+                        saleHouseList.AddRange(houseList);
+                        saleHouseItemList.AddRange(list);
+                        saleHouseItemList.ForEach(item => { HouseItemList.Add(item); });
+
                     }
-
-                    saleHouseList.Clear();
-                    saleHouseItemList.Clear();
-                    HouseItemList.Clear();
-
-                    saleHouseList.AddRange(houseRD.Buildings);
-                    saleHouseItemList.AddRange(list);
-                    saleHouseItemList.ForEach(item => { HouseItemList.Add(item); });
-
                 }
+                else
+                {
+                    CrossToastPopUp.Current.ShowToastWarning(baseResponse.Msg, ToastLength.Short);
+                    return;
+                }
+
             }
             catch (Exception)
             {

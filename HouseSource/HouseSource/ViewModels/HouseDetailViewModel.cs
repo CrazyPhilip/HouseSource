@@ -10,6 +10,8 @@ using Rg.Plugins.Popup.Services;
 using Xamarin.Forms;
 using HouseSource.Services;
 using Xamarin.Essentials;
+using HouseSource.ResponseData;
+using Newtonsoft.Json;
 
 namespace HouseSource.ViewModels
 {
@@ -253,14 +255,22 @@ namespace HouseSource.ViewModels
                 }
 
                 string content = await RestSharpService.GetPhotosByPropertyID(House.PropertyID);
-                if (content == "EmptyList")
+
+                if (string.IsNullOrWhiteSpace(content))
                 {
-                    PhotoList = new List<string> { "NullPic.jpg" };
+                    CrossToastPopUp.Current.ShowToastError("服务器错误", ToastLength.Short);
+                    return;
+                }
+
+                BaseResponse baseResponse = JsonConvert.DeserializeObject<BaseResponse>(content);
+
+                if (int.Parse(baseResponse.Msg) > 0)
+                {
+                    PhotoList = JsonConvert.DeserializeObject<List<string>>(baseResponse.Result.ToString());
                 }
                 else
                 {
-                    string[] array = content.TrimStart('{').TrimEnd('}').Split(',');
-                    PhotoList = new List<string>(array);
+                    PhotoList = new List<string> { "NullPic.jpg" };
                 }
             }
             catch (Exception)

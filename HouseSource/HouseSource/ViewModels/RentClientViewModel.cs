@@ -185,15 +185,32 @@ namespace HouseSource.ViewModels
 				}
 
 				clientPara.SearchContent = SearchContent;
-				ClientRD rentClientRD = await RestSharpService.GetClientAsync(clientPara, "Rent");
+				string content = await RestSharpService.GetClientAsync(clientPara, "Rent");
 
-				RentClientList.Clear();
-				if (rentClientRD != null)
+				if (string.IsNullOrWhiteSpace(content))
 				{
-					foreach (var item in rentClientRD.Customers)
+					CrossToastPopUp.Current.ShowToastError("服务器错误", ToastLength.Short);
+					return;
+				}
+
+				BaseResponse baseResponse = JsonConvert.DeserializeObject<BaseResponse>(content);
+
+				if (baseResponse.Flag == "success")
+				{
+					if (int.Parse(baseResponse.Msg) > 0)
 					{
-						RentClientList.Add(item);
+						List<ClientItemInfo> list = JsonConvert.DeserializeObject<List<ClientItemInfo>>(baseResponse.Result.ToString());
+
+						RentClientList.Clear();
+						foreach (var item in list)
+						{
+							RentClientList.Add(item);
+						}
 					}
+				}
+				else
+				{
+					CrossToastPopUp.Current.ShowToastError(baseResponse.Msg, ToastLength.Short);
 				}
 			}
 			catch (Exception)

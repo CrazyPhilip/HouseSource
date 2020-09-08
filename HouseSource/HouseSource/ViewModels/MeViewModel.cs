@@ -13,13 +13,14 @@ using HouseSource.Services;
 using Newtonsoft.Json.Linq;
 using System.IO;
 using Xamarin.Essentials;
+using HouseSource.ResponseData;
 
 namespace HouseSource.ViewModels
 {
     public class MeViewModel : BaseViewModel
     {
-        private UserInfo user;   //用户信息
-        public UserInfo User
+        private LoginRD user;   //用户信息
+        public LoginRD User
         {
             get { return user; }
             set { SetProperty(ref user, value); }
@@ -163,8 +164,8 @@ namespace HouseSource.ViewModels
                 OptionList = new ObservableCollection<Option>
                 {
                     new Option { icon = "edit.png", option = "修改个人信息", page = "HouseSource.Views.EditUserInfoPage"},
-                    new Option { icon = "star.png", option = "我的收藏", page = "HouseSource.Views.CollectionPage"},
-                    new Option { icon = "service.png", option = "业务办理", page = "Business" },
+                    //new Option { icon = "star.png", option = "我的收藏", page = "HouseSource.Views.CollectionPage"},
+                    //new Option { icon = "service.png", option = "业务办理", page = "Business" },
                     new Option { icon = "moon.png", option = "设置", page = "HouseSource.Views.SettingPage" },
                     new Option { icon = "poweroff.png", option = "退出登录", page = "LogOut" }
                 };

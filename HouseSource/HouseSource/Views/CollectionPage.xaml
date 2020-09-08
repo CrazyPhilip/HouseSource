@@ -24,7 +24,7 @@
                         <DataTemplate>
                             <Frame HeightRequest="80" Style="{DynamicResource BaseFrame}">
                                 <Grid RowSpacing="0" RowDefinitions="*,*,*,*" ColumnDefinitions="100,*">
-                                    <ff:CachedImage Grid.Row="0" Grid.Column="0" Grid.RowSpan="4" Source="{Binding PhotoUrl}" 
+                                    <ff:CachedImage Grid.Row="0" Grid.Column="0" Grid.RowSpan="4" Source="{Binding PhotoUrl}" ErrorPlaceholder="NullPic.jpg"
                                                                 HeightRequest="80" WidthRequest="100"
                                                                 DownsampleHeight="80" DownsampleWidth="100"/>
 

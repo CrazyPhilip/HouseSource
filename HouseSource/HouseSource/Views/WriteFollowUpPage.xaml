@@ -8,7 +8,6 @@
              x:Class="HouseSource.Views.WriteFollowUpPage"
              Title="写跟进">
 
-
     <ContentPage.Resources>
         <ResourceDictionary>
             <Style x:Key="ButtonStyle" TargetType="Button">
@@ -31,7 +30,7 @@
                     <controls:FluentPicker OptionName="跟进方式" Title="请选择跟进方式" ItemsSource="{Binding FollowTypeList}" SelectedItem="{Binding FollowType}"/>
 
                     <!--提醒范围-->
-                    <controls:FluentPicker OptionName="单元" Title="请选择提醒范围" ItemsSource="{Binding AlertList}" SelectedItem="{Binding Alert}"/>
+                    <controls:FluentPicker OptionName="提醒范围" Title="请选择提醒范围" ItemsSource="{Binding AlertList}" SelectedItem="{Binding Alert}" IsVisible="{Binding Visible}"/>
 
                     <!--跟进内容-->
                     <controls:FluentEditor OptionName="跟进内容" Text="{Binding Content}" Placeholder="请输入跟进内容（300字）" />

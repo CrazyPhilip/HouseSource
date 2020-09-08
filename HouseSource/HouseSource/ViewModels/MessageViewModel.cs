@@ -11,6 +11,7 @@ using HouseSource.Services;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using HouseSource.Views;
+using Newtonsoft.Json;
 
 namespace HouseSource.ViewModels
 {
@@ -50,10 +51,29 @@ namespace HouseSource.ViewModels
                     return;
                 }
 
-                NewsRD newsRD = await RestSharpService.GetNewsAsync();
+                string content = await RestSharpService.GetNewsAsync();
 
-                NewsList = new ObservableCollection<NewsInfo>(newsRD.News);
+                if (string.IsNullOrWhiteSpace(content))
+                {
+                    CrossToastPopUp.Current.ShowToastError("服务器错误", ToastLength.Short);
+                    return;
+                }
 
+                BaseResponse baseResponse = JsonConvert.DeserializeObject<BaseResponse>(content);
+
+                if (baseResponse.Flag == "success")
+                {
+                    if (int.Parse(baseResponse.Msg) > 0)
+                    {
+                        List<NewsInfo> list = JsonConvert.DeserializeObject<List<NewsInfo>>(baseResponse.Result.ToString());
+
+                        NewsList = new ObservableCollection<NewsInfo>(list);
+                    }
+                    else
+                    {
+                        NewsList = new ObservableCollection<NewsInfo>();
+                    }
+                }
             }
             catch (Exception)
             {

@@ -6,6 +6,7 @@ using HouseSource.Models;
 using HouseSource.ResponseData;
 using HouseSource.Services;
 using HouseSource.Utils;
+using Newtonsoft.Json;
 using Plugin.Toast;
 using Plugin.Toast.Abstractions;
 
@@ -40,16 +41,24 @@ namespace HouseSource.ViewModels
 				}
 
 				InquiryFollowRD inquiryFollowRD = new InquiryFollowRD();
-				inquiryFollowRD = isProperty ? await RestSharpService.GetHouseFollowInfo(id) : await RestSharpService.GetInquiryFollowInfo(id);
+				string content = isProperty ? await RestSharpService.GetHouseFollowInfo(id) : await RestSharpService.GetInquiryFollowInfo(id);
 
-                if (isProperty)
-				{
-					FollowInfoList = inquiryFollowRD.Msg == "success" ? new ObservableCollection<InquiryFollowItemInfo>(inquiryFollowRD.FollowInfo) : new ObservableCollection<InquiryFollowItemInfo>();
-				}
-				else
-				{
-					FollowInfoList = inquiryFollowRD.Msg == "success" ? new ObservableCollection<InquiryFollowItemInfo>(inquiryFollowRD.InquiryFollowInfo) : new ObservableCollection<InquiryFollowItemInfo>();
-				}
+                if (!string.IsNullOrWhiteSpace(content))
+                {
+					BaseResponse baseResponse = JsonConvert.DeserializeObject<BaseResponse>(content);
+
+                    if (baseResponse.Flag == "success")
+                    {
+						List<InquiryFollowItemInfo> list = JsonConvert.DeserializeObject<List<InquiryFollowItemInfo>>(baseResponse.Result.ToString());
+
+						FollowInfoList = new ObservableCollection<InquiryFollowItemInfo>(list);
+					}
+                    else
+                    {
+						FollowInfoList = new ObservableCollection<InquiryFollowItemInfo>();
+					}
+                }
+
 			}
 			catch (Exception)
 			{

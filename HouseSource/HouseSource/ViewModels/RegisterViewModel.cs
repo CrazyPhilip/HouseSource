@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Xamarin.Forms;
 using HouseSource.Services;
 using HouseSource.Utils;
@@ -11,11 +9,28 @@ using System.Threading.Tasks;
 using HouseSource.Views;
 using Newtonsoft.Json;
 using HouseSource.Models;
+using System.Collections.ObjectModel;
+using System.Collections.Generic;
+using HouseSource.ResponseData;
 
 namespace HouseSource.ViewModels
 {
     public class RegisterViewModel : BaseViewModel
     {
+        private ObservableCollection<Area> dBList;   //Comment
+        public ObservableCollection<Area> DBList
+        {
+            get { return dBList; }
+            set { SetProperty(ref dBList, value); }
+        }
+
+        private Area dBName;   //Comment
+        public Area DBName
+        {
+            get { return dBName; }
+            set { SetProperty(ref dBName, value); }
+        }
+
         private string telOrEmpNo;   //手机号
         public string TelOrEmpNo
         {
@@ -88,6 +103,12 @@ namespace HouseSource.ViewModels
                         return;
                     }
 
+                    if (string.IsNullOrWhiteSpace(DBName.areaName))
+                    {
+                        CrossToastPopUp.Current.ShowToastError("区域不能为空", ToastLength.Short);
+                        return;
+                    }
+
                     if (string.IsNullOrWhiteSpace(TelOrEmpNo))
                     {
                         CrossToastPopUp.Current.ShowToastError("手机号或员工号不能为空", ToastLength.Short);
@@ -147,7 +168,7 @@ namespace HouseSource.ViewModels
                 }
             }, () => { return true; });
 
-
+            GetDBList();
         }
 
         /// <summary>
@@ -156,6 +177,12 @@ namespace HouseSource.ViewModels
         /// <returns></returns>
         private bool CheckInput()
         {
+            if (string.IsNullOrWhiteSpace(DBName.dbName))
+            {
+                CrossToastPopUp.Current.ShowToastError("区域不能为空", ToastLength.Short);
+                return false;
+            }
+
             if (string.IsNullOrWhiteSpace(TelOrEmpNo))
             {
                 CrossToastPopUp.Current.ShowToastError("手机号或员工号不能为空", ToastLength.Short);
@@ -202,7 +229,7 @@ namespace HouseSource.ViewModels
                     return;
                 }
 
-                string content = await RestSharpService.Register(TelOrEmpNo, Password, RealName);
+                string content = await RestSharpService.Register(DBName.dbName, TelOrEmpNo, Password, RealName, "", "");
 
                 if (!string.IsNullOrWhiteSpace(content))
                 {
@@ -212,13 +239,11 @@ namespace HouseSource.ViewModels
                         CrossToastPopUp.Current.ShowToastSuccess("注册成功", ToastLength.Long);
                         // 注册成功后 ，自动保存全局的登录信息，并跳转界面 ，content中有除 PhotoUrl的其他变量
 
-                        GlobalVariables.LoggedUser = JsonConvert.DeserializeObject<UserInfo>(content);
+                        GlobalVariables.LoggedUser = JsonConvert.DeserializeObject<LoginRD>(content);
                         //Console.Write(GlobalVariables.LoggedUser.ToString());
                         GlobalVariables.LoggedUser.PhotoUrl = null;  //注册成功后的headPic为空
                         GlobalVariables.IsLogged = true;
                         GlobalVariables.LoggedUser.EmpNo = TelOrEmpNo;
-
-
 
                         MainPage mainPage = new MainPage();
                         await Application.Current.MainPage.Navigation.PushAsync(mainPage);
@@ -237,8 +262,40 @@ namespace HouseSource.ViewModels
             }
         }
 
-        #region 计时器
+        /// <summary>
+        /// 获取区域列表
+        /// </summary>
+        private async void GetDBList()
+        {
+            try
+            {
+                if (!Tools.IsNetConnective())
+                {
+                    CrossToastPopUp.Current.ShowToastError("无网络连接，请检查网络。", ToastLength.Short);
+                    return;
+                }
 
+                string content = await RestSharpService.GetDBName();
+                JObject jObject = JObject.Parse(content);
+
+                if (jObject["Msg"].ToString() == "Success")
+                {
+                    List<Area> list = jObject["DBList"].ToObject<List<Area>>();
+                    DBList = new ObservableCollection<Area>(list);
+                }
+                else
+                {
+                    DBList = new ObservableCollection<Area>();
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+
+        #region 计时器
         public void LoadAsync()
         {
             IsEnable = false;

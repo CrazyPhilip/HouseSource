@@ -14,6 +14,7 @@ using UltimateXF.Widget.Charts.Models.LineChart;
 using UltimateXF.Widget.Charts.Models.Formatters;
 using UltimateXF.Widget.Charts.Models.Component;
 using HouseSource.Views;
+using Newtonsoft.Json;
 
 namespace HouseSource.ViewModels
 {
@@ -92,17 +93,29 @@ namespace HouseSource.ViewModels
 
             TappedCommand = new Command<string>((h) =>
             {
-                houseList.ForEach((item) =>
-                {
-                    if (item.PropertyID == h)
-                    {
-                        HouseDetailPage houseDetailPage = new HouseDetailPage(item);
-                        Application.Current.MainPage.Navigation.PushAsync(houseDetailPage);
-                    }
-                });
+                //houseList.ForEach((item) =>
+                //{
+                //    if (item.PropertyID == h)
+                //    {
+                //        HouseDetailPage houseDetailPage = new HouseDetailPage(item);
+                //        Application.Current.MainPage.Navigation.PushAsync(houseDetailPage);
+                //    }
+                //});
+                //HouseInfo temp = new HouseInfo();
+                //foreach (var item in houseList)
+                //{
+                //    if (item.PropertyID == h)
+                //    {
+                //        temp = item;
+                //    }
+                //}
+
+                //HouseDetailPage houseDetailPage = new HouseDetailPage(temp);
+                //Application.Current.MainPage.Navigation.PushAsync(houseDetailPage);
+
             }, (h) => { return true; });
 
-            InitHomePage();
+            //InitHomePage();
         }
 
         /// <summary>
@@ -118,44 +131,51 @@ namespace HouseSource.ViewModels
                     return;
                 }
 
-                HouseRD houseRD = await RestSharpService.GetCollection();
+                string content = await RestSharpService.GetCollection();
+
+                BaseResponse baseResponse = JsonConvert.DeserializeObject<BaseResponse>(content);
+
+                if (baseResponse.Flag == "fail")
+                {
+                    CrossToastPopUp.Current.ShowToastError(baseResponse.Msg, ToastLength.Short);
+                    return;
+                }
+
+                houseList = JsonConvert.DeserializeObject<List<HouseInfo>>(baseResponse.Result.ToString());
 
                 List<HouseItemInfo> list = new List<HouseItemInfo>();
-                if (houseRD.Buildings != null)
+                foreach (var h in houseList)
                 {
-                    foreach (var h in houseRD.Buildings)
+                    HouseItemInfo houseItemInfo = new HouseItemInfo
                     {
-                        HouseItemInfo houseItemInfo = new HouseItemInfo
-                        {
-                            //houseItemInfo.HouseTitle = h.Title == "" ? h.DistrictName + " " + h.AreaName + " " + h.EstateName : h.Title;
-                            HouseTitle = h.DistrictName + " " + h.AreaName + " " + h.EstateName,
-                            RoomStyle = ((h.CountF.Length == 0 || h.CountF == " ") ? "-" : h.CountF) + "室"
-                            + ((h.CountT.Length == 0 || h.CountT == " ") ? "-" : h.CountT) + "厅"
-                            + ((h.CountW.Length == 0 || h.CountW == " ") ? "-" : h.CountW) + "卫",
-                            Square = (h.Square.Length > 5 ? h.Square.Substring(0, 5) : h.Square) + "㎡",
-                            EstateName = h.EstateName,
-                            Price = h.Price.Substring(0, h.Price.Length - 2) + "万元",
-                            SinglePrice = h.Trade == "出售" ? h.RentPrice.Substring(0, h.RentPrice.Length - 2) + "元/平" : "",
-                            PhotoUrl = (h.PhotoUrl == "" ? "NullPic.jpg" : h.PhotoUrl)
-                        };
+                        //houseItemInfo.HouseTitle = h.Title == "" ? h.DistrictName + " " + h.AreaName + " " + h.EstateName : h.Title;
+                        HouseTitle = h.DistrictName + " " + h.AreaName + " " + h.EstateName,
+                        RoomStyle = ((h.CountF.Length == 0 || h.CountF == " ") ? "-" : h.CountF) + "室"
+                        + ((h.CountT.Length == 0 || h.CountT == " ") ? "-" : h.CountT) + "厅"
+                        + ((h.CountW.Length == 0 || h.CountW == " ") ? "-" : h.CountW) + "卫",
+                        Square = (h.Square.Length > 5 ? h.Square.Substring(0, 5) : h.Square) + "㎡",
+                        EstateName = h.EstateName,
+                        Price = h.Price.Substring(0, h.Price.Length - 2) + "万元",
+                        SinglePrice = h.Trade == "出售" ? h.RentPrice.Substring(0, h.RentPrice.Length - 2) + "元/平" : "",
+                        PhotoUrl = (h.PhotoUrl == "" ? "NullPic.jpg" : h.PhotoUrl),
+                        PropertyID = h.PropertyID
+                    };
 
-                        switch (h.Privy)
-                        {
-                            case "0": houseItemInfo.PanType = "公盘"; break;
-                            case "1": houseItemInfo.PanType = "私盘"; break;
-                            case "2": houseItemInfo.PanType = "特盘"; break;
-                            default: houseItemInfo.PanType = "封盘"; break;
-                        }
-
-                        houseItemInfo.PropertyDecoration = h.PropertyDecoration;
-                        houseItemInfo.PropertyLook = h.PropertyLook;
-
-                        list.Add(houseItemInfo);
+                    switch (h.Privy)
+                    {
+                        case "0": houseItemInfo.PanType = "公盘"; break;
+                        case "1": houseItemInfo.PanType = "私盘"; break;
+                        case "2": houseItemInfo.PanType = "特盘"; break;
+                        default: houseItemInfo.PanType = "封盘"; break;
                     }
 
-                    HouseItemList = new ObservableCollection<HouseItemInfo>(list);
-                    houseList = new List<HouseInfo>(houseRD.Buildings);
+                    houseItemInfo.PropertyDecoration = h.PropertyDecoration;
+                    houseItemInfo.PropertyLook = h.PropertyLook;
+
+                    list.Add(houseItemInfo);
                 }
+
+                HouseItemList = new ObservableCollection<HouseItemInfo>(list);
             }
             catch (Exception)
             {

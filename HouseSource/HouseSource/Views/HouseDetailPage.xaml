@@ -40,7 +40,7 @@
 
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="分享" IconImageSource="share.png" Command="{Binding ShareCommand}"/>
-        <ToolbarItem Text="收藏" IconImageSource="{Binding StarSource}" Command="{Binding CollectCommand}"/>
+        <!--<ToolbarItem Text="收藏" IconImageSource="{Binding StarSource}" Command="{Binding CollectCommand}"/>-->
     </ContentPage.ToolbarItems>
 
     <ContentPage.Content>
@@ -51,7 +51,7 @@
                     <CarouselView ItemsSource="{Binding PhotoList}" HeightRequest="250" IndicatorView="indicatorView">
                         <CarouselView.ItemTemplate>
                             <DataTemplate>
-                                <ff:CachedImage Source="{Binding .}" BackgroundColor="Transparent" Aspect="AspectFit">
+                                <ff:CachedImage Source="{Binding .}" ErrorPlaceholder="NullPic.jpg" BackgroundColor="Transparent" Aspect="AspectFit">
                                     <ff:CachedImage.GestureRecognizers>
                                         <TapGestureRecognizer NumberOfTapsRequired="1"
                                                               Command="{Binding Path=BindingContext.CarouselTappedCommand, Source={x:Reference Name=houseDetailPage}}"

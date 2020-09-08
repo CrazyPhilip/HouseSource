@@ -13,6 +13,8 @@ using Xamarin.Essentials;
 using System.Threading;
 using System.Threading.Tasks;
 using HouseSource.Controls;
+using HouseSource.ResponseData;
+using System.Collections.Generic;
 
 namespace HouseSource.ViewModels
 {
@@ -209,21 +211,17 @@ namespace HouseSource.ViewModels
 				}
 				else
 				{
-					JObject jObject = JObject.Parse(result);
+					BaseResponse baseResponse = JsonConvert.DeserializeObject<BaseResponse>(result);
 
-					if (jObject["Msg"].ToString() == "success")
+					if (baseResponse.Flag == "success")
 					{
 						//GlobalVariables.LoggedUser = JsonConvert.DeserializeObject<UserInfo>(result);
-						GlobalVariables.LoggedUser = new UserInfo
-						{
-							DBName = jObject["DBName"].ToString(),
-							EmpID = jObject["EmpID"].ToString(),
-							EmpName = jObject["EmpName"].ToString(),
-							PhotoUrl = jObject["PhotoUrl"].ToString(),
-							AccountStyle = jObject["AccountStyle"].ToString(),
-							CompanyOrEstateName = jObject["CompanyOrEstateName"].ToString()
-						};
+						CrossToastPopUp.Current.ShowToastSuccess(baseResponse.Msg, ToastLength.Short);
 
+						LoginRD loginRD = JsonConvert.DeserializeObject<LoginRD>(baseResponse.Result.ToString());
+						loginRD.DBName = loginRD.DBName.TrimStart('[');
+
+						GlobalVariables.LoggedUser = loginRD;
 						GlobalVariables.IsLogged = true;
 						GlobalVariables.LoggedUser.EmpNo = TelOrEmpNo;
 						//提供自动登录的信息  除非用户手动退出登录 LoginState变为False
@@ -242,7 +240,7 @@ namespace HouseSource.ViewModels
 					}
 					else
 					{
-						CrossToastPopUp.Current.ShowToastError("登录错误", ToastLength.Short);
+						CrossToastPopUp.Current.ShowToastError(baseResponse.Msg, ToastLength.Short);
 						IsLoading = false;
 						return;
 					}

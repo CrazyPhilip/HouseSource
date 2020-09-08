@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
 using RestSharp;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace HouseSource.Services
@@ -22,8 +21,8 @@ namespace HouseSource.Services
 
         }
 
-        static RestClient _restClient = new RestClient("http://47.108.202.57:8081/WebService.asmx");
-        //static RestClient _restClient = new RestClient("http://47.108.202.57:8087");
+        //static RestClient _restClient = new RestClient("http://47.108.202.57:8081/WebService.asmx");
+        static RestClient _restClient = new RestClient("http://47.108.202.57:8087/WebService.asmx");
         //static RestClient _restClient = new RestClient("http://120.26.3.153:7777");
 
         /// <summary>

@@ -12,6 +12,8 @@ using Xamarin.Forms;
 using HouseSource.Views;
 using Xamarin.Forms.Internals;
 using System.Collections;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 namespace HouseSource.ViewModels
 {
@@ -138,7 +140,7 @@ namespace HouseSource.ViewModels
         //public bool[] radios { get; set; }
         public BitArray radios { get; set; }
         public BitArray tempRadios { get; set; }
-        
+
         public Command SearchCommand { get; set; }
         public Command VisibleCommand { get; set; }
         public Command<string> SortCommand { get; set; }
@@ -149,11 +151,11 @@ namespace HouseSource.ViewModels
         {
             SearchContent = search;
 
-            SortTypeList = new [] { "出售", "出租" };
-            DistrictList = new [] { "全部区域", "青白江区", "郫都区", "金牛区", "成华区", "高新西区", "武侯区", "锦江区", "高新区", "天府新区", "温江区", "新都区", "青羊区", "双流区", "龙泉驿区" };
-            RoomStyleList = new [] { "全部房型", "1房", "2房", "3房", "4房及以上" };
-            SalePriceList = new [] { "全部价格", "0-30万", "30-50万", "50-100万", "100-150万", "150-200万", "200-300万", "300-500万", "500万以上" };
-            SquareList = new [] { "全部面积", "0-20平", "20-50平", "50-100平", "100-150平", "150-200平", "200-250平", "250-500平", "500-800平", "800平以上" };
+            SortTypeList = new[] { "出售", "出租" };
+            DistrictList = new[] { "全部区域", "青白江区", "郫都区", "金牛区", "成华区", "高新西区", "武侯区", "锦江区", "高新区", "天府新区", "温江区", "新都区", "青羊区", "双流区", "龙泉驿区" };
+            RoomStyleList = new[] { "全部房型", "1房", "2房", "3房", "4房及以上" };
+            SalePriceList = new[] { "全部价格", "0-30万", "30-50万", "50-100万", "100-150万", "150-200万", "200-300万", "300-500万", "500万以上" };
+            SquareList = new[] { "全部面积", "0-20平", "20-50平", "50-100平", "100-150平", "150-200平", "200-250平", "250-500平", "500-800平", "800平以上" };
 
             //UsageList = new List<string> { "全部用途", "住宅", "商住", "商铺", "网店", "写字楼", "厂房", "写厂", "铺厂", "仓库", "地皮", "车位", "其他" };
             //PanTypeList = new List<string> { "全部类型", "公盘", "私盘", "特盘", "封盘" };
@@ -512,63 +514,69 @@ namespace HouseSource.ViewModels
                 }
 
                 SaleHousePara.SearchContent = SearchContent;
-                HouseRD houseRD = await RestSharpService.GetHouseAsync(SaleHousePara, SortType);
+                string content = await RestSharpService.GetHouseAsync(SaleHousePara, SortType);
+
+                BaseResponse baseResponse = JsonConvert.DeserializeObject<BaseResponse>(content);
+
+                if (baseResponse.Flag == "fail")
+                {
+                    CrossToastPopUp.Current.ShowToastError(baseResponse.Msg, ToastLength.Short);
+                    return;
+                }
+
+                List<HouseInfo> houseList = JsonConvert.DeserializeObject<List<HouseInfo>>(baseResponse.Result.ToString());
 
                 List<HouseItemInfo> list = new List<HouseItemInfo>();
-                if (houseRD.Buildings != null)
+                foreach (var h in houseList)
                 {
-                    
-                    foreach (var h in houseRD.Buildings)
+                    HouseItemInfo houseItemInfo = new HouseItemInfo
                     {
-                        HouseItemInfo houseItemInfo = new HouseItemInfo
-                        {
-                            //houseItemInfo.HouseTitle = h.Title == "" ? h.DistrictName + " " + h.AreaName + " " + h.EstateName : h.Title;
-                            HouseTitle = h.DistrictName + " " + h.AreaName + " " + h.EstateName,
-                            RoomStyle = ((h.CountF.Length == 0 || h.CountF == " ") ? "-" : h.CountF) + "室"
-                            + ((h.CountT.Length == 0 || h.CountT == " ") ? "-" : h.CountT) + "厅"
-                            + ((h.CountW.Length == 0 || h.CountW == " ") ? "-" : h.CountW) + "卫",
-                            Square = (h.Square.Length > 5 ? h.Square.Substring(0, 5) : h.Square) + "㎡",
-                            EstateName = h.EstateName,
-                            Price = h.Price.Substring(0, h.Price.Length - 2) + "万元",
-                            SinglePrice = h.Trade == "出售" ? h.RentPrice.Substring(0, h.RentPrice.Length - 2) + "元/平" : "",
-                            PhotoUrl = (h.PhotoUrl == "" ? "NullPic.jpg" : h.PhotoUrl),
-                            PropertyID = h.PropertyID
-                        };
+                        //houseItemInfo.HouseTitle = h.Title == "" ? h.DistrictName + " " + h.AreaName + " " + h.EstateName : h.Title;
+                        HouseTitle = h.DistrictName + " " + h.AreaName + " " + h.EstateName,
+                        RoomStyle = ((h.CountF.Length == 0 || h.CountF == " ") ? "-" : h.CountF) + "室"
+                        + ((h.CountT.Length == 0 || h.CountT == " ") ? "-" : h.CountT) + "厅"
+                        + ((h.CountW.Length == 0 || h.CountW == " ") ? "-" : h.CountW) + "卫",
+                        Square = (h.Square.Length > 5 ? h.Square.Substring(0, 5) : h.Square) + "㎡",
+                        EstateName = h.EstateName,
+                        Price = h.Price.Substring(0, h.Price.Length - 2) + "万元",
+                        SinglePrice = h.Trade == "出售" ? h.RentPrice.Substring(0, h.RentPrice.Length - 2) + "元/平" : "",
+                        PhotoUrl = (string.IsNullOrWhiteSpace(h.PhotoUrl) ? "NullPic.jpg" : h.PhotoUrl),
+                        PropertyID = h.PropertyID
+                    };
 
-                        switch (h.Privy)
-                        {
-                            case "0": houseItemInfo.PanType = "公盘"; break;
-                            case "1": houseItemInfo.PanType = "私盘"; break;
-                            case "2": houseItemInfo.PanType = "特盘"; break;
-                            default: houseItemInfo.PanType = "封盘"; break;
-                        }
-
-                        houseItemInfo.PropertyDecoration = h.PropertyDecoration;
-                        houseItemInfo.PropertyLook = h.PropertyLook;
-
-                        list.Add(houseItemInfo);
+                    switch (h.Privy)
+                    {
+                        case "0": houseItemInfo.PanType = "公盘"; break;
+                        case "1": houseItemInfo.PanType = "私盘"; break;
+                        case "2": houseItemInfo.PanType = "特盘"; break;
+                        default: houseItemInfo.PanType = "封盘"; break;
                     }
 
-                    if (SortType == "出售")
-                    {
-                        saleHouseList.Clear();
-                        saleHouseItemList.Clear();
-                        HouseItemList.Clear();
+                    houseItemInfo.PropertyDecoration = h.PropertyDecoration;
+                    houseItemInfo.PropertyLook = h.PropertyLook;
 
-                        saleHouseList.AddRange(houseRD.Buildings);
-                        saleHouseItemList.AddRange(list);
-                        saleHouseItemList.ForEach(item => { HouseItemList.Add(item); });
-                    }
-                    else
-                    {
-                        rentHouseList.Clear();
-                        rentHouseItemList.Clear();
-                        HouseItemList.Clear();
+                    list.Add(houseItemInfo);
+                }
 
-                        rentHouseList.AddRange(houseRD.Buildings);
-                        rentHouseItemList.AddRange(list);
-                        rentHouseItemList.ForEach(item => { HouseItemList.Add(item); });
-                    }
+                if (SortType == "出售")
+                {
+                    saleHouseList.Clear();
+                    saleHouseItemList.Clear();
+                    HouseItemList.Clear();
+
+                    saleHouseList.AddRange(houseList);
+                    saleHouseItemList.AddRange(list);
+                    saleHouseItemList.ForEach(item => { HouseItemList.Add(item); });
+                }
+                else
+                {
+                    rentHouseList.Clear();
+                    rentHouseItemList.Clear();
+                    HouseItemList.Clear();
+
+                    rentHouseList.AddRange(houseList);
+                    rentHouseItemList.AddRange(list);
+                    rentHouseItemList.ForEach(item => { HouseItemList.Add(item); });
                 }
             }
             catch (Exception)

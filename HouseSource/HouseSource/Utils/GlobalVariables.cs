@@ -1,7 +1,5 @@
 ﻿using HouseSource.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using HouseSource.ResponseData;
 
 namespace HouseSource.Utils
 {
@@ -9,7 +7,7 @@ namespace HouseSource.Utils
     {
         public static bool IsLogged { get; set; }
 
-        public static UserInfo LoggedUser { get; set; }
+        public static LoginRD LoggedUser { get; set; }
 
         public static bool DarkMode { get; set; }
     }

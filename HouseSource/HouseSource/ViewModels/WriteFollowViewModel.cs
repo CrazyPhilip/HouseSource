@@ -117,6 +117,7 @@ namespace HouseSource.ViewModels
                 else if (_Content.Contains("success"))
                 {
                     CrossToastPopUp.Current.ShowToastSuccess("新增跟进成功！", ToastLength.Short);
+                    await Application.Current.MainPage.Navigation.PopAsync();
                     return;
                 }
                 else if (_Content.Contains("failed"))

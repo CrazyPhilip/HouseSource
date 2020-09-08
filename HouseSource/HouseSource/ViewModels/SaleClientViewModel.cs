@@ -182,23 +182,38 @@ namespace HouseSource.ViewModels
 				}
 
 				clientPara.SearchContent = SearchContent;
-				ClientRD saleClientRD = await RestSharpService.GetClientAsync(clientPara, "Sale");
+				string content = await RestSharpService.GetClientAsync(clientPara, "Sale");
 
-				SaleClientList.Clear();
-				if (saleClientRD != null)
-				{
-					foreach (var item in saleClientRD.Customers)
+                if (string.IsNullOrWhiteSpace(content))
+                {
+					CrossToastPopUp.Current.ShowToastError("服务器错误", ToastLength.Short);
+					return;
+                }
+
+				BaseResponse baseResponse = JsonConvert.DeserializeObject<BaseResponse>(content);
+
+                if (baseResponse.Flag == "success")
+                {
+                    if (int.Parse(baseResponse.Msg) > 0)
 					{
-						SaleClientList.Add(item);
+						List<ClientItemInfo> list = JsonConvert.DeserializeObject<List<ClientItemInfo>>(baseResponse.Result.ToString());
+
+						SaleClientList.Clear();
+						foreach (var item in list)
+						{
+							SaleClientList.Add(item);
+						}
 					}
 				}
+                else
+                {
+					CrossToastPopUp.Current.ShowToastError(baseResponse.Msg, ToastLength.Short);
+                }
 			}
 			catch (Exception)
 			{
 				throw;
 			}
-
-
 		}
 	}
 }

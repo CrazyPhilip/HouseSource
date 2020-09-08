@@ -36,7 +36,7 @@
     <ContentPage.Content>
         <Grid RowDefinitions="100,40,40,40,40,40,40,40" ColumnDefinitions="*,*" Padding="40,0" VerticalOptions="Center">
             <ff:CachedImage Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Source="circle.png" HorizontalOptions="Fill" Aspect="AspectFit"/>
-            <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Text="好房记" TextColor="{StaticResource PrimaryColor}" FontSize="18" FontAttributes="Bold" HorizontalOptions="Center"/>
+            <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Text="军军房页" TextColor="{StaticResource PrimaryColor}" FontSize="18" FontAttributes="Bold" HorizontalOptions="Center"/>
 
             <BoxView Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Color="LightGray" CornerRadius="5" Opacity="0.5"/>
             <BoxView Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Color="LightGray" CornerRadius="5" Opacity="0.5"/>

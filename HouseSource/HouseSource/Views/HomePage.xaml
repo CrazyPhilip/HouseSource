@@ -122,7 +122,7 @@
                     </Grid>
                 </Frame>
 
-                <Label Grid.Row="3" Grid.Column="0" Text="热门优选" Style="{DynamicResource SectionTitle}" Margin="5,0"/>
+                <!--<Label Grid.Row="3" Grid.Column="0" Text="热门优选" Style="{DynamicResource SectionTitle}" Margin="5,0"/>
 
                 <ScrollView Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Vertical" VerticalScrollBarVisibility="Never">
                     <StackLayout Orientation="Vertical" BindableLayout.ItemsSource="{Binding HouseItemList}" Padding="5,0">
@@ -130,7 +130,7 @@
                             <DataTemplate>
                                 <Frame HeightRequest="80" Style="{DynamicResource BaseFrame}">
                                     <Grid RowSpacing="0" RowDefinitions="*,*,*,*" ColumnDefinitions="100,*">
-                                        <ff:CachedImage Grid.Row="0" Grid.Column="0" Grid.RowSpan="4" Source="{Binding PhotoUrl}" 
+                                        <ff:CachedImage Grid.Row="0" Grid.Column="0" Grid.RowSpan="4" Source="{Binding PhotoUrl}" ErrorPlaceholder="NullPic.jpg"
                                                                 HeightRequest="80" WidthRequest="100"
                                                                 DownsampleHeight="80" DownsampleWidth="100"/>
 
@@ -175,7 +175,7 @@
                             </DataTemplate>
                         </BindableLayout.ItemTemplate>
                     </StackLayout>
-                </ScrollView>
+                </ScrollView>-->
 
             </Grid>
         </ScrollView>
