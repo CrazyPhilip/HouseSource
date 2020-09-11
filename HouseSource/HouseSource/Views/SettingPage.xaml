@@ -19,8 +19,8 @@
     <ContentPage.Content>
         <ScrollView Orientation="Vertical">
             <StackLayout Orientation="Vertical" Margin="10">
-                <ff:CachedImage Source="circle.png" HeightRequest="80" WidthRequest="80" HorizontalOptions="Center"/>
-                <Label Text="好房记" TextColor="{DynamicResource PrimaryTextColor}" FontAttributes="Bold" HorizontalOptions="Center"/>
+                <ff:CachedImage Source="logo.png" HeightRequest="80" WidthRequest="80" HorizontalOptions="Center"/>
+                <Label Text="军军房页" TextColor="{DynamicResource PrimaryTextColor}" FontAttributes="Bold" HorizontalOptions="Center"/>
                 <Label Text="{Binding CurrentVersion,StringFormat='版本号：{0}'}" TextColor="{DynamicResource SecondaryTextColor}" HorizontalOptions="Center" FontSize="12"/>
 
                 <controls:FluentSwitch OptionName="夜间模式" IsToggled="{Binding DarkModeIsToggled}" ToggledCommand="{Binding ThemeCommand}" 

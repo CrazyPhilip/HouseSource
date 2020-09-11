@@ -224,52 +224,49 @@ namespace HouseSource.ViewModels
 
                 if (baseResponse.Flag == "success")
                 {
-                    if (int.Parse(baseResponse.Msg) > 0)
+                    List<HouseInfo> houseList = JsonConvert.DeserializeObject<List<HouseInfo>>(baseResponse.Result.ToString());
+
+                    List<HouseItemInfo> list = new List<HouseItemInfo>();
+                    foreach (var h in houseList)
                     {
-
-                        List<HouseInfo> houseList = JsonConvert.DeserializeObject<List<HouseInfo>>(baseResponse.Result.ToString());
-
-                        List<HouseItemInfo> list = new List<HouseItemInfo>();
-                        foreach (var h in houseList)
+                        HouseItemInfo houseItemInfo = new HouseItemInfo
                         {
-                            HouseItemInfo houseItemInfo = new HouseItemInfo
-                            {
-                                //houseItemInfo.HouseTitle = h.Title == "" ? h.DistrictName + " " + h.AreaName + " " + h.EstateName : h.Title;
-                                HouseTitle = h.DistrictName + " " + h.AreaName + " " + h.EstateName,
-                                RoomStyle = ((h.CountF.Length == 0 || h.CountF == " ") ? "-" : h.CountF) + "室"
-                                + ((h.CountT.Length == 0 || h.CountT == " ") ? "-" : h.CountT) + "厅"
-                                + ((h.CountW.Length == 0 || h.CountW == " ") ? "-" : h.CountW) + "卫",
-                                Square = (h.Square.Length > 5 ? h.Square.Substring(0, 5) : h.Square) + "㎡",
-                                EstateName = h.EstateName,
-                                Price = h.Price.Substring(0, h.Price.Length - 2) + "万元",
-                                SinglePrice = h.Trade == "出售" ? h.RentPrice.Substring(0, h.RentPrice.Length - 2) + "元/平" : "",
-                                PhotoUrl = (h.PhotoUrl == "" ? "NullPic.jpg" : h.PhotoUrl),
-                                PropertyID = h.PropertyID
-                            };
+                            //houseItemInfo.HouseTitle = h.Title == "" ? h.DistrictName + " " + h.AreaName + " " + h.EstateName : h.Title;
+                            HouseTitle = h.DistrictName + " " + h.AreaName + " " + h.EstateName,
+                            RoomStyle = ((h.CountF.Length == 0 || h.CountF == " ") ? "-" : h.CountF) + "室"
+                            + ((h.CountT.Length == 0 || h.CountT == " ") ? "-" : h.CountT) + "厅"
+                            + ((h.CountW.Length == 0 || h.CountW == " ") ? "-" : h.CountW) + "卫",
+                            Square = (h.Square.Length > 5 ? h.Square.Substring(0, 5) : h.Square) + "㎡",
+                            EstateName = h.EstateName,
+                            Price = h.Price.Substring(0, h.Price.Length - 2) + "万元",
+                            SinglePrice = h.Trade == "出售" ? h.RentPrice.Substring(0, h.RentPrice.Length - 2) + "元/平" : "",
+                            PhotoUrl = (h.PhotoUrl == "" ? "NullPic.jpg" : h.PhotoUrl),
+                            PropertyID = h.PropertyID
+                        };
 
-                            switch (h.Privy)
-                            {
-                                case "0": houseItemInfo.PanType = "公盘"; break;
-                                case "1": houseItemInfo.PanType = "私盘"; break;
-                                case "2": houseItemInfo.PanType = "特盘"; break;
-                                default: houseItemInfo.PanType = "封盘"; break;
-                            }
-
-                            houseItemInfo.PropertyDecoration = h.PropertyDecoration;
-                            houseItemInfo.PropertyLook = h.PropertyLook;
-
-                            list.Add(houseItemInfo);
+                        switch (h.Privy)
+                        {
+                            case "0": houseItemInfo.PanType = "公盘"; break;
+                            case "1": houseItemInfo.PanType = "私盘"; break;
+                            case "2": houseItemInfo.PanType = "特盘"; break;
+                            default: houseItemInfo.PanType = "封盘"; break;
                         }
 
-                        saleHouseList.Clear();
-                        saleHouseItemList.Clear();
-                        HouseItemList.Clear();
+                        houseItemInfo.PropertyDecoration = h.PropertyDecoration;
+                        houseItemInfo.PropertyLook = h.PropertyLook;
 
-                        saleHouseList.AddRange(houseList);
-                        saleHouseItemList.AddRange(list);
-                        saleHouseItemList.ForEach(item => { HouseItemList.Add(item); });
-
+                        list.Add(houseItemInfo);
                     }
+
+                    saleHouseList.Clear();
+                    saleHouseItemList.Clear();
+                    HouseItemList.Clear();
+
+                    saleHouseList.AddRange(houseList);
+                    saleHouseItemList.AddRange(list);
+                    saleHouseItemList.ForEach(item => { HouseItemList.Add(item); });
+
+                    CrossToastPopUp.Current.ShowToastSuccess(baseResponse.Msg, ToastLength.Short);
                 }
                 else
                 {

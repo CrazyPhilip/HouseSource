@@ -141,7 +141,7 @@ namespace HouseSource.ViewModels
             set { SetProperty(ref buildingList, value); }
         }
 
-        BuildingInfo[] RawBuildingList { get; set; }   //栋座列表  原始
+        List<BuildingInfo> RawBuildingList { get; set; }   //栋座列表  原始
 
         private ObservableCollection<string> unitList;   //单元列表
         public ObservableCollection<string> UnitList
@@ -284,7 +284,7 @@ namespace HouseSource.ViewModels
             set { SetProperty(ref unit, value); }
         }
 
-        private string btnText;   
+        private string btnText;
         public string BtnText
         {
             get { return btnText; }
@@ -527,8 +527,33 @@ namespace HouseSource.ViewModels
                     return;
                 }
 
-                BuildingRD buildingRD = await RestSharpService.GetDongzuoByEstateID(Estate.EstateID);
+                string content = await RestSharpService.GetDongzuoByEstateID(Estate.EstateID);
 
+                if (string.IsNullOrWhiteSpace(content))
+                {
+                    CrossToastPopUp.Current.ShowToastError("服务器错误", ToastLength.Short);
+                    return;
+                }
+
+                BaseResponse baseResponse = JsonConvert.DeserializeObject<BaseResponse>(content);
+
+                if (baseResponse.Flag == "success")
+                {
+                    List<BuildingInfo> list = JsonConvert.DeserializeObject<List<BuildingInfo>>(baseResponse.Result.ToString());
+
+                    BuildingList = new ObservableCollection<string>();
+                    foreach (var item in list)
+                    {
+                        BuildingList.Add(item.BuildingName);
+                    }
+                    RawBuildingList = list;
+                }
+                else
+                {
+                    BuildingList = new ObservableCollection<string>();
+                }
+
+                /*
                 if (buildingRD.Msg == "EmptyList")
                 {
                     CrossToastPopUp.Current.ShowToastError("该小区下没有栋座信息，拒绝新增，请在电脑端完善后再进行录入。", ToastLength.Short);
@@ -542,7 +567,7 @@ namespace HouseSource.ViewModels
                         BuildingList.Add(item.BuildingName);
                     }
                     RawBuildingList = buildingRD.Dongzuo;
-                }
+                }*/
             }
             catch (Exception)
             {
@@ -585,9 +610,9 @@ namespace HouseSource.ViewModels
 
                     //后台返回数据中，栋座和单元合并了，如01栋02单元，须分离
                     List<string> digitList = Tools.GetDigit(House.BuildNo);
-                    BuildNo = digitList[0]+"栋";  //无法设置SelectedItem ?
+                    BuildNo = digitList[0] + "栋";  //无法设置SelectedItem ?
                     Unit = digitList[1] + "单元";
-                    
+
                 }
             }
             catch (Exception)
@@ -609,18 +634,19 @@ namespace HouseSource.ViewModels
                     return;
                 }
 
-                string result = await RestSharpService.GetCellByBuildingID(buildingID);
-                if (!string.IsNullOrWhiteSpace(result))
+                string content = await RestSharpService.GetCellByBuildingID(buildingID);
+
+                if (!string.IsNullOrWhiteSpace(content))
                 {
-                    JObject jObject = JObject.Parse(result);
-                    if (jObject["Msg"].ToString() == "EmptyList")
+                    JObject jObject = JObject.Parse(content);
+                    if (jObject["Flag"].ToString() == "0")
                     {
                         CrossToastPopUp.Current.ShowToastError("该栋座下没有单元信息", ToastLength.Short);
                         return;
                     }
-                    else if (jObject["Msg"].ToString() == "Success")
+                    else if (jObject["Flag"].ToString() == "success")
                     {
-                        string value = jObject["Cell"][0]["Cell"].ToString();
+                        string value = jObject["Result"][0]["Cell"].ToString();
                         if (value == "000" || value == "NULL" || value == "" || value == "undefined")
                         {
                             UnitList = new ObservableCollection<string> { "无" };
@@ -721,7 +747,7 @@ namespace HouseSource.ViewModels
 
             if (string.IsNullOrWhiteSpace(BuildNo))
             {
-                CrossToastPopUp.Current.ShowToastError("栋座不能为空，请重新填写栋座", ToastLength.Long);
+                CrossToastPopUp.Current.ShowToastError("栋座不能为空，请重新选择栋座", ToastLength.Long);
                 return false;
             }
 
@@ -828,7 +854,7 @@ namespace HouseSource.ViewModels
                 return false;
             }
 
-            if (!Regex.IsMatch(Para.CountF, IntNumReg) || !Regex.IsMatch(Para.CountT, IntNumReg) || !Regex.IsMatch(Para.CountW, IntNumReg) || !Regex.IsMatch(Para.CountY, IntNumReg) )
+            if (!Regex.IsMatch(Para.CountF, IntNumReg) || !Regex.IsMatch(Para.CountT, IntNumReg) || !Regex.IsMatch(Para.CountW, IntNumReg) || !Regex.IsMatch(Para.CountY, IntNumReg))
             {
                 CrossToastPopUp.Current.ShowToastError("户型格式不对，只能是数字，请重新填写户型", ToastLength.Long);
                 return false;
@@ -878,15 +904,24 @@ namespace HouseSource.ViewModels
                 Para.HandOverDate = ReleaseDate.Year + "-" + ReleaseDate.Month + "-" + ReleaseDate.Day;
                 Para.HangDate = EntrustDate.Year + "-" + EntrustDate.Month + "-" + EntrustDate.Day;
 
-                CommonRD responseData = await RestSharpService.AddNewHouse(Para, ImageList);
+                string content = await RestSharpService.AddNewHouse(Para, ImageList);
 
-                switch (responseData.Msg)
+                if (string.IsNullOrWhiteSpace(content))
                 {
-                    case "CompleteSuccess": 
-                        { 
+                    CrossToastPopUp.Current.ShowToastError("服务器错误", ToastLength.Short);
+                    return;
+                }
+
+                BaseResponse baseResponse = JsonConvert.DeserializeObject<BaseResponse>(content);
+
+                switch (baseResponse.Msg)
+                {
+                    case "CompleteSuccess":
+                        {
                             CrossToastPopUp.Current.ShowToastSuccess("房源新增成功", ToastLength.Long);
                             await Application.Current.MainPage.Navigation.PopAsync();
-                        } break;
+                        }
+                        break;
                     case "SQLSuccess":
                         {
                             CrossToastPopUp.Current.ShowToastSuccess("房源新增成功", ToastLength.Long);
@@ -929,28 +964,35 @@ namespace HouseSource.ViewModels
                 Para.HandOverDate = ReleaseDate.Year + "-" + ReleaseDate.Month + "-" + ReleaseDate.Day;
                 Para.HangDate = EntrustDate.Year + "-" + EntrustDate.Month + "-" + EntrustDate.Day;
 
-                CommonRD responseData = await RestSharpService.ModifyHouse(Para);
+                string content = await RestSharpService.ModifyHouse(Para);
 
-                switch (responseData.Msg)
+                if (string.IsNullOrWhiteSpace(content))
+                {
+                    CrossToastPopUp.Current.ShowToastError("服务器错误", ToastLength.Short);
+                    return;
+                }
+
+                BaseResponse baseResponse = JsonConvert.DeserializeObject<BaseResponse>(content);
+
+                switch (baseResponse.Flag)
                 {
                     case "CompleteSuccess":
                         {
-                            CrossToastPopUp.Current.ShowToastSuccess("房源修改成功", ToastLength.Long);
+                            CrossToastPopUp.Current.ShowToastSuccess(baseResponse.Msg, ToastLength.Short);
                             await Application.Current.MainPage.Navigation.PopAsync();
                         }
                         break;
                     case "SQLSuccess":
                         {
-                            CrossToastPopUp.Current.ShowToastSuccess("房源修改成功", ToastLength.Long);
+                            CrossToastPopUp.Current.ShowToastSuccess(baseResponse.Msg, ToastLength.Short);
                             await Application.Current.MainPage.Navigation.PopAsync();
                         }
                         break;
-                    case "SQLSuccessButUploadFailed": CrossToastPopUp.Current.ShowToastError("房源数据已加入数据库，但图片上传失败，请在电脑端进行补录操作", ToastLength.Long); break;
-                    case "SQLSuccessAndUploadSemiSuccess": CrossToastPopUp.Current.ShowToastError("房源数据已加入数据库，但部分图片上传失败，请在电脑端进行补录操作", ToastLength.Long); break;
-                    case "SQLExistProperty": CrossToastPopUp.Current.ShowToastWarning("该房源已存在", ToastLength.Long); break;
-                    default: CrossToastPopUp.Current.ShowToastError("房源修改失败", ToastLength.Long); break;
+                    case "SQLSuccessButUploadFailed": CrossToastPopUp.Current.ShowToastError(baseResponse.Msg, ToastLength.Short); break;
+                    case "SQLSuccessAndUploadSemiSuccess": CrossToastPopUp.Current.ShowToastError(baseResponse.Msg, ToastLength.Short); break;
+                    case "SQLExistProperty": CrossToastPopUp.Current.ShowToastWarning(baseResponse.Msg, ToastLength.Short); break;
+                    default: CrossToastPopUp.Current.ShowToastError(baseResponse.Msg, ToastLength.Short); break;
                 }
-
             }
             catch (Exception)
             {

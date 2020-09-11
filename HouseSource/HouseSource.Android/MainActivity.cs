@@ -15,7 +15,7 @@ using Android.Provider;
 
 namespace HouseSource.Droid
 {
-    [Activity(Label = "68独立经纪人版", Icon = "@mipmap/erp_logo", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
+    [Activity(Label = "军军房页", Icon = "@mipmap/erp_logo", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
         internal static MainActivity Instance { get; private set; }

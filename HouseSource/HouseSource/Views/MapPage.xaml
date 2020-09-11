@@ -20,7 +20,7 @@
     <ContentPage.Content>
         <controls:HybridWebView Uri="http://www.crazyphilip.space:8087/map3.html"
                                 android:WebView.MixedContentMode="AlwaysAllow"
-                                android:WebView.EnableZoomControls="true" 
+                                android:WebView.EnableZoomControls="True" 
                                 android:WebView.DisplayZoomControls="True"/>
     </ContentPage.Content>
 </ContentPage>

@@ -77,10 +77,22 @@ namespace HouseSource.ViewModels
 
 				string content = await RestSharpService.GetEstateInfoByEstateName(searchContent);
 
-				if (content.Contains("Success"))
+                if (string.IsNullOrWhiteSpace(content))
+                {
+					CrossToastPopUp.Current.ShowToastError("服务器错误", ToastLength.Short);
+					return;
+                }
+
+				BaseResponse baseResponse = JsonConvert.DeserializeObject<BaseResponse>(content);
+
+                if (baseResponse.Flag == "success")
+                {
+					List<EstateItemInfo> list = JsonConvert.DeserializeObject<List<EstateItemInfo>>(baseResponse.Result.ToString());
+					EstateList = new ObservableCollection<EstateItemInfo>(list);
+                }
+				else
 				{
-					EstateRD estateRD = JsonConvert.DeserializeObject<EstateRD>(content);
-					EstateList = new ObservableCollection<EstateItemInfo>(estateRD.Info);
+					EstateList = new ObservableCollection<EstateItemInfo>();
 				}
 			}
 			catch (Exception)
@@ -97,16 +109,15 @@ namespace HouseSource.ViewModels
 		public async Task BackPage(EstateItemInfo e)
 		{
 			var page = Application.Current.MainPage.Navigation.NavigationStack.FirstOrDefault(p => p is AddHousePage2);
-			var vm = page.BindingContext as AddHouseViewModel;
 
-			if (vm != null)
-			{
-				vm.Estate = e;
-				vm.Para.Title = e.DistrictName + " " + e.EstateName + " ";
-				vm.GetBuildings();
-			}
+            if (page.BindingContext is AddHouseViewModel vm)
+            {
+                vm.Estate = e;
+                vm.Para.Title = e.DistrictName + " " + e.EstateName + " ";
+                vm.GetBuildings();
+            }
 
-			await Application.Current.MainPage.Navigation.PopAsync();
+            await Application.Current.MainPage.Navigation.PopAsync();
 		}
 	}
 }

@@ -250,13 +250,12 @@ namespace HouseSource.Services
         /// </summary>
         /// <param name="propertyID">房源编号</param>
         /// <returns></returns>
-        public static async Task<BuildingRD> GetDongzuoByEstateID(string estateID)
+        public static async Task<string> GetDongzuoByEstateID(string estateID)
         {
             string url = "GetDongzuoByEstateID?DBName=" + GlobalVariables.LoggedUser.DBName + "&EstateID=" + estateID;
 
             string content = await RestSharpHelper<string>.GetAsyncWithoutDeserialization(url);
-            BuildingRD buildingRD = JsonConvert.DeserializeObject<BuildingRD>(content);
-            return buildingRD;
+            return content;
         }
 
         /// <summary>
@@ -278,7 +277,7 @@ namespace HouseSource.Services
         /// <param name="addHousePara"></param>
         /// <param name="photos"></param>
         /// <returns></returns>
-        public static async Task<CommonRD> AddNewHouse(AddHousePara addHousePara, IList<string> photos)
+        public static async Task<string> AddNewHouse(AddHousePara addHousePara, IList<string> photos)
         {
             string url = "NewHouseData";
             //string httpContent = JsonConvert.SerializeObject(addClientPara);
@@ -307,8 +306,7 @@ namespace HouseSource.Services
             }
 
             string content = await RestSharpHelper<string>.PostFormAsyncWithoutDeserialization(requestPost);
-            CommonRD commonRD = JsonConvert.DeserializeObject<CommonRD>(content);
-            return commonRD;
+            return content;
         }
 
         /// <summary>
@@ -316,7 +314,7 @@ namespace HouseSource.Services
         /// </summary>
         /// <param name="addHousePara"></param>
         /// <returns></returns>
-        public static async Task<CommonRD> ModifyHouse(AddHousePara addHousePara)
+        public static async Task<string> ModifyHouse(AddHousePara addHousePara)
         {
             string url = "ModHouseData";
             //string httpContent = JsonConvert.SerializeObject(addClientPara);
@@ -339,12 +337,9 @@ namespace HouseSource.Services
                 requestPost.AddParameter(item.Name, item.GetValue(addHousePara, null));
             }
 
-
             string content = await RestSharpHelper<string>.PostFormAsyncWithoutDeserialization(requestPost);
-            CommonRD commonRD = JsonConvert.DeserializeObject<CommonRD>(content);
-            return commonRD;
+            return content;
         }
-
 
         /// <summary>
         /// 获取房源跟进信息
