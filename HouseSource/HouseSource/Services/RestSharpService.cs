@@ -582,9 +582,30 @@ namespace HouseSource.Services
         /// 获取区域列表
         /// </summary>
         /// <returns></returns>
-        public static async Task<string> GetDBName()
+        public static async Task<string> GetDistrictsByCity(string cityName)
         {
-            string url = "GetDBList";
+            string url = "GetAllDistrictByCity?CityName="+ cityName;
+
+            string content = await RestSharpHelper<string>.GetAsyncWithoutDeserialization(url);
+            return content;
+        }
+        /*
+         public static async Task<string> GetDBName()
+         {
+             string url = "GetDBList";
+
+             string content = await RestSharpHelper<string>.GetAsyncWithoutDeserialization(url);
+             return content;
+         }
+        */
+
+        /// <summary>
+        /// 获取街区列表
+        /// </summary>
+        /// <returns></returns>
+        public static async Task<string> GetAreaByDistrict(string districtName)
+        {
+            string url = "GetAllAreaByDistrict?DistrictName=" + districtName;
 
             string content = await RestSharpHelper<string>.GetAsyncWithoutDeserialization(url);
             return content;

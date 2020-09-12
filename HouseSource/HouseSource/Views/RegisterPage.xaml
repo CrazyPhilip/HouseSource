@@ -5,7 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:HouseSource.ViewModels"
              xmlns:controls="clr-namespace:HouseSource.Controls"
-             xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms" xmlns:behaviors="clr-namespace:HouseSource.Behaviors"
              mc:Ignorable="d"
              x:Class="HouseSource.Views.RegisterPage"
              Title="注册">
@@ -27,10 +27,18 @@
     <ContentPage.Content>
         <Grid RowDefinitions="40,40,40,40,40,40,40,40,40" ColumnDefinitions="3*, 1*" VerticalOptions="CenterAndExpand" Padding="40,0">
 
-            <Frame Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="LightGray" HasShadow="False" CornerRadius="5" Padding="0">
-                <Picker Title="选择区域" TitleColor="White" ItemsSource="{Binding DBList}" SelectedItem="{Binding DBName,Mode=TwoWay}" ItemDisplayBinding="{Binding areaName}" HorizontalOptions="Center"/>
+            <Frame Grid.Row="0" Grid.Column="0"  BackgroundColor="LightGray" HasShadow="False" CornerRadius="5" Padding="0">
+                <Picker  x:Name="BuildingPicker"  Title="请选择区域" SelectedItem="{Binding TownName}" ItemsSource="{Binding DistrictList}" ItemDisplayBinding="{Binding town}">
+                    <Picker.Behaviors>
+                        <behaviors:EventToCommandBehavior EventName="SelectedIndexChanged" Command="{Binding GetAreaCommand}" 
+                                                          CommandParameter="{Binding Path=SelectedIndex,Source={x:Reference BuildingPicker}}"/>
+                    </Picker.Behaviors>
+                </Picker>
+             
             </Frame>
 
+            <Picker Grid.Row="0"  Grid.Column="1"  Title="请选择街道" BackgroundColor="LightGray" ItemsSource="{Binding AreaList}" SelectedItem="{Binding DBName}" ItemDisplayBinding="{Binding village}"/>
+            
             <Frame Grid.Row="1" Grid.Column="0"  BackgroundColor="LightGray" HasShadow="False" CornerRadius="5" Padding="5">
                 <controls:MyEntry Placeholder="手机号" Text="{Binding TelOrEmpNo}" Keyboard="Telephone" MaxLength="11" Style="{DynamicResource EntryStyle}"/>
             </Frame>

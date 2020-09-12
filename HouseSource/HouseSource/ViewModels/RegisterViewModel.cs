@@ -18,11 +18,25 @@ namespace HouseSource.ViewModels
 {
     public class RegisterViewModel : BaseViewModel
     {
-        private ObservableCollection<Area> districtList;   //Comment
-        public ObservableCollection<Area> DistrictList
+        private ObservableCollection<Area> areaList;   //Comment
+        public ObservableCollection<Area> AreaList
+        {
+            get { return areaList; }
+            set { SetProperty(ref areaList, value); }
+        }
+
+        private ObservableCollection<District> districtList;   //Comment
+        public ObservableCollection<District> DistrictList
         {
             get { return districtList; }
             set { SetProperty(ref districtList, value); }
+        }
+
+        private string townName;   //Comment  //区域名
+        public string TownName
+        {
+            get { return townName; }
+            set { SetProperty(ref townName, value); }
         }
 
         private Area dBName;   //Comment
@@ -87,6 +101,7 @@ namespace HouseSource.ViewModels
 
         public Command SendCodeCommand { get; set; }
         public Command RegisterCommand { get; set; }
+        public Command<int> GetAreaCommand { get; set; }
 
         public RegisterViewModel()
         {
@@ -166,7 +181,12 @@ namespace HouseSource.ViewModels
                 }
             }, () => { return true; });
 
-            GetDBList();
+            GetAreaCommand = new Command<int>((index) =>
+            {
+                GetAreaByDistrict(DistrictList[index].town);  //直接放参数，没有拿到这个值
+            }, (index) => { return true; });
+
+            GetDistrictsByCity("cd");
         }
 
         /// <summary>
@@ -271,7 +291,7 @@ namespace HouseSource.ViewModels
         /// <summary>
         /// 获取区域列表
         /// </summary>
-        private async void GetDBList()
+        private async void GetDistrictsByCity(string cityName)
         {
             try
             {
@@ -281,7 +301,7 @@ namespace HouseSource.ViewModels
                     return;
                 }
 
-                string content = await RestSharpService.GetDBName();
+                string content = await RestSharpService.GetDistrictsByCity(cityName);
 
                 if (string.IsNullOrWhiteSpace(content))
                 {
@@ -293,12 +313,12 @@ namespace HouseSource.ViewModels
                     BaseResponse baseResponse = JsonConvert.DeserializeObject<BaseResponse>(content);
                     if (baseResponse.Flag == "success")
                     {
-                        List<Area> list = JsonConvert.DeserializeObject<List<Area>>(baseResponse.Result.ToString());
-                        DistrictList = new ObservableCollection<Area>(list);
+                        List<District> list = JsonConvert.DeserializeObject<List<District>>(baseResponse.Result.ToString());
+                        DistrictList = new ObservableCollection<District>(list);
                     }
                     else
                     {
-                        DistrictList = new ObservableCollection<Area>();
+                        DistrictList = new ObservableCollection<District>();
                     }
 
 
@@ -311,6 +331,48 @@ namespace HouseSource.ViewModels
             }
         }
 
+        /// <summary>
+        /// 获取街区列表
+        /// </summary>
+        private async void GetAreaByDistrict(string districtName)
+        {
+            try
+            {
+                if (!Tools.IsNetConnective())
+                {
+                    CrossToastPopUp.Current.ShowToastError("无网络连接，请检查网络。", ToastLength.Short);
+                    return;
+                }
+
+                string content = await RestSharpService.GetAreaByDistrict(districtName);
+
+                if (string.IsNullOrWhiteSpace(content))
+                {
+                    CrossToastPopUp.Current.ShowToastError("服务器返回值为空", ToastLength.Short);
+                    return;
+                }
+                else
+                {
+                    BaseResponse baseResponse = JsonConvert.DeserializeObject<BaseResponse>(content);
+                    if (baseResponse.Flag == "success")
+                    {
+                        List<Area> list = JsonConvert.DeserializeObject<List<Area>>(baseResponse.Result.ToString());
+                        AreaList = new ObservableCollection<Area>(list);
+                    }
+                    else
+                    {
+                        AreaList = new ObservableCollection<Area>();
+                    }
+
+
+                }
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
 
         #region 计时器
         public void LoadAsync()
