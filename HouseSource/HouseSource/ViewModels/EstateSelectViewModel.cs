@@ -113,7 +113,7 @@ namespace HouseSource.ViewModels
             if (page.BindingContext is AddHouseViewModel vm)
             {
                 vm.Estate = e;
-                vm.Para.Title = e.DistrictName + " " + e.EstateName + " ";
+                vm.HouseTitle = e.DistrictName + " " + e.EstateName + " ";
                 vm.GetBuildings();
             }
 

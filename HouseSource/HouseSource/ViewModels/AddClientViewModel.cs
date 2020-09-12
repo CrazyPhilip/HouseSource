@@ -6,6 +6,7 @@ using HouseSource.Models;
 using HouseSource.ResponseData;
 using HouseSource.Services;
 using HouseSource.Utils;
+using Newtonsoft.Json;
 using Plugin.Toast;
 using Plugin.Toast.Abstractions;
 using Xamarin.Forms;
@@ -216,7 +217,7 @@ namespace HouseSource.ViewModels
 
         #endregion
 
-        private AreaInfo[] areaInfoArray{ get; set; }
+        private List<AreaInfo> areaInfoArray{ get; set; }
 
         #region 命令
         public Command DistrictPickerSelectedItemChangedCommand { get; set; }
@@ -267,7 +268,6 @@ namespace HouseSource.ViewModels
 
             }, () => { return true; });
 
-
         }
 
         /// <summary>
@@ -285,9 +285,22 @@ namespace HouseSource.ViewModels
 
                 string content = await RestSharpService.GetDistrictList();
 
-                string[] dists = content.TrimStart('{').TrimEnd('}').Split(',');
+                if (string.IsNullOrWhiteSpace(content))
+                {
+                    CrossToastPopUp.Current.ShowToastError("服务器错误", ToastLength.Short);
+                    return;
+                }
 
-                DistrictList = new List<string>(dists);
+                BaseResponse baseResponse = JsonConvert.DeserializeObject<BaseResponse>(content);
+
+                if (baseResponse.Flag == "success")
+                {
+                    DistrictList = JsonConvert.DeserializeObject<List<string>>(baseResponse.Result.ToString());
+                }
+                else
+                {
+                    DistrictList = new List<string>();
+                }
             }
             catch (Exception)
             {
@@ -308,32 +321,31 @@ namespace HouseSource.ViewModels
                     return;
                 }
 
-                AreaRD areaRD = await RestSharpService.GetAreaMsgByDistrictName(District);
+                string content = await RestSharpService.GetAreaMsgByDistrictName(District);
 
-                if (areaRD.Msg == "Success")
+                if (string.IsNullOrWhiteSpace(content))
                 {
+                    CrossToastPopUp.Current.ShowToastError("服务器错误", ToastLength.Short);
+                    return;
+                }
+
+                BaseResponse baseResponse = JsonConvert.DeserializeObject<BaseResponse>(content);
+
+                if (baseResponse.Flag == "success")
+                {
+                    areaInfoArray = JsonConvert.DeserializeObject<List<AreaInfo>>(baseResponse.Result.ToString());
+
                     List<string> areaList = new List<string>();
-
-                    areaInfoArray = areaRD.AreaMsg;
-
-                    foreach (var item in areaRD.AreaMsg)
+                    foreach (var item in areaInfoArray)
                     {
                         areaList.Add(item.AreaName);
                     }
 
                     BlockList = areaList;
-                    return;
-                }
-                else if (areaRD.Msg == "EmptyList")
-                {
-                    CrossToastPopUp.Current.ShowToastWarning("该城区下没有片区信息！", ToastLength.Short);
-                    BlockList = new List<string>();
-                    return;
                 }
                 else
                 {
-                    CrossToastPopUp.Current.ShowToastError("获取片区列表失败！", ToastLength.Short);
-                    return;
+                    BlockList = new List<string>();
                 }
             }
             catch (Exception)
@@ -384,15 +396,27 @@ namespace HouseSource.ViewModels
                 EmpNoOrTel = GlobalVariables.LoggedUser.EmpNo
             };//此处EmpNoOrTel只能是电话号码
 
-            CommonRD responseData = await RestSharpService.AddNewClient(addClientPara);
+            string content = await RestSharpService.AddNewClient(addClientPara);
 
-            if (responseData.Msg == "Success")
+            if (string.IsNullOrWhiteSpace(content))
             {
-                CrossToastPopUp.Current.ShowToastSuccess("客源新增成功", ToastLength.Long);
+                CrossToastPopUp.Current.ShowToastError("服务器错误", ToastLength.Short);
+                return;
             }
-            else if (responseData.Msg == "KYExists")
+
+            BaseResponse baseResponse = JsonConvert.DeserializeObject<BaseResponse>(content);
+
+            if (baseResponse.Flag == "success")
             {
-                CrossToastPopUp.Current.ShowToastError("新增失败，重复的客源，拒绝新增", ToastLength.Long);
+                if (baseResponse.Msg == "KYExists")
+                {
+                    CrossToastPopUp.Current.ShowToastError("重复的客源，拒绝新增", ToastLength.Long);
+                }
+                else
+                {
+                    CrossToastPopUp.Current.ShowToastSuccess("客源新增成功", ToastLength.Long);
+                    await Application.Current.MainPage.Navigation.PopAsync();
+                }
             }
             else
             {

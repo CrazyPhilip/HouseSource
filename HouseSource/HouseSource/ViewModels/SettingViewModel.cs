@@ -14,6 +14,8 @@ using Xamarin.Essentials;
 using System.Threading;
 using Newtonsoft.Json.Linq;
 using System.Threading.Tasks;
+using HouseSource.ResponseData;
+using Newtonsoft.Json;
 
 namespace HouseSource.ViewModels
 {
@@ -106,20 +108,29 @@ namespace HouseSource.ViewModels
                     return;
                 }
 
-                string result = await RestSharpService.GetNewestVersion();
+                string content = await RestSharpService.GetNewestVersion();
 
-                JObject jObject = JObject.Parse(result);
-                if (jObject["Msg"].ToString() == "failed")
+                if (string.IsNullOrWhiteSpace(content))
                 {
-                    CrossToastPopUp.Current.ShowToastError("获取失败", ToastLength.Short);
+                    CrossToastPopUp.Current.ShowToastError("服务器错误", ToastLength.Short);
                     return;
                 }
 
-                bool action = await Application.Current.MainPage.DisplayAlert("更新", "最新版本：" + jObject["VersionCode"].ToString() + "\n" + jObject["Remarks"].ToString(), "确定", "取消");
-                if (action)
+                JObject jObject = JObject.Parse(content);
+
+                if (jObject["Flag"].ToString() == "success")
                 {
-                    await Browser.OpenAsync(jObject["DownloadUrl"].ToString(), BrowserLaunchMode.SystemPreferred);
+                    bool action = await Application.Current.MainPage.DisplayAlert("更新", "最新版本：" + jObject["Result"][0]["VersionCode"].ToString() + "\n" + jObject["Result"][0]["Remarks"].ToString(), "确定", "取消");
+                    if (action)
+                    {
+                        await Browser.OpenAsync(jObject["Result"][0]["DownloadUrl"].ToString(), BrowserLaunchMode.SystemPreferred);
+                    }
                 }
+                else
+                {
+                    CrossToastPopUp.Current.ShowToastError("获取失败", ToastLength.Short);
+                }
+
             }
             catch (Exception)
             {

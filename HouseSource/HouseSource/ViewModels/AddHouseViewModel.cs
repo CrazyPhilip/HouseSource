@@ -207,11 +207,11 @@ namespace HouseSource.ViewModels
             set { SetProperty(ref para, value); }
         }
 
-        private string pageTitle;   //Comment
-        public string PageTitle
+        private string houseTitle;   //Comment
+        public string HouseTitle
         {
-            get { return pageTitle; }
-            set { SetProperty(ref pageTitle, value); }
+            get { return houseTitle; }
+            set { SetProperty(ref houseTitle, value); }
         }
 
         private DateTime releaseDate;   //交房日
@@ -311,7 +311,7 @@ namespace HouseSource.ViewModels
 
 #endif
             House = houseInfo; //用全局变量接收参数
-            PageTitle = "修改房源";
+            Title = "修改房源";
             btnText = "确认修改";
             ImageList = new ObservableCollection<string>();
             TradeList = new List<string> { "出售", "出租" };
@@ -418,7 +418,7 @@ namespace HouseSource.ViewModels
 
         public AddHouseViewModel()
         {
-            PageTitle = "新增房源";
+            Title = "新增房源";
             btnText = "确认新增";
             ImageList = new ObservableCollection<string>();
             TradeList = new List<string> { "出售", "出租" };
@@ -725,7 +725,7 @@ namespace HouseSource.ViewModels
             string IntNumReg = @"^\d+$";   //非负整数
             string FloatNumReg = @"^\d+(\.\d+)?$";    //非负浮点数
             //string TelReg = @"^(\d{3,4}-)?\d{6,8}$";   //电话
-            string CellPhoneReg = @"^[1]+[3,4,5,7,8,9]+\d{9}$";   //手机
+            //string CellPhoneReg = @"^[1]+[3,4,5,7,8,9]+\d{9}$";   //手机
 
             if (string.IsNullOrWhiteSpace(Estate.CityName))
             {
@@ -805,7 +805,7 @@ namespace HouseSource.ViewModels
                 }
             }
 
-            if (string.IsNullOrWhiteSpace(Para.Title))
+            if (string.IsNullOrWhiteSpace(HouseTitle))
             {
                 CrossToastPopUp.Current.ShowToastError("房源标题不能为空，请重新选择楼盘", ToastLength.Long);
                 return false;
@@ -889,6 +889,7 @@ namespace HouseSource.ViewModels
             try
             {
                 Para.DBName = GlobalVariables.LoggedUser.DBName;
+                Para.Title = HouseTitle;
                 Para.CityName = Estate.CityName;
                 Para.DistrictName = Estate.DistrictName;
                 Para.EstateID = Estate.EstateID;
@@ -914,7 +915,7 @@ namespace HouseSource.ViewModels
 
                 BaseResponse baseResponse = JsonConvert.DeserializeObject<BaseResponse>(content);
 
-                switch (baseResponse.Msg)
+                switch (baseResponse.Flag)
                 {
                     case "CompleteSuccess":
                         {
@@ -924,7 +925,7 @@ namespace HouseSource.ViewModels
                         break;
                     case "SQLSuccess":
                         {
-                            CrossToastPopUp.Current.ShowToastSuccess("房源新增成功", ToastLength.Long);
+                            CrossToastPopUp.Current.ShowToastSuccess("房源数据已加入数据库", ToastLength.Long);
                             await Application.Current.MainPage.Navigation.PopAsync();
                         }
                         break;

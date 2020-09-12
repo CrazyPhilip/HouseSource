@@ -279,6 +279,8 @@ namespace HouseSource.Services
         /// <returns></returns>
         public static async Task<string> AddNewHouse(AddHousePara addHousePara, IList<string> photos)
         {
+            Console.WriteLine(JsonConvert.SerializeObject(addHousePara));
+
             string url = "NewHouseData";
             //string httpContent = JsonConvert.SerializeObject(addClientPara);
 
@@ -297,12 +299,20 @@ namespace HouseSource.Services
             foreach (var item in type.GetProperties())
             {
                 //httpContent += (item.Name + "=" + item.GetValue(addHousePara, null) + "&");
-                requestPost.AddParameter(item.Name, item.GetValue(addHousePara, null));
+                requestPost.AddParameter(item.Name, item.GetValue(addHousePara, null) ?? "");
             }
 
-            foreach (var item in photos)
+            //如果没有图片就传空值
+            if (photos == null || photos.Count < 1)
             {
-                requestPost.AddFile("photos", item);
+                requestPost.AddFile("photos", new byte[0], "1");
+            }
+            else
+            {
+                foreach (var item in photos)
+                {
+                    requestPost.AddFile("photos", item);
+                }
             }
 
             string content = await RestSharpHelper<string>.PostFormAsyncWithoutDeserialization(requestPost);
@@ -397,7 +407,7 @@ namespace HouseSource.Services
         /// <returns></returns>
         public static async Task<string> GetDistrictList()
         {
-            string url = "GetDistrictList?DBName=" + GlobalVariables.LoggedUser.DBName + "";
+            string url = "GetDistrictList?DBName=" + GlobalVariables.LoggedUser.DBName;
 
             string content = await RestSharpHelper<string>.GetAsyncWithoutDeserialization(url);
             return content;
@@ -408,15 +418,12 @@ namespace HouseSource.Services
         /// </summary>
         /// <param name="districtName"></param>
         /// <returns></returns>
-        public static async Task<AreaRD> GetAreaMsgByDistrictName(string districtName)
+        public static async Task<string> GetAreaMsgByDistrictName(string districtName)
         {
             string url = "GetAreaMsgByDistrictName?DBName=" + GlobalVariables.LoggedUser.DBName + "&DistrictName=" + districtName;
 
             string content = await RestSharpHelper<string>.GetAsyncWithoutDeserialization(url);
-
-            content = GetSubString(content, "{", "}");
-            AreaRD responseData = JsonConvert.DeserializeObject<AreaRD>(content);
-            return responseData;
+            return content;
         }
 
         #endregion
@@ -427,7 +434,7 @@ namespace HouseSource.Services
         /// </summary>
         /// <param name="addClientPara"></param>
         /// <returns></returns>
-        public static async Task<CommonRD> AddNewClient(AddClientPara addClientPara)
+        public static async Task<string> AddNewClient(AddClientPara addClientPara)
         {
             string uri = "NewInquiry";
             //string httpContent = JsonConvert.SerializeObject(addClientPara);
@@ -441,9 +448,7 @@ namespace HouseSource.Services
             httpContent = httpContent.TrimEnd('&');
 
             string content = await RestSharpHelper<string>.PostFormAsyncWithoutDeserialization(uri, httpContent);
-            CommonRD responseData = JsonConvert.DeserializeObject<CommonRD>(content);
-
-            return responseData;
+            return content;
         }
 
         /// <summary>
