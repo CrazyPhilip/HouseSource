@@ -67,7 +67,7 @@ namespace HouseSource.Services
         /// <returns></returns>
         public static async Task<string> CheckIfRegister(string tel)
         {
-            string url = "IfRegisterTel?Tel=" + tel;
+            string url = "IfTelRegistered?Tel=" + tel;
 
             string content = await RestSharpHelper<string>.GetAsyncWithoutDeserialization(url);
             return content;
@@ -80,10 +80,10 @@ namespace HouseSource.Services
         /// <param name="password">密码</param>
         /// <param name="name">真实姓名</param>
         /// <returns></returns>
-        public static async Task<string> Register(string DBName, string tel, string password, string name, string AccountStyle, string CompanyOrEstateName)
+        public static async Task<string> Register(string DBName, string tel, string password, string name, string AccountStyle)
         {
             string url = "ApplyForRegister?DBName=" + DBName + "&EmpNo=&Tel=" + tel
-                + "&Password=" + password + "&EmpName=" + name + "&AccountStyle=" + AccountStyle + "&CompanyOrEstateName=" + CompanyOrEstateName;
+                + "&Password=" + password + "&EmpName=" + name + "&AccountStyle=" + AccountStyle ;
 
             string content = await RestSharpHelper<string>.GetAsyncWithoutDeserialization(url);
             return content;
