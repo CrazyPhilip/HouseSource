@@ -216,7 +216,7 @@ namespace HouseSource.ViewModels
 					if (baseResponse.Flag == "success")
 					{
 						//GlobalVariables.LoggedUser = JsonConvert.DeserializeObject<UserInfo>(result);
-						CrossToastPopUp.Current.ShowToastSuccess(baseResponse.Msg, ToastLength.Short);
+						//CrossToastPopUp.Current.ShowToastSuccess(baseResponse.Msg, ToastLength.Short);
 
 						LoginRD loginRD = JsonConvert.DeserializeObject<LoginRD>(baseResponse.Result.ToString());
 						loginRD.DBName = loginRD.DBName.TrimStart('[');

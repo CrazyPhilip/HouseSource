@@ -8,7 +8,8 @@ using Plugin.Toast;
 using Plugin.Toast.Abstractions;
 using Newtonsoft.Json.Linq;
 using System.Threading.Tasks;
-
+using HouseSource.ResponseData;
+using Newtonsoft.Json;
 
 namespace HouseSource.ViewModels
 {
@@ -95,8 +96,9 @@ namespace HouseSource.ViewModels
 
                     if (!string.IsNullOrWhiteSpace(ifExist))
                     {
-                        JObject jObject = JObject.Parse(ifExist);
-                        if (jObject["Msg"].ToString() == "NoExist")
+                        BaseResponse baseResponse = JsonConvert.DeserializeObject<BaseResponse>(ifExist);
+                        string res = (string)baseResponse.Result;
+                        if (res == "NoExist")
                         {
                             CrossToastPopUp.Current.ShowToastSuccess("手机号未注册", ToastLength.Long);
                         }
@@ -109,7 +111,9 @@ namespace HouseSource.ViewModels
                             }
                             else
                             {
-                                authCode = result;
+                                BaseResponse myResponse = JsonConvert.DeserializeObject<BaseResponse>(result);
+                                CrossToastPopUp.Current.ShowToastSuccess(result, ToastLength.Long);
+                                authCode = (string)myResponse.Result;
                                 myTimer = new MyTimer { EndDate = DateTime.Now.Add(new TimeSpan(900000000)) };
                                 LoadAsync();
                                 CrossToastPopUp.Current.ShowToastSuccess("请注意查收短信！", ToastLength.Short);
@@ -191,8 +195,8 @@ namespace HouseSource.ViewModels
 
                 if (!string.IsNullOrWhiteSpace(content))
                 {
-                    JObject jObject = JObject.Parse(content);
-                    if (jObject["Msg"].ToString() == "success")
+                    BaseResponse baseResponse = JsonConvert.DeserializeObject<BaseResponse>(content);
+                    if (baseResponse.Flag == "success")
                     {
                         CrossToastPopUp.Current.ShowToastSuccess("密码重置成功", ToastLength.Long);
                     }

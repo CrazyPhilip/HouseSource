@@ -12,16 +12,31 @@ using HouseSource.Models;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using HouseSource.ResponseData;
+using HouseSource.Controls;
 
 namespace HouseSource.ViewModels
 {
     public class RegisterViewModel : BaseViewModel
     {
-        private ObservableCollection<Area> dBList;   //Comment
-        public ObservableCollection<Area> DBList
+        private ObservableCollection<Area> areaList;   //Comment
+        public ObservableCollection<Area> AreaList
         {
-            get { return dBList; }
-            set { SetProperty(ref dBList, value); }
+            get { return areaList; }
+            set { SetProperty(ref areaList, value); }
+        }
+
+        private ObservableCollection<District> districtList;   //Comment
+        public ObservableCollection<District> DistrictList
+        {
+            get { return districtList; }
+            set { SetProperty(ref districtList, value); }
+        }
+
+        private string townName;   //Comment  //区域名
+        public string TownName
+        {
+            get { return townName; }
+            set { SetProperty(ref townName, value); }
         }
 
         private Area dBName;   //Comment
@@ -86,6 +101,7 @@ namespace HouseSource.ViewModels
 
         public Command SendCodeCommand { get; set; }
         public Command RegisterCommand { get; set; }
+        public Command<int> GetAreaCommand { get; set; }
 
         public RegisterViewModel()
         {
@@ -100,12 +116,6 @@ namespace HouseSource.ViewModels
                     if (!Tools.IsNetConnective())
                     {
                         CrossToastPopUp.Current.ShowToastError("无网络连接，请检查网络。", ToastLength.Short);
-                        return;
-                    }
-
-                    if (string.IsNullOrWhiteSpace(DBName.areaName))
-                    {
-                        CrossToastPopUp.Current.ShowToastError("区域不能为空", ToastLength.Short);
                         return;
                     }
 
@@ -125,8 +135,9 @@ namespace HouseSource.ViewModels
 
                     if (!string.IsNullOrWhiteSpace(ifExist))
                     {
-                        JObject jObject = JObject.Parse(ifExist);
-                        if (jObject["Msg"].ToString() == "TelExist")
+                        BaseResponse baseResponse = JsonConvert.DeserializeObject<BaseResponse>(ifExist);
+                        string res = (string)baseResponse.Result;
+                        if (res == "TelExist")
                         {
                             CrossToastPopUp.Current.ShowToastSuccess("手机号已经注册", ToastLength.Long);
                         }
@@ -139,7 +150,9 @@ namespace HouseSource.ViewModels
                             }
                             else
                             {
-                                authCode = result;
+                                BaseResponse myResponse = JsonConvert.DeserializeObject<BaseResponse>(result);
+                                CrossToastPopUp.Current.ShowToastSuccess(result, ToastLength.Long);
+                                authCode = (string)myResponse.Result;
                                 myTimer = new MyTimer { EndDate = DateTime.Now.Add(new TimeSpan(900000000)) };
                                 LoadAsync();
                                 CrossToastPopUp.Current.ShowToastSuccess("请注意查收短信！", ToastLength.Short);
@@ -168,7 +181,12 @@ namespace HouseSource.ViewModels
                 }
             }, () => { return true; });
 
-            GetDBList();
+            GetAreaCommand = new Command<int>((index) =>
+            {
+                GetAreaByDistrict(DistrictList[index].town);  //直接放参数，没有拿到这个值
+            }, (index) => { return true; });
+
+            GetDistrictsByCity("cd");
         }
 
         /// <summary>
@@ -177,6 +195,11 @@ namespace HouseSource.ViewModels
         /// <returns></returns>
         private bool CheckInput()
         {
+            if(DBName == null)
+            {
+                CrossToastPopUp.Current.ShowToastError("区域不能为空", ToastLength.Short);
+                return false;
+            }
             if (string.IsNullOrWhiteSpace(DBName.dbName))
             {
                 CrossToastPopUp.Current.ShowToastError("区域不能为空", ToastLength.Short);
@@ -186,6 +209,7 @@ namespace HouseSource.ViewModels
             if (string.IsNullOrWhiteSpace(TelOrEmpNo))
             {
                 CrossToastPopUp.Current.ShowToastError("手机号或员工号不能为空", ToastLength.Short);
+
                 return false;
             }
 
@@ -229,24 +253,26 @@ namespace HouseSource.ViewModels
                     return;
                 }
 
-                string content = await RestSharpService.Register(DBName.dbName, TelOrEmpNo, Password, RealName, "", "");
+                string content = await RestSharpService.Register(DBName.dbName, TelOrEmpNo, Password, RealName, "");
 
                 if (!string.IsNullOrWhiteSpace(content))
                 {
-                    JObject jObject = JObject.Parse(content);
-                    if (jObject["Msg"].ToString() == "success")
+                    BaseResponse baseResponse = JsonConvert.DeserializeObject<BaseResponse>(content);
+                    if (baseResponse.Flag == "success")
                     {
                         CrossToastPopUp.Current.ShowToastSuccess("注册成功", ToastLength.Long);
                         // 注册成功后 ，自动保存全局的登录信息，并跳转界面 ，content中有除 PhotoUrl的其他变量
 
-                        GlobalVariables.LoggedUser = JsonConvert.DeserializeObject<LoginRD>(content);
+                        GlobalVariables.LoggedUser = JsonConvert.DeserializeObject<LoginRD>(baseResponse.Result.ToString());
                         //Console.Write(GlobalVariables.LoggedUser.ToString());
                         GlobalVariables.LoggedUser.PhotoUrl = null;  //注册成功后的headPic为空
                         GlobalVariables.IsLogged = true;
                         GlobalVariables.LoggedUser.EmpNo = TelOrEmpNo;
 
-                        MainPage mainPage = new MainPage();
-                        await Application.Current.MainPage.Navigation.PushAsync(mainPage);
+                        //MainPage mainPage = new MainPage();
+                        //await Application.Current.MainPage.Navigation.PushAsync(mainPage);
+                        MyNavigationPage myNavigationPage = new MyNavigationPage(new MainPage());
+                        Application.Current.MainPage = myNavigationPage;
 
                     }
                 }
@@ -265,7 +291,7 @@ namespace HouseSource.ViewModels
         /// <summary>
         /// 获取区域列表
         /// </summary>
-        private async void GetDBList()
+        private async void GetDistrictsByCity(string cityName)
         {
             try
             {
@@ -275,18 +301,29 @@ namespace HouseSource.ViewModels
                     return;
                 }
 
-                string content = await RestSharpService.GetDBName();
-                JObject jObject = JObject.Parse(content);
+                string content = await RestSharpService.GetDistrictsByCity(cityName);
 
-                if (jObject["Msg"].ToString() == "Success")
+                if (string.IsNullOrWhiteSpace(content))
                 {
-                    List<Area> list = jObject["DBList"].ToObject<List<Area>>();
-                    DBList = new ObservableCollection<Area>(list);
+                    CrossToastPopUp.Current.ShowToastError("服务器返回值为空", ToastLength.Short);
+                    return;
                 }
                 else
                 {
-                    DBList = new ObservableCollection<Area>();
+                    BaseResponse baseResponse = JsonConvert.DeserializeObject<BaseResponse>(content);
+                    if (baseResponse.Flag == "success")
+                    {
+                        List<District> list = JsonConvert.DeserializeObject<List<District>>(baseResponse.Result.ToString());
+                        DistrictList = new ObservableCollection<District>(list);
+                    }
+                    else
+                    {
+                        DistrictList = new ObservableCollection<District>();
+                    }
+
+
                 }
+               
             }
             catch (Exception)
             {
@@ -294,6 +331,48 @@ namespace HouseSource.ViewModels
             }
         }
 
+        /// <summary>
+        /// 获取街区列表
+        /// </summary>
+        private async void GetAreaByDistrict(string districtName)
+        {
+            try
+            {
+                if (!Tools.IsNetConnective())
+                {
+                    CrossToastPopUp.Current.ShowToastError("无网络连接，请检查网络。", ToastLength.Short);
+                    return;
+                }
+
+                string content = await RestSharpService.GetAreaByDistrict(districtName);
+
+                if (string.IsNullOrWhiteSpace(content))
+                {
+                    CrossToastPopUp.Current.ShowToastError("服务器返回值为空", ToastLength.Short);
+                    return;
+                }
+                else
+                {
+                    BaseResponse baseResponse = JsonConvert.DeserializeObject<BaseResponse>(content);
+                    if (baseResponse.Flag == "success")
+                    {
+                        List<Area> list = JsonConvert.DeserializeObject<List<Area>>(baseResponse.Result.ToString());
+                        AreaList = new ObservableCollection<Area>(list);
+                    }
+                    else
+                    {
+                        AreaList = new ObservableCollection<Area>();
+                    }
+
+
+                }
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
 
         #region 计时器
         public void LoadAsync()
