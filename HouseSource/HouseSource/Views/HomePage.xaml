@@ -110,6 +110,9 @@
                         <Label Grid.Row="0" Grid.Column="1" Text="二手房热销榜" FontSize="14" TextColor="Black" FontAttributes="Bold"/>
                         <Label Grid.Row="1" Grid.Column="1" Text="真实低价房源" FontSize="12"/>
                     </Grid>
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer NumberOfTapsRequired="1" Command="{Binding TempCommand}"/>
+                    </Frame.GestureRecognizers>
                 </Frame>
 
                 <Frame Grid.Row="2" Grid.Column="1" CornerRadius="5" BackgroundColor="{DynamicResource ControlBackgroundColor}" Margin="5,0">

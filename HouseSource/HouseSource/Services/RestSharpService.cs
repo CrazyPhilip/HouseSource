@@ -155,7 +155,44 @@ namespace HouseSource.Services
 
             return content;
         }
-        
+
+        public static async Task<string> GetHouseAsync(string cityPinYin, string pageNum, string pageSize)
+        {
+            try
+            {
+                string url = string.Format("property/search?cityPinYin={0}&pageNum={1}&pageSize={2}", cityPinYin, pageNum, pageSize);
+
+                var requestPost = new RestRequest(url, Method.POST);
+
+                JObject jObject = new JObject
+                {
+                    { "searchParam", "{}" },
+                };
+                requestPost.AddParameter("application/json; charset=utf-8", jObject.ToString(), ParameterType.RequestBody);
+                requestPost.RequestFormat = DataFormat.Json;
+
+                string content = await RestSharpHelper<string>.PostFormAsyncWithoutDeserialization("http://47.108.202.57:8090/", requestPost);
+                return content;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// 获得房源的评论
+        /// </summary>
+        /// <param name="propertyID">房源编号</param>
+        /// <returns></returns>
+        public static async Task<string> GetComents(string cityPinYin, string propId)
+        {
+            string url = "property/getCommentsByPropertyId?propId=" + propId + "&cityPinYin=" + cityPinYin;
+
+            string content = await RestSharpHelper<string>.GetAsyncWithoutDeserialization("http://47.108.202.57:8090/", url);
+            return content;
+        }
+
         /// <summary>
         /// 获取收藏房源
         /// </summary>
@@ -383,6 +420,8 @@ namespace HouseSource.Services
             string content = await RestSharpHelper<string>.GetAsyncWithoutDeserialization(url);
             return content;
         }
+
+
         #endregion
 
         #region 消息

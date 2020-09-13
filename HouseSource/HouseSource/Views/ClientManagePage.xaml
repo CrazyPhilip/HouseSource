@@ -9,6 +9,7 @@
             BackgroundColor="{DynamicResource PageBackgroundColor}"
             BarBackgroundColor="{DynamicResource PrimaryColor}"
             x:Name="clientManagePage"
+            Icon="people.png"
             Title="客源管理">
 
     <TabbedPage.ToolbarItems>

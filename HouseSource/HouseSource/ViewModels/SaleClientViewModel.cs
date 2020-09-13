@@ -201,6 +201,7 @@ namespace HouseSource.ViewModels
 						SaleClientList.Clear();
 						foreach (var item in list)
 						{
+							item.FirstChar = item.CustName.Substring(0, 1);
 							SaleClientList.Add(item);
 						}
 					}

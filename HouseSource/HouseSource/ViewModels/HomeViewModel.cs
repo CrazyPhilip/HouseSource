@@ -15,6 +15,7 @@ using UltimateXF.Widget.Charts.Models.Formatters;
 using UltimateXF.Widget.Charts.Models.Component;
 using HouseSource.Views;
 using Newtonsoft.Json;
+using System.Linq;
 
 namespace HouseSource.ViewModels
 {
@@ -55,6 +56,7 @@ namespace HouseSource.ViewModels
         #endregion
 
         public Command SearchCommand { get; set; }
+        public Command TempCommand { get; set; }
         public Command<string> NavigateCommand { get; set; }    //导航命令事件
 
         public HomeViewModel()
@@ -66,7 +68,8 @@ namespace HouseSource.ViewModels
 
             OptionList = new List<Option>
             {
-                new Option { icon = "estate.png", option = "全网房源", page = "HouseSource.Views.AllHouseListPage"},
+                //new Option { icon = "estate.png", option = "全网房源", page = "HouseSource.Views.AllHouseListPage"},
+                new Option { icon = "estate.png", option = "全网房源", page = "HouseSource.Views.AllHouseListPage2"},
                 new Option { icon = "house_manage.png", option = "房源管理", page = "HouseSource.Views.HouseManagePage"},
                 new Option { icon = "customer_manage.png", option = "客源管理", page = "HouseSource.Views.ClientManagePage"},
                 new Option { icon = "news2.png", option = "新闻公告", page = "HouseSource.Views.MessagePage"},
@@ -86,9 +89,31 @@ namespace HouseSource.ViewModels
             //导航命令事件
             NavigateCommand = new Command<string>((pageName) =>
             {
-                Type type = Type.GetType(pageName);
-                Page page = (Page)Activator.CreateInstance(type);
-                Application.Current.MainPage.Navigation.PushAsync(page);
+                switch (pageName)
+                {
+                    case "HouseSource.Views.HouseManagePage":
+                        {
+                            TabbedPage page = Application.Current.MainPage.Navigation.NavigationStack.FirstOrDefault(p => p is MainPage) as TabbedPage;
+                            page.CurrentPage = page.Children.FirstOrDefault(p => p is HouseManagePage);
+                        }
+                        break;
+
+                    case "HouseSource.Views.ClientManagePage":
+                        {
+                            TabbedPage page = Application.Current.MainPage.Navigation.NavigationStack.FirstOrDefault(p => p is MainPage) as TabbedPage;
+                            page.CurrentPage = page.Children.FirstOrDefault(p => p is ClientManagePage);
+                        }
+                        break;
+
+                    default:
+                        {
+                            Type type = Type.GetType(pageName);
+                            Page page = (Page)Activator.CreateInstance(type);
+                            Application.Current.MainPage.Navigation.PushAsync(page);
+                        }
+                        break;
+                }
+
             }, (pageName) => { return true; });
 
             TappedCommand = new Command<string>((h) =>
@@ -114,6 +139,11 @@ namespace HouseSource.ViewModels
                 //Application.Current.MainPage.Navigation.PushAsync(houseDetailPage);
 
             }, (h) => { return true; });
+
+            TempCommand = new Command(() =>
+            {
+                CrossToastPopUp.Current.ShowToastWarning("功能开发中", ToastLength.Short);
+            }, () => { return true; });
 
             //InitHomePage();
         }

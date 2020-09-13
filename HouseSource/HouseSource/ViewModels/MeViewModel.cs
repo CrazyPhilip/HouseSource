@@ -91,6 +91,12 @@ namespace HouseSource.ViewModels
                         }
                         break;
 
+                    case "HouseSource.Views.EditUserInfoPage":
+                        {
+                            CrossToastPopUp.Current.ShowToastWarning("功能开发中", ToastLength.Short);
+                        }
+                        break;
+
                     //默认跳转到其他页面
                     default:
                         {

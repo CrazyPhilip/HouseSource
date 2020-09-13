@@ -25,6 +25,8 @@ namespace HouseSource.Services
         static RestClient _restClient = new RestClient("http://47.108.202.57:8087/WebService.asmx");
         //static RestClient _restClient = new RestClient("http://120.26.3.153:7777");
 
+        static RestClient _restClient2 = new RestClient();
+
         /// <summary>
         /// Post 异步 反序列化
         /// </summary>
@@ -270,5 +272,56 @@ namespace HouseSource.Services
             return responsePost.Content;
         }
 
+        /// <summary>
+        /// Get 异步 不反序列化
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
+        public static async Task<string> GetAsyncWithoutDeserialization(string baseUrl, string url)
+        {
+            _restClient2.BaseUrl = new Uri(baseUrl);
+            var requestGet = new RestRequest(url, Method.GET);
+            IRestResponse responseGet = await _restClient2.ExecuteAsync(requestGet);
+
+            if (responseGet.ErrorException != null)
+            {
+                string message = "Error retrieving response. The Url is " + url;
+                var twilioException = new ApplicationException(message, responseGet.ErrorException);
+                throw twilioException;
+            }
+
+            if (responseGet.StatusCode >= System.Net.HttpStatusCode.BadRequest)
+            {
+                return "";
+            }
+
+            return responseGet.Content;
+        }
+
+        /// <summary>
+        /// Post Form表单 异步 不反序列化
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="form"></param>
+        /// <returns></returns>
+        public static async Task<string> PostFormAsyncWithoutDeserialization(string baseUrl, RestRequest restRequest)
+        {
+            _restClient2.BaseUrl = new Uri(baseUrl);
+            IRestResponse responsePost = await _restClient2.ExecuteAsync(restRequest);
+
+            if (responsePost.ErrorException != null)
+            {
+                string message = "Error retrieving response. The Url is ";
+                var twilioException = new ApplicationException(message, responsePost.ErrorException);
+                throw twilioException;
+            }
+
+            if (responsePost.StatusCode >= System.Net.HttpStatusCode.BadRequest)
+            {
+                return "";
+            }
+
+            return responsePost.Content;
+        }
     }
 }

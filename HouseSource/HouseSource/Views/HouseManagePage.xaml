@@ -9,6 +9,7 @@
             BackgroundColor="{DynamicResource PageBackgroundColor}"
             BarBackgroundColor="{DynamicResource PrimaryColor}"
             x:Name="houseManagePage"
+            Icon="building1.png"
             Title="房源管理">
 
     <TabbedPage.ToolbarItems>

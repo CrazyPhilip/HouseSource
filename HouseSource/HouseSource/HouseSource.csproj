@@ -59,6 +59,9 @@
     <Compile Update="Views\AllHouseListPage.xaml.cs">
       <DependentUpon>AllHouseListPage.xaml</DependentUpon>
     </Compile>
+    <Compile Update="Views\HouseDetailPage2.xaml.cs">
+      <DependentUpon>HouseDetailPage2.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\TaxPage.xaml.cs">
       <DependentUpon>TaxPage.xaml</DependentUpon>
     </Compile>
@@ -93,6 +96,9 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\AddHousePage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\AllHouseListPage2.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\ClientDetailPage.xaml">

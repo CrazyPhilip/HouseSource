@@ -1,0 +1,148 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             x:Class="HouseSource.Views.AllHouseListPage2"
+             xmlns:viewModels="clr-namespace:HouseSource.ViewModels" 
+             xmlns:controls="clr-namespace:HouseSource.Controls" 
+             xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms" 
+             mc:Ignorable="d"
+             x:Name="homePage2"
+             NavigationPage.HasNavigationBar="False"
+             BackgroundColor="{DynamicResource PageBackgroundColor}"
+             Icon="home.png"
+             Title="首页">
+    
+    <ContentPage.BindingContext>
+        <viewModels:AllHouseListViewModel2/>
+    </ContentPage.BindingContext>
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="LabelStyle" TargetType="Label">
+                <Setter Property="FontFamily" Value="FontAwesome"/>
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="HorizontalOptions" Value="Center"/>
+                <Setter Property="VerticalOptions" Value="Center"/>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <Grid Padding="10,0" RowDefinitions="40,30,*" ColumnDefinitions="*,*,*,*">
+
+            <!--搜索-->
+            <controls:FluentSearchBar Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" Placeholder="输入楼盘名/片区搜索房源" Text="{Binding SearchContent}" Command="{Binding SearchCommand}" VerticalOptions="End"/>
+
+            <!--筛选条件-->
+            <Label Grid.Row="1" Grid.Column="0" Text="{Binding District,StringFormat='{0}&#xf0d7;'}" Style="{DynamicResource LabelStyle}">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding SortCommand}" CommandParameter="1"/>
+                </Label.GestureRecognizers>
+            </Label>
+
+            <Label Grid.Row="1" Grid.Column="1" Text="{Binding RoomStyle,StringFormat='{0}&#xf0d7;'}" Style="{DynamicResource LabelStyle}">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding SortCommand}" CommandParameter="2"/>
+                </Label.GestureRecognizers>
+            </Label>
+
+            <Label Grid.Row="1" Grid.Column="2" Text="{Binding SalePrice,StringFormat='{0}&#xf0d7;'}" Style="{DynamicResource LabelStyle}">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding SortCommand}" CommandParameter="3"/>
+                </Label.GestureRecognizers>
+            </Label>
+
+            <Label Grid.Row="1" Grid.Column="3" Text="{Binding Square,StringFormat='{0}&#xf0d7;'}" Style="{DynamicResource LabelStyle}">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding SortCommand}" CommandParameter="4"/>
+                </Label.GestureRecognizers>
+            </Label>
+
+            <ScrollView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" Orientation="Vertical">
+                <StackLayout Orientation="Vertical">
+                    <StackLayout BindableLayout.ItemsSource="{Binding HouseItemList}" Orientation="Vertical">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate>
+                                <Frame HeightRequest="90" Padding="0,5" Style="{DynamicResource BaseFrame}">
+                                    <Grid RowSpacing="0" RowDefinitions="*,*,*,*" ColumnDefinitions="100,*">
+                                        <ff:CachedImage Grid.Row="0" Grid.Column="0" Grid.RowSpan="4" 
+                                                        Source="{Binding proCoverUrl,TargetNullValue=NullPic.jpg}"
+                                                        HeightRequest="80" WidthRequest="100"
+                                                        DownsampleHeight="80" DownsampleWidth="100"/>
+
+                                        <Label Grid.Row="0" Grid.Column="1" Text="{Binding proTitle}" TextColor="{DynamicResource PrimaryTextColor}" 
+                                               LineBreakMode="CharacterWrap" FontAttributes="Bold"/>
+
+                                        <StackLayout Grid.Row="1" Grid.Column="1" Padding="0" Margin="0" Spacing="5" Orientation="Horizontal">
+                                            <controls:LabelWithBorder FontSize="10" Text="{Binding proDistrict}" DrawableColor="{DynamicResource LightPink}" TextColor="White" CornerRadius="2" VerticalOptions="Center"/>
+                                            <controls:LabelWithBorder FontSize="10" Text="{Binding proArea}" TextColor="{DynamicResource ThickPink}" BorderThickness="2" BorderColor="{DynamicResource ThickPink}" CornerRadius="2" VerticalOptions="Center"/>
+                                            <controls:LabelWithBorder FontSize="10" Text="VR" TextColor="{DynamicResource SecondaryColor}" BorderThickness="2" BorderColor="{DynamicResource SecondaryColor}" CornerRadius="2" VerticalOptions="Center"/>
+                                            <controls:LabelWithBorder FontSize="10" Text="随时看房" TextColor="{DynamicResource SecondaryColor}" BorderThickness="2" BorderColor="{DynamicResource SecondaryColor}" CornerRadius="2" VerticalOptions="Center"/>
+                                        </StackLayout>
+
+                                        <Label Grid.Row="2" Grid.Column="1" FontSize="10" LineBreakMode="TailTruncation" VerticalOptions="Center">
+                                            <Label.FormattedText>
+                                                <FormattedString>
+                                                    <Span Text="{Binding proCountF}"/>
+                                                    <Span Text="室"/>
+                                                    <Span Text="{Binding proCountT}"/>
+                                                    <Span Text="厅"/>
+                                                    <Span Text="{Binding proCountW}"/>
+                                                    <Span Text="卫|"/>
+                                                    <Span Text="{Binding proSquare}"/>
+                                                    <Span Text="㎡|"/>
+                                                    <Span Text="{Binding proDirection}"/>
+                                                    <Span Text="|"/>
+                                                    <Span Text="{Binding proDecoration}"/>
+                                                    <Span Text="|"/>
+                                                    <Span Text="{Binding proFloor}"/>
+                                                    <Span Text="（共"/>
+                                                    <Span Text="{Binding proFloorAll}"/>
+                                                    <Span Text="层）|"/>
+                                                    <Span Text="{Binding proCompleteYear}"/>
+                                                    <Span Text="建|"/>
+                                                    <Span Text="{Binding proType}"/>
+                                                </FormattedString>
+                                            </Label.FormattedText>
+                                        </Label>
+
+                                        <Label Grid.Row="3" Grid.Column="1">
+                                            <Label.FormattedText>
+                                                <FormattedString>
+                                                    <Span Text="{Binding proPrice}" TextColor="{DynamicResource LightPink}" FontAttributes="Bold"/>
+                                                    <Span Text="{Binding proPriceType}" TextColor="{DynamicResource LightPink}" FontAttributes="Bold"/>
+                                                    <Span Text="单价:" FontSize="10"/>
+                                                    <Span Text="{Binding proUnitPrice}" FontSize="10"/>
+                                                    <Span Text="{Binding proUnitPriceType}" FontSize="10"/>
+                                                </FormattedString>
+                                            </Label.FormattedText>
+                                        </Label>
+                                    </Grid>
+
+                                    <Frame.GestureRecognizers>
+                                        <TapGestureRecognizer NumberOfTapsRequired="1"
+                                                              Command="{Binding BindingContext.TappedCommand, Source={x:Reference homePage2}}"
+                                                              CommandParameter="{Binding proId}"/>
+                                    </Frame.GestureRecognizers>
+                                </Frame>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </StackLayout>
+
+                    <Button Command="{Binding LoadMoreCommand}" BackgroundColor="Transparent" IsEnabled="{Binding IsEnable}">
+                        <Button.Text>
+                            <MultiBinding StringFormat="下一页（{0}/{1}）">
+                                <Binding Path="PageNum" />
+                                <Binding Path="TotalPage"/>
+                            </MultiBinding>
+                        </Button.Text>
+                    </Button>
+                </StackLayout>
+            </ScrollView>
+
+            <ActivityIndicator Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" Grid.ColumnSpan="4" IsRunning="{Binding IsLoading}" HeightRequest="50" WidthRequest="50" VerticalOptions="Center" HorizontalOptions="Center"/>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

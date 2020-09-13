@@ -93,7 +93,8 @@ namespace HouseSource.ViewModels
 
             UpdateCommand = new Command(async () =>
             {
-                await CheckAppVersionAsync();
+                await Browser.OpenAsync("http://47.108.202.57:8087/app/com.jjfc.housesource.apk", BrowserLaunchMode.SystemPreferred);
+                //await CheckAppVersionAsync();
             }, () => { return true; });
 
         }

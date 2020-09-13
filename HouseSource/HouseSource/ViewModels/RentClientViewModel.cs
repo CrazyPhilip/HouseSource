@@ -204,6 +204,7 @@ namespace HouseSource.ViewModels
 						RentClientList.Clear();
 						foreach (var item in list)
 						{
+							item.FirstChar = item.CustName.Substring(0, 1);
 							RentClientList.Add(item);
 						}
 					}

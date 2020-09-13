@@ -79,5 +79,8 @@ namespace HouseSource.Models
 
         [JsonProperty("CustMobile1", NullValueHandling = NullValueHandling.Ignore)]
         public string CustMobile1 { get; set; }
+
+        [JsonIgnore]
+        public string FirstChar { get; set; }
     }
 }

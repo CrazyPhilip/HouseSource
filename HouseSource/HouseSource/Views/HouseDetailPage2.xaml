@@ -1,0 +1,236 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:viewModels="clr-namespace:HouseSource.ViewModels"
+             xmlns:controls="clr-namespace:HouseSource.Controls"
+             mc:Ignorable="d"
+             x:Class="HouseSource.Views.HouseDetailPage2"
+             BackgroundColor="{DynamicResource PageBackgroundColor}"
+             x:Name="houseDetailPage2"
+             Title="房源详情">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="PrimaryLabel" TargetType="Label">
+                <Setter Property="FontSize" Value="16"/>
+                <Setter Property="TextColor" Value="{DynamicResource PrimaryTextColor}"/>
+            </Style>
+            <Style x:Key="SecondaryLabel" TargetType="Label">
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="TextColor" Value="{DynamicResource SecondaryTextColor}"/>
+            </Style>
+            <Style x:Key="OptionButton" TargetType="Button">
+                <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+                <Setter Property="TextColor" Value="White"/>
+                <Setter Property="Padding" Value="0"/>
+                <Setter Property="CornerRadius" Value="5"/>
+                <Setter Property="BackgroundColor" Value="{DynamicResource PrimaryColor}"/>
+            </Style>
+            <Style x:Key="CommonFrame" TargetType="Frame">
+                <Setter Property="HasShadow" Value="True"/>
+                <Setter Property="Padding" Value="10"/>
+                <Setter Property="CornerRadius" Value="5"/>
+                <Setter Property="BackgroundColor" Value="{DynamicResource ControlBackgroundColor}"/>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="分享" IconImageSource="share.png" Command="{Binding ShareCommand}"/>
+        <!--<ToolbarItem Text="收藏" IconImageSource="{Binding StarSource}" Command="{Binding CollectCommand}"/>-->
+    </ContentPage.ToolbarItems>
+
+    <ContentPage.Content>
+        <Grid RowDefinitions="*,50" RowSpacing="0">
+            <ScrollView Grid.Row="0">
+                <StackLayout Orientation="Vertical" Padding="10,5">
+                    <!--图片集-->
+                    <CarouselView ItemsSource="{Binding PhotoList}" HeightRequest="250" IndicatorView="indicatorView">
+                        <CarouselView.ItemTemplate>
+                            <DataTemplate>
+                                <ff:CachedImage Source="{Binding .}" BackgroundColor="Transparent" Aspect="AspectFit">
+                                    <ff:CachedImage.GestureRecognizers>
+                                        <TapGestureRecognizer NumberOfTapsRequired="1"
+                                                              Command="{Binding Path=BindingContext.CarouselTappedCommand, Source={x:Reference Name=houseDetailPage2}}"
+                                                              CommandParameter="{Binding .}"/>
+                                    </ff:CachedImage.GestureRecognizers>
+                                </ff:CachedImage>
+                            </DataTemplate>
+                        </CarouselView.ItemTemplate>
+                    </CarouselView>
+
+                    <IndicatorView x:Name="indicatorView" IndicatorColor="LightGray" SelectedIndicatorColor="{DynamicResource SecondaryColor}" HorizontalOptions="Center" VerticalOptions="Center"/>
+
+                    <!--简要信息-->
+                    <Frame Style="{DynamicResource CommonFrame}">
+                        <Grid RowDefinitions="40,30,30,20" ColumnDefinitions="30,*">
+                            <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding House.proTitle}" TextColor="Black" FontSize="16" FontAttributes="Bold" VerticalOptions="Center"/>
+                            <StackLayout Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
+                                <controls:LabelWithBorder FontSize="10" Text="{Binding House.proDistrict}" DrawableColor="{DynamicResource LightPink}" TextColor="White" CornerRadius="2" VerticalOptions="Center"/>
+                                <controls:LabelWithBorder FontSize="10" Text="{Binding House.proArea}" TextColor="{DynamicResource ThickPink}" BorderThickness="2" BorderColor="{DynamicResource ThickPink}" CornerRadius="2" VerticalOptions="Center"/>
+                                <controls:LabelWithBorder FontSize="10" Text="VR" TextColor="{DynamicResource SecondaryColor}" BorderThickness="2" BorderColor="{DynamicResource SecondaryColor}" CornerRadius="2" VerticalOptions="Center"/>
+                                <controls:LabelWithBorder FontSize="10" Text="随时看房" TextColor="{DynamicResource SecondaryColor}" BorderThickness="2" BorderColor="{DynamicResource SecondaryColor}" CornerRadius="2" VerticalOptions="Center"/>
+                            </StackLayout>
+
+                            <BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Color="LightGray" HeightRequest="1" VerticalOptions="End"/>
+
+                            <StackLayout Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
+                                <Label TextColor="{DynamicResource ThickPink}" FontSize="18" HorizontalOptions="StartAndExpand">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="{Binding House.proPrice}"/>
+                                            <Span Text="{Binding House.proPriceType}"/>
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                                <Label TextColor="{DynamicResource ThickPink}" FontSize="16" HorizontalOptions="CenterAndExpand">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="{Binding House.proUnitPrice}"/>
+                                            <Span Text="{Binding House.proUnitPriceType}"/>
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                                <Label Text="{Binding House.proSquare,StringFormat='{0:F2}㎡'}" TextColor="{DynamicResource ThickPink}" FontSize="16" HorizontalOptions="EndAndExpand"/>
+                            </StackLayout>
+
+                            <!--<BoxView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Color="LightGray" HeightRequest="1" VerticalOptions="End"/>
+
+                            <StackLayout Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Vertical">
+                                <Label Text="{Binding House.proEstateName,StringFormat='小区名称：{0}'}" Style="{DynamicResource SecondaryLabel}"/>
+                                <Label Text="{Binding House.proSquare,StringFormat='所在区域：{0}'}" Style="{DynamicResource SecondaryLabel}"/>
+                                <Label Text="{Binding House.proSquare,StringFormat='看房时间：{0}'}" Style="{DynamicResource SecondaryLabel}"/>
+                                <Label Text="{Binding House.proSquare,StringFormat='房源编号：{0}'}" Style="{DynamicResource SecondaryLabel}"/>
+                            </StackLayout>-->
+
+                            <Frame Grid.Row="3" Grid.Column="0" HasShadow="False" Padding="0" VerticalOptions="Center">
+                                <ff:CachedImage HeightRequest="40" WidthRequest="40" Source="avatar.png"/>
+                            </Frame>
+                            <Label Grid.Row="3" Grid.Column="1" LineBreakMode="NoWrap">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="{Binding House.proEmployee1Name}" TextColor="Black"/>
+                                        <Span Text=" | 军军房页 信息真实性负责人"/>
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                        </Grid>
+                    </Frame>
+
+                    <!--详细信息-->
+                    <Frame Style="{DynamicResource CommonFrame}">
+                        <Grid RowDefinitions="*,*,*,*,*" ColumnDefinitions="*,*">
+                            <Label Grid.Row="0" Grid.Column="0" Style="{DynamicResource SecondaryLabel}">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="户型："/>
+                                        <Span Text="{Binding House.proCountF}"/>
+                                        <Span Text="室"/>
+                                        <Span Text="{Binding House.proCountT}"/>
+                                        <Span Text="厅"/>
+                                        <Span Text="{Binding House.proCountW}"/>
+                                        <Span Text="卫"/>
+                                        <Span Text="{Binding House.proCountY}"/>
+                                        <Span Text="卫"/>
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+
+                            <Label Grid.Row="0" Grid.Column="1" Style="{DynamicResource SecondaryLabel}">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="楼层："/>
+                                        <Span Text="{Binding House.proFloor}"/>
+                                        <Span Text="（共"/>
+                                        <Span Text="{Binding House.proFloorAll}"/>
+                                        <Span Text="层）"/>
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+
+                            <Label Grid.Row="1" Grid.Column="0" Text="{Binding House.proSquare,StringFormat='建筑面积：{0}㎡'}" Style="{DynamicResource SecondaryLabel}"/>
+
+                            <Label Grid.Row="1" Grid.Column="1" Text="{Binding House.proOwnership,StringFormat='属性：{0}'}" Style="{DynamicResource SecondaryLabel}"/>
+
+                            <Label Grid.Row="2" Grid.Column="0" Text="{Binding House.proType,StringFormat='结构：{0}'}" Style="{DynamicResource SecondaryLabel}"/>
+
+                            <Label Grid.Row="2" Grid.Column="1" Text="{Binding House.proDirection,StringFormat='朝向：{0}'}" Style="{DynamicResource SecondaryLabel}"/>
+
+                            <Label Grid.Row="3" Grid.Column="0" Text="{Binding House.proDecoration,StringFormat='装修：{0}'}" Style="{DynamicResource SecondaryLabel}"/>
+
+                            <Label Grid.Row="3" Grid.Column="1" Text="{Binding House.proUsage,StringFormat='用途：{0}'}" Style="{DynamicResource SecondaryLabel}"/>
+
+                            <Label Grid.Row="4" Grid.Column="0" Text="{Binding House.proRightYears,StringFormat='产权：{0}'}" Style="{DynamicResource SecondaryLabel}"/>
+
+                            <Label Grid.Row="4" Grid.Column="1" Text="{Binding House.proTrade,StringFormat='交易：{0}'}" Style="{DynamicResource SecondaryLabel}"/>
+                        </Grid>
+                    </Frame>
+
+                    <Frame Style="{DynamicResource CommonFrame}">
+                        <Grid RowDefinitions="*,*">
+                            <Label Grid.Row="0" Text="房源特色" Style="{DynamicResource PrimaryLabel}"/>
+                            <Label Grid.Row="1" Text="{Binding House.proKeywords,TargetNullValue='暂无数据'}" Style="{DynamicResource SecondaryLabel}"/>
+                        </Grid>
+                    </Frame>
+
+                    <Frame Style="{DynamicResource CommonFrame}">
+                        <Grid RowDefinitions="*,*" ColumnDefinitions="*,*">
+                            <Label Grid.Row="0" Grid.Column="0" Text="服务介绍" Style="{DynamicResource PrimaryLabel}"/>
+                            <Label Grid.Row="1" Grid.Column="0" Text="{Binding House.ownername,StringFormat='业主：{0}'}" Style="{DynamicResource SecondaryLabel}"/>
+                            <Label Grid.Row="1" Grid.Column="1" Text="{Binding House.ownermobile,StringFormat='电话：{0}'}" Style="{DynamicResource SecondaryLabel}"/>
+                        </Grid>
+                    </Frame>
+
+                    <Frame Style="{DynamicResource CommonFrame}">
+                        <Grid RowDefinitions="*,200">
+                            <Label Grid.Row="0" Text="房源评论" Style="{DynamicResource PrimaryLabel}"/>
+                            <ScrollView Grid.Row="1" Orientation="Vertical">
+                                <StackLayout BindableLayout.ItemsSource="{Binding CommentList}" Orientation="Vertical" Spacing="10">
+                                    <BindableLayout.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid RowDefinitions="*,*" ColumnDefinitions="40,*">
+                                                <ff:CachedImage Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" 
+                                                        Source="{Binding photoUrl,TargetNullValue=avatar.jpg}"
+                                                        HeightRequest="40" WidthRequest="40"
+                                                        DownsampleHeight="40" DownsampleWidth="40"/>
+
+                                                <Label Grid.Row="0" Grid.Column="1" LineBreakMode="TailTruncation">
+                                                    <Label.FormattedText>
+                                                        <FormattedString>
+                                                            <Span Text="{Binding commentPerson}"/>
+                                                            <Span Text=" "/>
+                                                            <Span Text="{Binding commentPersonTel}"/>
+                                                        </FormattedString>
+                                                    </Label.FormattedText>
+                                                </Label>
+
+                                                <Label Grid.Row="1" Grid.Column="1" Text="{Binding content}" TextColor="Black" LineBreakMode="CharacterWrap" FontAttributes="Bold"/>
+
+                                            </Grid>
+                                        </DataTemplate>
+                                    </BindableLayout.ItemTemplate>
+                                </StackLayout>
+                            </ScrollView>
+                        </Grid>
+                    </Frame>
+
+                </StackLayout>
+            </ScrollView>
+
+            <!--底部栏-->
+            <Grid Grid.Row="1" RowDefinitions="*,*" ColumnDefinitions="50,*,100" Padding="5">
+                <Frame Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" CornerRadius="5" HasShadow="False" Padding="0">
+                    <ff:CachedImage Source="avatar.png"/>
+                </Frame>
+                <Label Grid.Row="0" Grid.Column="1" Text="{Binding House.proEmployee1Name}" FontSize="16" TextColor="Black"/>
+                <Label Grid.Row="1" Grid.Column="1" Text="房屋信息发布人" FontSize="12"/>
+                <Button Grid.Row="0" Grid.Column="2" Grid.RowSpan="2" CornerRadius="5"
+                        Text="致电" TextColor="White" BackgroundColor="#6ecbb8"
+                        Command="{Binding CallCommand}"/>
+            </Grid>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

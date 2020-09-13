@@ -12,8 +12,10 @@
             UnselectedTabColor="LightGray">
     
     <views:HomePage/>
-    <views:MapPage/>
-    <views:ReportPage/>
+    <!--<views:MapPage/>
+    <views:ReportPage/>-->
+    <views:HouseManagePage/>
+    <views:ClientManagePage/>
     <views:MePage/>
 
 </TabbedPage>
