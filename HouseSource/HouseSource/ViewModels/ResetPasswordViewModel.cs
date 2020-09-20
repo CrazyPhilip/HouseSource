@@ -63,6 +63,7 @@ namespace HouseSource.ViewModels
 
         public Command SendCodeCommand { get; set; }
         public Command RegisterCommand { get; set; }
+        public Command ReturnCommand { get; set; }
 
         public ResetPasswordViewModel()
         {
@@ -142,6 +143,10 @@ namespace HouseSource.ViewModels
                 }
             }, () => { return true; });
 
+            ReturnCommand = new Command(() =>
+            {
+                Application.Current.MainPage.Navigation.PopModalAsync();
+            }, () => { return true; });
 
         }
 

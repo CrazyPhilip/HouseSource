@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:HouseSource.ViewModels"
+             xmlns:controls="clr-namespace:HouseSource.Controls"
+             xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms" xmlns:behaviors="clr-namespace:HouseSource.Behaviors"
+             mc:Ignorable="d"
+             x:Class="HouseSource.Views.RegisterPage2"
+             Title="注册">
+
+    <ContentPage.BindingContext>
+        <viewModels:RegisterViewModel/>
+    </ContentPage.BindingContext>
+
+    <ContentPage.Resources>
+        <Style x:Key="EntryStyle" TargetType="controls:MyEntry">
+            <Setter Property="WidthRequest" Value="200"/>
+            <Setter Property="PlaceholderColor" Value="White"/>
+            <Setter Property="HorizontalOptions" Value="Center"/>
+            <Setter Property="VerticalOptions" Value="Center"/>
+            <Setter Property="HorizontalTextAlignment" Value="Center"/>
+        </Style>
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <Frame CornerRadius="5" BackgroundColor="{DynamicResource ControlBackgroundColor}" HasShadow="False" Padding="10">
+            <Grid RowDefinitions="40,40,40,40,40,40,40,40,40,40,40" ColumnDefinitions="3*,1*" VerticalOptions="Center">
+
+                <ff:CachedImage Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Source="logo.png" HorizontalOptions="Center" VerticalOptions="Center"/>
+
+                <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Text="注册" HorizontalOptions="Center" VerticalOptions="Center" FontSize="14" FontAttributes="Bold"/>
+
+                <!--区域-->
+                <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" ColumnDefinitions="30,*,*,30" HeightRequest="40">
+                    <Label Grid.Column="1" Text="区域" TextColor="Black" FontAttributes="Bold" FontSize="12" HorizontalOptions="Start" VerticalOptions="Center"/>
+
+                    <controls:MyPicker Grid.Column="2" x:Name="myPicker" Title="请选择区域" ItemsSource="{Binding DistrictList}" TitleColor="LightGray" 
+                               TextColor="Black" FontSize="12" SelectedItem="{Binding TownName}" ItemDisplayBinding="{Binding town}">
+                        <controls:MyPicker.Behaviors>
+                            <behaviors:EventToCommandBehavior EventName="SelectedIndexChanged" Command="{Binding GetAreaCommand}" 
+                                                          CommandParameter="{Binding Path=SelectedIndex,Source={x:Reference myPicker}}"/>
+                        </controls:MyPicker.Behaviors>
+                    </controls:MyPicker>
+
+                    <Path Grid.Column="3" Stroke="LightGray" StrokeThickness="1" Aspect="Uniform" Fill="LightGray" HeightRequest="10" WidthRequest="10" HorizontalOptions="Center" VerticalOptions="Center"
+                  Data="M256.002176 1023.991296a25.599782 25.599782 0 0 1-18.124646-43.673229l442.671437-442.671437-442.671437-442.671437a25.599782 25.599782 0 0 1 36.198092-36.198093l460.796084 460.796084a25.599782 25.599782 0 0 1 0 36.198092l-460.796084 460.796083a25.497383 25.497383 0 0 1-18.124646 7.475137z"/>
+
+                    <BoxView Grid.ColumnSpan="4" Color="WhiteSmoke" HeightRequest="1" HorizontalOptions="Fill" VerticalOptions="End"/>
+                </Grid>
+                
+                <!--街道-->
+                <Grid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" ColumnDefinitions="30,*,*,30" HeightRequest="40">
+                    <Label Grid.Column="1" Text="街道" TextColor="Black" FontAttributes="Bold" FontSize="12" HorizontalOptions="Start" VerticalOptions="Center"/>
+
+                    <controls:MyPicker Grid.Column="2" Title="请选择街道" ItemsSource="{Binding AreaList}" TitleColor="LightGray" 
+                               TextColor="Black" FontSize="12" SelectedItem="{Binding DBName}" ItemDisplayBinding="{Binding village}"/>
+
+                    <Path Grid.Column="3" Stroke="LightGray" StrokeThickness="1" Aspect="Uniform" Fill="LightGray" HeightRequest="10" WidthRequest="10" HorizontalOptions="Center" VerticalOptions="Center"
+                  Data="M256.002176 1023.991296a25.599782 25.599782 0 0 1-18.124646-43.673229l442.671437-442.671437-442.671437-442.671437a25.599782 25.599782 0 0 1 36.198092-36.198093l460.796084 460.796084a25.599782 25.599782 0 0 1 0 36.198092l-460.796084 460.796083a25.497383 25.497383 0 0 1-18.124646 7.475137z"/>
+
+                    <BoxView Grid.ColumnSpan="4" Color="WhiteSmoke" HeightRequest="1" HorizontalOptions="Fill" VerticalOptions="End"/>
+                </Grid>
+                
+                <!--楼层-->
+                <controls:FluentEntry Grid.Row="4" Grid.Column="0" OptionName="手机号" Placeholder="请输入手机号" Text="{Binding TelOrEmpNo}" Keyboard="Telephone"/>
+
+                <!--发送验证码-->
+                <Button Grid.Row="4" Grid.Column="1" Text="{Binding AuthCodeButtonText}" HeightRequest="40" BackgroundColor="{Binding ButtonColor}" TextColor="White"
+                    CornerRadius="5" Padding="0" Command="{Binding SendCodeCommand}"/>
+
+                <!--短信验证码-->
+                <controls:FluentEntry Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" OptionName="短信验证码" Placeholder="请输入短信验证码" Text="{Binding Code}" ReturnType="Next" Keyboard="Numeric"/>
+
+                <!--登录密码-->
+                <controls:FluentEntry Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" OptionName="登录密码" Placeholder="请输入登录密码" Text="{Binding Password}" ReturnType="Next"/>
+
+                <!--真实姓名-->
+                <controls:FluentEntry Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" OptionName="真实姓名" Placeholder="请输入真实姓名" Text="{Binding RealName}" ReturnType="Next" Keyboard="Numeric"/>
+
+                <Button Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Text="注册" BackgroundColor="{DynamicResource PrimaryColor}" TextColor="White" Padding="0" CornerRadius="5" Command="{Binding RegisterCommand}"/>
+                <Button Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2" Text="返回" BackgroundColor="LightGray" TextColor="White" Padding="0" CornerRadius="5" Command="{Binding ReturnCommand}"/>
+
+            </Grid>
+        </Frame>
+        
+    </ContentPage.Content>
+
+</ContentPage>

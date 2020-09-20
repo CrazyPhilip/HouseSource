@@ -25,7 +25,7 @@
     </ContentPage.Resources>
 
     <ContentPage.Content>
-        <Grid RowDefinitions="40,40,40,40,40,40,40,40,40" ColumnDefinitions="*,*,*,*" VerticalOptions="CenterAndExpand" Padding="40,0">
+        <Grid RowDefinitions="40,40,40,40,40,40,40,40,40,40" ColumnDefinitions="*,*,*,*" VerticalOptions="CenterAndExpand" Padding="40,0">
 
             <Frame Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="LightGray" HasShadow="False" CornerRadius="5" Padding="0">
                 <controls:MyPicker  x:Name="BuildingPicker"  Title="请选择区域" HorizontalOptions="Center" SelectedItem="{Binding TownName}" ItemsSource="{Binding DistrictList}" ItemDisplayBinding="{Binding town}">
@@ -62,6 +62,9 @@
 
             <Button Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="4" Text="注册" BackgroundColor="{DynamicResource PrimaryColor}" TextColor="White"
                     Padding="0" CornerRadius="5" Command="{Binding RegisterCommand}"/>
+            
+            <Button Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="4" Text="返回" BackgroundColor="LightGray" TextColor="White"
+                    Padding="0" CornerRadius="5" Command="{Binding ReturnCommand}"/>
         </Grid>
     </ContentPage.Content>
 

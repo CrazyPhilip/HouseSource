@@ -63,8 +63,16 @@ namespace HouseSource.ViewModels
 			set { SetProperty(ref searchContent, value); }
 		}
 
+		private bool isRefreshing;   //Comment
+		public bool IsRefreshing
+		{
+			get { return isRefreshing; }
+			set { SetProperty(ref isRefreshing, value); }
+		}
+
 		public ClientPara clientPara { get; set; }
 
+		public Command RefreshCommand { get; set; }
 		public Command SearchCommand { get; set; }
 		public Command SortCommand { get; set; }
 		public Command<string> TappedCommand { get; set; }
@@ -163,6 +171,13 @@ namespace HouseSource.ViewModels
 			SearchCommand = new Command(() =>
 			{
 				GetClientList();
+			}, () => { return true; });
+
+			RefreshCommand = new Command(() =>
+			{
+				IsRefreshing = true;
+				GetClientList();
+				IsRefreshing = false;
 			}, () => { return true; });
 
 			GetClientList();

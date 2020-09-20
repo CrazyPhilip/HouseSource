@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using Xamarin.Forms;
+using Xamarin.Forms.Internals;
 using Xamarin.Forms.Xaml;
 
 namespace HouseSource.Controls
@@ -21,7 +23,7 @@ namespace HouseSource.Controls
         public static readonly BindableProperty ItemsSourceProperty = BindableProperty.Create(nameof(ItemsSource), typeof(IList), typeof(FluentPicker), defaultBindingMode: BindingMode.TwoWay);
         public static readonly BindableProperty SelectedItemProperty = BindableProperty.Create(nameof(SelectedItem), typeof(string), typeof(FluentPicker), null, defaultBindingMode: BindingMode.TwoWay, propertyChanged: OnSelectedItemChanged);
         public static readonly BindableProperty SelectedIndexProperty = BindableProperty.Create(nameof(SelectedIndex), typeof(int), typeof(FluentPicker), -1, defaultBindingMode: BindingMode.TwoWay, propertyChanged: OnSelectedIndexChanged);
-        //public static readonly BindableProperty ItemDisplayBindingProperty = BindableProperty.Create(nameof(ItemDisplayBinding), typeof(BindingBase), typeof(FluentPicker), null, defaultBindingMode: BindingMode.TwoWay);
+        //public static readonly BindableProperty ItemDisplayBindingProperty = BindableProperty.Create(nameof(ItemDisplayBinding), typeof(Binding), typeof(FluentPicker), null, defaultBindingMode: BindingMode.TwoWay);
         
         public event EventHandler SelectedIndexChanged;
 
@@ -65,9 +67,9 @@ namespace HouseSource.Controls
             SelectedIndex = myPicker.Items.IndexOf(selectedItem.ToString());
         }
 
-        //public BindingBase ItemDisplayBinding
+        //public Binding ItemDisplayBinding
         //{
-        //    get => (BindingBase)GetValue(ItemDisplayBindingProperty);
+        //    get => (Binding)GetValue(ItemDisplayBindingProperty);
         //    set => SetValue(ItemDisplayBindingProperty, value);
         //}
 

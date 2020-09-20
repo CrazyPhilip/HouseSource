@@ -62,6 +62,12 @@
     <Compile Update="Views\HouseDetailPage2.xaml.cs">
       <DependentUpon>HouseDetailPage2.xaml</DependentUpon>
     </Compile>
+    <Compile Update="Views\RegisterPage2.xaml.cs">
+      <DependentUpon>RegisterPage2.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\ResetPasswordPage2.xaml.cs">
+      <DependentUpon>ResetPasswordPage2.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\TaxPage.xaml.cs">
       <DependentUpon>TaxPage.xaml</DependentUpon>
     </Compile>

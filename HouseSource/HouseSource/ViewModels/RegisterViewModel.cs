@@ -101,6 +101,7 @@ namespace HouseSource.ViewModels
 
         public Command SendCodeCommand { get; set; }
         public Command RegisterCommand { get; set; }
+        public Command ReturnCommand { get; set; }
         public Command<int> GetAreaCommand { get; set; }
 
         public RegisterViewModel()
@@ -186,6 +187,11 @@ namespace HouseSource.ViewModels
                 GetAreaByDistrict(DistrictList[index].town);  //直接放参数，没有拿到这个值
             }, (index) => { return true; });
 
+            ReturnCommand = new Command(() =>
+            {
+                Application.Current.MainPage.Navigation.PopModalAsync();
+            }, () => { return true; });
+
             GetDistrictsByCity("cd");
         }
 
@@ -253,34 +259,52 @@ namespace HouseSource.ViewModels
                     return;
                 }
 
+                //string content1 = await RestSharpService.CheckIfRegister(TelOrEmpNo);
+                //if (string.IsNullOrWhiteSpace(content1))
+                //{
+                //    CrossToastPopUp.Current.ShowToastError("服务器错误", ToastLength.Short);
+                //    return;
+                //}
+                //BaseResponse baseResponse1 = JsonConvert.DeserializeObject<BaseResponse>(content1);
+                //if (baseResponse1.Flag == "success")
+                //{
+                //    if (baseResponse1.Result.ToString() == "TelExist")
+                //    {
+                //        CrossToastPopUp.Current.ShowToastError("电话号码已注册", ToastLength.Short);
+                //        return;
+                //    }
+                //}
+
                 string content = await RestSharpService.Register(DBName.dbName, TelOrEmpNo, Password, RealName, "");
 
-                if (!string.IsNullOrWhiteSpace(content))
+                if (string.IsNullOrWhiteSpace(content))
                 {
-                    BaseResponse baseResponse = JsonConvert.DeserializeObject<BaseResponse>(content);
-                    if (baseResponse.Flag == "success")
-                    {
-                        CrossToastPopUp.Current.ShowToastSuccess("注册成功", ToastLength.Long);
-                        // 注册成功后 ，自动保存全局的登录信息，并跳转界面 ，content中有除 PhotoUrl的其他变量
+                    CrossToastPopUp.Current.ShowToastError("注册失败", ToastLength.Short);
+                    return;
+                }
 
-                        GlobalVariables.LoggedUser = JsonConvert.DeserializeObject<LoginRD>(baseResponse.Result.ToString());
-                        //Console.Write(GlobalVariables.LoggedUser.ToString());
-                        GlobalVariables.LoggedUser.PhotoUrl = null;  //注册成功后的headPic为空
-                        GlobalVariables.IsLogged = true;
-                        GlobalVariables.LoggedUser.EmpNo = TelOrEmpNo;
+                BaseResponse baseResponse = JsonConvert.DeserializeObject<BaseResponse>(content);
+                if (baseResponse.Flag == "success")
+                {
+                    CrossToastPopUp.Current.ShowToastSuccess("注册成功", ToastLength.Long);
+                    // 注册成功后 ，自动保存全局的登录信息，并跳转界面 ，content中有除 PhotoUrl的其他变量
 
-                        //MainPage mainPage = new MainPage();
-                        //await Application.Current.MainPage.Navigation.PushAsync(mainPage);
-                        MyNavigationPage myNavigationPage = new MyNavigationPage(new MainPage());
-                        Application.Current.MainPage = myNavigationPage;
+                    GlobalVariables.LoggedUser = JsonConvert.DeserializeObject<LoginRD>(baseResponse.Result.ToString());
+                    //Console.Write(GlobalVariables.LoggedUser.ToString());
+                    GlobalVariables.LoggedUser.PhotoUrl = null;  //注册成功后的headPic为空
+                    GlobalVariables.IsLogged = true;
+                    GlobalVariables.LoggedUser.EmpNo = TelOrEmpNo;
+                    GlobalVariables.LoggedUser.DBName = DBName.dbName;
 
-                    }
+                    //MainPage mainPage = new MainPage();
+                    //await Application.Current.MainPage.Navigation.PushAsync(mainPage);
+                    MyNavigationPage myNavigationPage = new MyNavigationPage(new MainPage());
+                    Application.Current.MainPage = myNavigationPage;
                 }
                 else
                 {
-                    CrossToastPopUp.Current.ShowToastError("注册失败", ToastLength.Short);
+                    CrossToastPopUp.Current.ShowToastError(baseResponse.Msg, ToastLength.Short);
                 }
-                
             }
             catch (Exception)
             {

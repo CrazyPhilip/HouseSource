@@ -276,7 +276,8 @@ namespace HouseSource.Services
         /// <returns></returns>
         public static async Task<string> GetEstateInfoByEstateName(string estateName)
         {
-            string url = "GetEstateInfoByEstateName?DBName=" + GlobalVariables.LoggedUser.DBName + "&SelectType=1&EstateName=" + estateName;
+            //string url = "GetEstateInfoByEstateName?DBName=" + GlobalVariables.LoggedUser.DBName + "&SelectType=1&EstateName=" + estateName;
+            string url = "GetEstateInfoByEstateName?DBName=cd&SelectType=1&EstateName=" + estateName;
 
             string content = await RestSharpHelper<string>.GetAsyncWithoutDeserialization(url);
             return content;

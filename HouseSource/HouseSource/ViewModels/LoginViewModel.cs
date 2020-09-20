@@ -119,18 +119,18 @@ namespace HouseSource.ViewModels
 
 			ToRegisterCommand = new Command(() =>
 			{
-				RegisterPage registerPage = new RegisterPage();
+				RegisterPage2 registerPage2 = new RegisterPage2();
 				//Application.Current.MainPage.Navigation.PushAsync(registerPage);
-				MyNavigationPage myNavigationPage = new MyNavigationPage(registerPage);
-				Application.Current.MainPage.Navigation.PushModalAsync(myNavigationPage);
+				//MyNavigationPage myNavigationPage = new MyNavigationPage(registerPage);
+				Application.Current.MainPage.Navigation.PushModalAsync(registerPage2);
 			}, () => { return true; });
 
 			ToResetPasswordCommand = new Command(() =>
 			{
-				ResetPasswordPage resetPasswordPage = new ResetPasswordPage();
+				ResetPasswordPage2 resetPasswordPage2 = new ResetPasswordPage2();
 				//Application.Current.MainPage.Navigation.PushAsync(resetPasswordPage);
-				MyNavigationPage myNavigationPage = new MyNavigationPage(resetPasswordPage);
-				Application.Current.MainPage.Navigation.PushModalAsync(myNavigationPage);
+				//MyNavigationPage myNavigationPage = new MyNavigationPage(resetPasswordPage);
+				Application.Current.MainPage.Navigation.PushModalAsync(resetPasswordPage2);
 			}, () => { return true; });
 
 			RememberPwdCommand = new Command(() =>

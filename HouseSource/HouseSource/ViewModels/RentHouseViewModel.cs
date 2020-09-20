@@ -81,7 +81,14 @@ namespace HouseSource.ViewModels
             set { SetProperty(ref saleHousePara, value); }
         }
 
+        private bool isRefreshing;   //Comment
+        public bool IsRefreshing
+        {
+            get { return isRefreshing; }
+            set { SetProperty(ref isRefreshing, value); }
+        }
 
+        public Command RefreshCommand { get; set; }
         public Command SearchCommand { get; set; }
         public Command<string> SortCommand { get; set; }
         public Command<string> TappedCommand { get; set; }
@@ -196,6 +203,13 @@ namespace HouseSource.ViewModels
                     }
                 });
             }, (h) => { return true; });
+
+            RefreshCommand = new Command(() =>
+            {
+                IsRefreshing = true;
+                GetHouseList();
+                IsRefreshing = false;
+            }, () => { return true; });
 
             GetHouseList();
         }

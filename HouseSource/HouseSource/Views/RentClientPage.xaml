@@ -61,58 +61,60 @@
             </Frame>
             <ImageButton Grid.Row="1" Grid.Column="3" Source="search.png" BackgroundColor="Transparent" VerticalOptions="CenterAndExpand" Command="{Binding SearchCommand}"/>-->
 
+            <RefreshView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}">
+                <ScrollView Orientation="Vertical">
+                    <StackLayout Orientation="Vertical">
+                        <StackLayout BindableLayout.ItemsSource="{Binding RentClientList}" Orientation="Vertical">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate>
+                                    <Frame HeightRequest="80" Style="{DynamicResource BaseFrame}">
+                                        <Grid RowSpacing="0" RowDefinitions="*,*,*,*" ColumnDefinitions="*,3*,2*">
+                                            <Frame Grid.Row="0" Grid.Column="0" Grid.RowSpan="4" BorderColor="LightGray" WidthRequest="60" HeightRequest="60" HorizontalOptions="Center" VerticalOptions="Center" HasShadow="False" Padding="0" CornerRadius="30">
+                                                <Label Text="{Binding FirstChar}" FontSize="20" TextColor="{DynamicResource PrimaryColor}" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Center"/>
+                                            </Frame>
+                                            <Label Grid.Row="0" Grid.Column="1" Text="{Binding CustName}" TextColor="Black" FontAttributes="Bold" VerticalOptions="Center"/>
+                                            <Label Grid.Row="1" Grid.Column="1" Text="{Binding CustMobile}" FontSize="12" VerticalOptions="Center"/>
+                                            <Label Grid.Row="2" Grid.Column="1" FontSize="12">
+                                                <Label.FormattedText>
+                                                    <FormattedString>
+                                                        <Span Text="["/>
+                                                        <Span Text="{Binding Position}"/>
+                                                        <Span Text="]"/>
+                                                        <Span Text="{Binding SquareMin}"/>
+                                                        <Span Text="~"/>
+                                                        <Span Text="{Binding SquareMax}"/>
+                                                        <Span Text="㎡"/>
+                                                    </FormattedString>
+                                                </Label.FormattedText>
+                                            </Label>
+                                            <Label Grid.Row="3" Grid.Column="1" Text="{Binding Remark}" FontSize="12" VerticalOptions="Center"/>
+                                            <Label Grid.Row="0" Grid.Column="2" Grid.RowSpan="4" FontSize="16" TextColor="Red" HorizontalOptions="Center" VerticalOptions="Center">
+                                                <Label.FormattedText>
+                                                    <FormattedString>
+                                                        <Span Text="{Binding PriceMin}"/>
+                                                        <Span Text="~"/>
+                                                        <Span Text="{Binding PriceMax}"/>
+                                                        <Span Text="万元"/>
+                                                    </FormattedString>
+                                                </Label.FormattedText>
+                                            </Label>
+                                        </Grid>
 
-            <ScrollView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" Orientation="Vertical">
-                <StackLayout Orientation="Vertical">
-                    <StackLayout BindableLayout.ItemsSource="{Binding RentClientList}" Orientation="Vertical">
-                        <BindableLayout.ItemTemplate>
-                            <DataTemplate>
-                                <Frame HeightRequest="80" Style="{DynamicResource BaseFrame}">
-                                    <Grid RowSpacing="0" RowDefinitions="*,*,*,*" ColumnDefinitions="*,3*,2*">
-                                        <Frame Grid.Row="0" Grid.Column="0" Grid.RowSpan="4" BorderColor="LightGray" WidthRequest="60" HeightRequest="60" HorizontalOptions="Center" VerticalOptions="Center" HasShadow="False" Padding="0" CornerRadius="30">
-                                            <Label Text="{Binding FirstChar}" FontSize="20" TextColor="{DynamicResource PrimaryColor}" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Center"/>
-                                        </Frame>
-                                        <Label Grid.Row="0" Grid.Column="1" Text="{Binding CustName}" TextColor="Black" FontAttributes="Bold" VerticalOptions="Center"/>
-                                        <Label Grid.Row="1" Grid.Column="1" Text="{Binding CustMobile}" FontSize="12" VerticalOptions="Center"/>
-                                        <Label Grid.Row="2" Grid.Column="1" FontSize="12">
-                                            <Label.FormattedText>
-                                                <FormattedString>
-                                                    <Span Text="["/>
-                                                    <Span Text="{Binding Position}"/>
-                                                    <Span Text="]"/>
-                                                    <Span Text="{Binding SquareMin}"/>
-                                                    <Span Text="~"/>
-                                                    <Span Text="{Binding SquareMax}"/>
-                                                    <Span Text="㎡"/>
-                                                </FormattedString>
-                                            </Label.FormattedText>
-                                        </Label>
-                                        <Label Grid.Row="3" Grid.Column="1" Text="{Binding Remark}" FontSize="12" VerticalOptions="Center"/>
-                                        <Label Grid.Row="0" Grid.Column="2" Grid.RowSpan="4" FontSize="16" TextColor="Red" HorizontalOptions="Center" VerticalOptions="Center">
-                                            <Label.FormattedText>
-                                                <FormattedString>
-                                                    <Span Text="{Binding PriceMin}"/>
-                                                    <Span Text="~"/>
-                                                    <Span Text="{Binding PriceMax}"/>
-                                                    <Span Text="万元"/>
-                                                </FormattedString>
-                                            </Label.FormattedText>
-                                        </Label>
-                                    </Grid>
-
-                                    <Frame.GestureRecognizers>
-                                        <TapGestureRecognizer NumberOfTapsRequired="1"
+                                        <Frame.GestureRecognizers>
+                                            <TapGestureRecognizer NumberOfTapsRequired="1"
                                                               Command="{Binding BindingContext.TappedCommand, Source={x:Reference rentClientPage}}"
                                                               CommandParameter="{Binding InquiryNo}"/>
-                                    </Frame.GestureRecognizers>
-                                </Frame>
-                            </DataTemplate>
-                        </BindableLayout.ItemTemplate>
-                    </StackLayout>
+                                        </Frame.GestureRecognizers>
+                                    </Frame>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </StackLayout>
 
-                    <Button Text="{Binding LoadMoreButtonText}" Command="{Binding LoadMoreCommand}" BackgroundColor="Transparent" IsEnabled="{Binding ButtonIsEnable}"/>
-                </StackLayout>
-            </ScrollView>
+                        <Button Text="{Binding LoadMoreButtonText}" Command="{Binding LoadMoreCommand}" BackgroundColor="Transparent" IsEnabled="{Binding ButtonIsEnable}"/>
+                    </StackLayout>
+                </ScrollView>
+            </RefreshView>
+            
         </Grid>
     </ContentPage.Content>
 </ContentPage>

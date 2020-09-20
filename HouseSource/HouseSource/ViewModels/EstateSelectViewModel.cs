@@ -44,6 +44,8 @@ namespace HouseSource.ViewModels
 
 		public EstateSelectViewModel()
 		{
+			EstateList = new ObservableCollection<EstateItemInfo>();
+
 			SelectCommand = new Command<EstateItemInfo>(async (e) =>
 			{
 				await BackPage(e);
@@ -92,7 +94,7 @@ namespace HouseSource.ViewModels
                 }
 				else
 				{
-					EstateList = new ObservableCollection<EstateItemInfo>();
+					CrossToastPopUp.Current.ShowToastError("没有查找到匹配的小区", ToastLength.Short);
 				}
 			}
 			catch (Exception)

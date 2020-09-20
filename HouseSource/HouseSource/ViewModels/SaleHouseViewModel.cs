@@ -71,6 +71,13 @@ namespace HouseSource.ViewModels
             set { SetProperty(ref saleHousePara, value); }
         }
 
+        private bool isRefreshing;   //Comment
+        public bool IsRefreshing
+        {
+            get { return isRefreshing; }
+            set { SetProperty(ref isRefreshing, value); }
+        }
+
         private ObservableCollection<HouseItemInfo> houseItemList;    //售房列表
         public ObservableCollection<HouseItemInfo> HouseItemList
         {
@@ -81,6 +88,7 @@ namespace HouseSource.ViewModels
         private List<HouseItemInfo> saleHouseItemList { get; set; }    //售房列表
         private List<HouseInfo> saleHouseList { get; set; }    //售房列表  原始
 
+        public Command RefreshCommand { get; set; }
         public Command SearchCommand { get; set; }
         public Command<string> SortCommand { get; set; }
         public Command<string> TappedCommand { get; set; }
@@ -195,9 +203,15 @@ namespace HouseSource.ViewModels
                 });
             }, (h) => { return true; });
 
+            RefreshCommand = new Command(() =>
+            {
+                IsRefreshing = true;
+                GetHouseList();
+                IsRefreshing = false;
+            }, () => { return true; });
+
             GetHouseList();
         }
-
 
         /// <summary>
         /// 获取房源列表
